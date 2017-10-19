@@ -1,0 +1,46 @@
+{
+  "id"       : 1,
+  "role"     : 2,
+  "email"    : "John@doe.com",
+  "name"     : "John",
+  "userName" : "JohnDoe",
+  "courses"  : [
+    {
+      "id"           : 2,
+      "name"         : "CS3028",
+      "professor_id" : 3,
+      "description"  : "A test description for a CS course.",
+      "assessments"  : [
+        {
+          "id"          : 4,
+          "course_id"   : 2,
+          "name"        : "Travelling salesman",
+          "start_date"  : "21/09/2017 21:09:00",
+          "end_date"    : "21/09/2017 21:09:00",
+          "description" : "Must complete in O(n) time.",
+          "resources"   : [
+            {
+              "filename"     : "Blaah",
+              "content_type" : "file",
+              "data"         : "12312312312312312",
+              "status"       : 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "submissions" : [
+    {
+      "user_id"       : 1,
+      "assessment_id" : 4,
+      "filename"      : "Blaah",
+      "content_type"  : "file",
+      "data"          : "12312312312312312",
+      "status"        : 0,
+      "result"        : 21,
+      "mark"          : 2,
+      "output"        : "That'll do pig, that'll do."
+    }
+  ]
+}
