@@ -10,7 +10,7 @@ import Assignment  from './Components/Assignment.js';
 import Login       from './Components/Login.js';
 import NavBar      from './Components/Navigation/NavBar.js';
 
-import './css/App.css';
+import './Css/App.css';
 
 function Welcome(props) {
   return <h1>Hello, {props.name}</h1>;
@@ -31,7 +31,7 @@ class App extends Component {
         <Welcome name="Stefan"/>
         <Application/>
         <Assignment/>
-        <Login/>
+        <Login name="NameProp"/>
 
       </div>
     );
