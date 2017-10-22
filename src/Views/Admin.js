@@ -1,6 +1,7 @@
 import React from 'react';
 import ConfigurableTable from './../Components/common/ConfigurableTable.js';
-import logo from './../Assets/CodemarkerLogo.png';
+import logo from './../Assets/CodeMarkerLogo.png';
+import { Table, FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 
 class Admin extends React.Component {
 

@@ -2,10 +2,14 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 class ConfigurableTable extends React.Component {
+
   render() {
+    const tableStyle = {
+      textAlign: "left",
+    }
     return (
       <div>
-        <Table responsive>
+        <Table responsive style={tableStyle}>
           <thead>
           <tr>
             <th>#</th>
