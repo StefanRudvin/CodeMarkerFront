@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import { BrowserRouter as Router, Route} from 'react-router-dom'
 
-import CoursesJSON from './Api/Courses.json'
-
 // Components
 import NavBar from './Components/Navigation/NavBar.js';
 
@@ -11,6 +9,7 @@ import NavBar from './Components/Navigation/NavBar.js';
 import AssessmentsView from './Views/Assessments.js';
 import CoursesView     from './Views/Courses.js';
 import LoginView       from './Views/Login.js';
+import AdminView       from './Views/Admin.js';
 import HomeView        from './Views/Home.js';
 import UserView        from './Views/User.js';
 
@@ -37,6 +36,9 @@ const routes = [
   },
   { path: '/courses',
     main: () => <CoursesView />
+  },
+  { path: '/admin',
+    main: () => <AdminView />
   }
 ]
 
@@ -49,10 +51,8 @@ class App extends Component {
       <Router>
         <div className="App">
           <NavBar courses={Courses}/>
-          <div class="container">
+          <div className="container">
             {routes.map((route, index) => (
-              // Render more <Route>s with the same paths as
-              // above, but different components this time.
               <Route
                 key={index}
                 path={route.path}
@@ -61,7 +61,6 @@ class App extends Component {
               />
             ))}
           </div>
-
         </div>
       </Router>
     );

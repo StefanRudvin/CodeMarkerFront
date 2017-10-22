@@ -22,6 +22,7 @@ class NavBar extends React.Component {
               </NavDropdown>
             </Nav>
             <Nav pullRight>
+              <NavItem><Link to="/admin">Admin</Link></NavItem>
               <NavItem><Link to="/user">Profile</Link></NavItem>
               <NavItem><Link to="/login">Login</Link></NavItem>
             </Nav>
