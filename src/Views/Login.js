@@ -1,56 +1,42 @@
-import React from 'react';
-import { Navbar, Jumbotron, Button, MenuItem, NavItem, NavDropdown, Nav, FormControl, FormGroup } from 'react-bootstrap';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import React, { Component } from 'react';
 
-class Login extends React.Component {
+class Login extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      username:'',
+      password:''
+    }
+  }
   render() {
     return (
-      <div className="login" style={loginStyle}>
-        {this.props.name}
-
-        <Navbar>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <a href="#">UserName</a>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Navbar.Form pullLeft>
-              <FormGroup>
-                <FormControl type="text" placeholder="Search" />
-              </FormGroup>
-              {' '}
-            </Navbar.Form>
-          </Navbar.Collapse>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <a href="#">Password</a>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Navbar.Form pullLeft>
-              <FormGroup>
-                <FormControl type="text" placeholder="Search" />
-              </FormGroup>
-              {' '}
-              <Button type="submit">Submit</Button>
-            </Navbar.Form>
-          </Navbar.Collapse>
-        </Navbar>
-
-        <Button active={false}>Helloo</Button>
-        <Button active={true}>Helloo</Button>
-        <Button bsStyle="warning">warning</Button>
-        <Button bsStyle="default">Default</Button>
-        <Button bsStyle="success">Success</Button>
+      <div>
+        <MuiThemeProvider>
+          <div>
+            <TextField
+              hintText="Enter your Username"
+              floatingLabelText="Username"
+              onChange = {(event,newValue) => this.setState({username:newValue})}
+            />
+            <br/>
+            <TextField
+              type="password"
+              hintText="Enter your Password"
+              floatingLabelText="Password"
+              onChange = {(event,newValue) => this.setState({password:newValue})}
+            />
+            <br/>
+            <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+          </div>
+        </MuiThemeProvider>
       </div>
     );
   }
 }
-
-const loginStyle = {
-
+const style = {
+  margin: 15,
 };
-
 export default Login;

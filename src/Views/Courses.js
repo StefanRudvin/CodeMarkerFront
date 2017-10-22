@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Jumbotron, Button, MenuItem, NavItem, NavDropdown, Nav, FormControl, FormGroup } from 'react-bootstrap';
+import { Navbar, Button, FormControl, FormGroup } from 'react-bootstrap';
 
 class Login extends React.Component {
   render() {
@@ -10,7 +10,7 @@ class Login extends React.Component {
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#">UserName</a>
+              <a href="">UserName</a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -24,7 +24,7 @@ class Login extends React.Component {
           </Navbar.Collapse>
           <Navbar.Header>
             <Navbar.Brand>
-              <a href="#">Password</a>
+              <a href="">Password</a>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

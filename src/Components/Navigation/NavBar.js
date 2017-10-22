@@ -1,43 +1,43 @@
 import React from 'react';
-import { Navbar, Jumbotron, Button, MenuItem, NavItem, NavDropdown, Nav } from 'react-bootstrap';
-import Style from './../../Css/style.scss';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+import { Navbar, NavItem, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 
-const NavBar = props => {
-  const navStyle = {
-    color: 'blue',
-    background: 'blue',
-    marginBottom: 0,
+class NavBar extends React.Component {
+  render() {
+    return (
+      <div className="navBar" style={navStyle}>
+        <Navbar inverse collapseOnSelect style={testStyle}>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Codemarker</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle/>
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav>
+              <NavDropdown title="Courses" id="basic-nav-dropdown">
+                {this.props.courses.map(course => (
+                  <MenuItem key={course.id}>{course.name}</MenuItem>
+                ))}
+              </NavDropdown>
+            </Nav>
+            <Nav pullRight>
+              <NavItem><Link to="/user">Profile</Link></NavItem>
+              <NavItem><Link to="/login">Login</Link></NavItem>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </div>
+    );
   }
-  const testStyle = {
-    marginBottom: 0,
-    borderRadius: 0
-  }
-  return (
-    <div className="navBar" style={navStyle}>
-      <Navbar inverse collapseOnSelect style={testStyle}>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a><Link to="/">Codemarker</Link></a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav>
-            <NavItem eventKey={1}><Link to="/courses">Courses</Link></NavItem>
-          </Nav>
-          <Nav pullRight>
-            <NavItem eventKey={1} href="#">Profile</NavItem>
-            <NavItem eventKey={2} href="#">Logout</NavItem>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </div>
-  );
 };
+
+const navStyle = {
+  marginBottom: 0,
+}
+const testStyle = {
+  marginBottom: 0,
+  borderRadius: 0
+}
 
 export default NavBar;

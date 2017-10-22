@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 
-// Bootstrap
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
+import { BrowserRouter as Router, Route} from 'react-router-dom'
 
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import CoursesJSON from './Api/Courses.json'
 
 // Components
-import Application from './Components/Application.js';
-import Assignment  from './Components/Assignment.js';
-import Login       from './Components/Login.js';
-import NavBar      from './Components/Navigation/NavBar.js';
+import NavBar from './Components/Navigation/NavBar.js';
 
 //  Views
-import Course      from './Views/Course.js';
+import AssessmentsView from './Views/Assessments.js';
+import CoursesView     from './Views/Courses.js';
+import LoginView       from './Views/Login.js';
+import HomeView        from './Views/Home.js';
+import UserView        from './Views/User.js';
 
 import './Css/App.css';
 
@@ -24,56 +23,72 @@ import './Css/App.css';
 const routes = [
   { path: '/',
     exact: true,
-    main: () => <h2>Home</h2>
+    main: () => <HomeView />
   },
   { path: '/login',
     exact: true,
-    main: () => <Login name="NameProp"/>
+    main: () => <LoginView />
   },
   { path: '/user',
-    main: () => <h2>User</h2>
+    main: () => <UserView />
   },
-  { path: '/assignments',
-    main: () => <h2>Assignments</h2>
+  { path: '/courses/assessments',
+    main: () => <AssessmentsView />
   },
   { path: '/courses',
-    main: () => <Course />
+    main: () => <CoursesView />
   }
 ]
 
-
 class App extends Component {
+  componentDidMount() {
+    console.log('Main component loaded')
+  }
   render() {
     return (
       <Router>
         <div className="App">
-          <NavBar/>
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to CodeMarker</h1>
-          </header>
+          <NavBar courses={Courses}/>
+          <div class="container">
+            {routes.map((route, index) => (
+              // Render more <Route>s with the same paths as
+              // above, but different components this time.
+              <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                component={route.main}
+              />
+            ))}
+          </div>
 
-          {routes.map((route, index) => (
-            // Render more <Route>s with the same paths as
-            // above, but different components this time.
-            <Route
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              component={route.main}
-            />
-          ))}
-
-          <p className="App-intro">
-            Codemarker is an application used by the
-          </p>
-          <p className="App-intro">
-            University of Aberdeen to assess student submissions for code assignments.
-          </p>
         </div>
       </Router>
     );
   }
 }
+
+const Courses = [
+  {
+    'id' : 1,
+    'name' : "CS3028 Algorithms"
+  },
+  {
+    'id' : 2,
+    'name' : "CS3029 Operating Systems"
+  },
+  {
+    'id' : 3,
+    'name' : "CS3010 Computer Architecture"
+  },
+  {
+    'id' : 4,
+    'name' : "CS3031 Software Engineering"
+  },
+  {
+    'id' : 5,
+    'name' : "CS2048 Web application development"
+  },
+]
 
 export default App;
