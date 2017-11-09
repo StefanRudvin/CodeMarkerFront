@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom'
 import React from 'react';
 
 class NavBar extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="navBar" style={navStyle}>

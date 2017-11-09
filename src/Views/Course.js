@@ -1,4 +1,5 @@
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 import React from 'react';
 import axios from 'axios';
 
@@ -6,7 +7,9 @@ class Course extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      course: {}
+      course: {
+        'assessments' :[]
+      }
     }
     this.props.history.listen((location, action) => {
       let id = location.pathname.slice(9);
@@ -20,6 +23,7 @@ class Course extends React.Component {
       .then( (response) => {
         return response.data})
       .then( (json) => {
+        console.log(json);
         this.setState({course: json});
       });
   }
@@ -31,13 +35,16 @@ class Course extends React.Component {
     return (
       <div className="login">
         <h1>{this.state.course.name}</h1>
+        <p>Created at: {this.state.course.created_at}</p>
+        <p>Updated at: {this.state.course.updated_at}</p>
         <p>{this.state.course.description}</p>
 
-        <Button active={false}>Helloo</Button>
-        <Button active={true}>Helloo</Button>
-        <Button bsStyle="warning">warning</Button>
-        <Button bsStyle="default">Default</Button>
-        <Button bsStyle="success">Success</Button>
+        <h2>Assessments</h2>
+        {
+          this.state.course.assessments.map(function(assessment) {
+            return <li><Link to={'/assessments/' + assessment.id}>{assessment.name}</Link></li>
+          })
+        }
       </div>
     );
   }

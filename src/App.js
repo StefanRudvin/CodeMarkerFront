@@ -43,13 +43,13 @@ class App extends Component {
           <NavBar courses={this.state.courses}/>
           <div className="container">
             <Switch>
-              <Route exact path='/'      component={HomeView}/>
-              <Route path='/admin'       component={AdminView}/>
-              <Route path='/courses/:id' component={CourseView}/>
-              <Route path='/courses'     component={CoursesView}/>
-              <Route path='/login'       component={LoginView}/>
-              <Route path='/user'        component={UserView}/>
-              <Route path='/assessments' component={AssessmentsView}/>
+              <Route exact path='/'          component={HomeView}/>
+              <Route path='/admin'           component={AdminView}/>
+              <Route path='/courses/:id'     component={CourseView}/>
+              <Route path='/courses'         component={CoursesView}/>
+              <Route path='/login'           component={LoginView}/>
+              <Route path='/user'            component={UserView}/>
+              <Route path='/assessments/:id' component={AssessmentsView}/>
             </Switch>
           </div>
         </div>
