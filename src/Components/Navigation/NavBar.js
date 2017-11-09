@@ -1,8 +1,13 @@
-import React from 'react';
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
+import React from 'react';
 
 class NavBar extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="navBar" style={navStyle}>
@@ -17,7 +22,7 @@ class NavBar extends React.Component {
             <Nav>
               <NavDropdown title="Courses" id="basic-nav-dropdown">
                 {this.props.courses.map(course => (
-                  <MenuItem key={course.id}>{course.name}</MenuItem>
+                  <MenuItem key={course.id}><Link to={'/courses/' + course.id}>{course.name}</Link></MenuItem>
                 ))}
               </NavDropdown>
             </Nav>
@@ -31,7 +36,7 @@ class NavBar extends React.Component {
       </div>
     );
   }
-};
+}
 
 const navStyle = {
   marginBottom: 0,

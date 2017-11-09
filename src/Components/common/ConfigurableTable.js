@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 
 class ConfigurableTable extends React.Component {
 
@@ -22,7 +23,7 @@ class ConfigurableTable extends React.Component {
           {this.props.items.map(item => (
             <tr>
               <td>{item.id}</td>
-              <td>{item.name}</td>
+              <td><Link to={this.props.link + "/" + item.id}>{item.name}</Link></td>
               <td>{item.code}</td>
               <td>{item.description}</td>
             </tr>
