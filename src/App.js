@@ -8,7 +8,7 @@ import NavBar from './Components/Navigation/NavBar.js';
 
 //  Views
 import AssessmentsView from './Views/Assessments.js';
-import CoursesView     from './Views/Courses.js';
+import SubmissionsView from './Views/Submission.js';
 import CourseView      from './Views/Course.js';
 import LoginView       from './Views/Login.js';
 import AdminView       from './Views/Admin.js';
@@ -46,7 +46,7 @@ class App extends Component {
               <Route exact path='/'          component={HomeView}/>
               <Route path='/admin'           component={AdminView}/>
               <Route path='/courses/:id'     component={CourseView}/>
-              <Route path='/courses'         component={CoursesView}/>
+              <Route path='/submissions'     component={SubmissionsView}/>
               <Route path='/login'           component={LoginView}/>
               <Route path='/user'            component={UserView}/>
               <Route path='/assessments/:id' component={AssessmentsView}/>
