@@ -52,6 +52,7 @@ class Admin extends React.Component {
                     tableHeader="Course Name"
                     tableDescription="Course Description"
                 />
+                
                 <form onSubmit={this.handleSubmit}>
                     <p>{this.nameWarning}</p>
                     <input

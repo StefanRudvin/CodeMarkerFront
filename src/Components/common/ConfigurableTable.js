@@ -19,7 +19,7 @@ class ConfigurableTable extends React.Component {
         }
         return (
             <div>
-                <Table responsive style={tableStyle} striped hover>
+                <table className="table">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -37,12 +37,12 @@ class ConfigurableTable extends React.Component {
                             <td><Link to={this.props.link + '/' + item.id}>{item.name}</Link></td>
                             <td>{item.description}</td>
                             {this.props.showDelete ? (
-                                <button>Delete</button>
+                                <td><a className="button">Delete</a></td>
                             ):null}
                         </tr>
                     ))}
                     </tbody>
-                </Table>
+                </table>
             </div>
         )
     }

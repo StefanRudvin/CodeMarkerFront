@@ -42,17 +42,20 @@ class Course extends React.Component {
                     <p>{this.state.course.description}</p>
                 </Jumbotron>
 
-                <p>Created at: {this.state.course.created_at}</p>
-                <p>Updated at: {this.state.course.updated_at}</p>
+                <div className="content">
+                    <p>Created at: {this.state.course.created_at}</p>
+                    <p>Updated at: {this.state.course.updated_at}</p>
 
-                <h2>Assessments</h2>
-                <ListGroup>
-                    {
-                        this.state.course.assessments.map(function (assessment) {
-                            return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>Created at {assessment.created_at}</ListGroupItem>
-                        })
-                    }
-                </ListGroup>
+                    <h2>Assessments</h2>
+                    <ListGroup>
+                        {
+                            this.state.course.assessments.map(function (assessment) {
+                                return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>Created at {assessment.created_at}</ListGroupItem>
+                            })
+                        }
+                    </ListGroup>
+                </div>
+
             </div>
         )
     }

@@ -60,28 +60,32 @@ class Assessments extends React.Component {
                 </Jumbotron>
 
                 <Col sm={6}>
-                    <p>{this.state.assessment.additional_help}</p>
-
-                    <p>Created at: {this.state.assessment.created_at}</p>
-                    <p>Updated at: {this.state.assessment.updated_at}</p>
-                    <h2>Upload File</h2>
-                    <br/>
-                    <Dropzone onDrop={this.onDrop.bind(this)}>
-                        <div>Try dropping some files here, or click to select files to upload.</div>
-                    </Dropzone>
-                    <br/>
-                    <br/>
+                    <div className="content">
+                        <h3>Additional Help</h3>
+                        <p>{this.state.assessment.additional_help}</p>
+                        <p>Created at: {this.state.assessment.created_at}</p>
+                        <p>Updated at: {this.state.assessment.updated_at}</p>
+                        <h2>Upload File</h2>
+                        <br/>
+                        <Dropzone onDrop={this.onDrop.bind(this)}>
+                            <div>Try dropping some files here, or click to select files to upload.</div>
+                        </Dropzone>
+                        <br/>
+                        <br/>
+                    </div>
                 </Col>
 
                 <Col sm={6}>
-                    <h2>Submissions</h2>
-                    <ListGroup>
-                        {
-                            this.state.submissions.map(function (submission) {
-                                return <ListGroupItem header={submission.result} href={'/submissions/' + submission.id}>Created at {submission.created_at}</ListGroupItem>
-                            })
-                        }
-                    </ListGroup>
+                    <div className="content">
+                        <h2>Submissions</h2>
+                        <ListGroup>
+                            {
+                                this.state.submissions.map(function (submission) {
+                                    return <ListGroupItem header={submission.result} href={'/submissions/' + submission.id}>Created at {submission.created_at}</ListGroupItem>
+                                })
+                            }
+                        </ListGroup>
+                    </div>
                 </Col>
             </div>
         )

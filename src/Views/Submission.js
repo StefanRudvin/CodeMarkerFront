@@ -9,10 +9,7 @@ class Submission extends React.Component {
             loading: true,
             submission: {}
         }
-        this.props.history.listen((location, action) => {
-            let id = location.pathname.slice(9)
-            this.getSubmission(id)
-        })
+        this.getSubmission(this.props.location.pathname.slice(13))
     }
 
     getSubmission (id) {

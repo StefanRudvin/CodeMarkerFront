@@ -2,6 +2,7 @@ import ConfigurableTable from './../Components/common/ConfigurableTable.js';
 import logo from './../Assets/CodeMarkerLogo.png';
 import React from 'react';
 import axios from 'axios';
+import { Button, Jumbotron, ListGroup, ListGroupItem, Col} from 'react-bootstrap'
 
 class Home extends React.Component {
 
@@ -24,17 +25,18 @@ class Home extends React.Component {
     render() {
     return (
         <div className="home">
-            <header className="App-header">
+            <Jumbotron>
                 <img src={logo} className="App-logo" alt="logo" />
                 <h1 className="App-title">Welcome to CodeMarker</h1>
-            </header>
-            <br/>
-            <p className="App-intro">
-                Codemarker is an application used by the
-            </p>
-            <p className="App-intro">
-                University of Aberdeen to assess student submissions for code assignments.
-            </p>
+                <br/>
+                <p className="App-intro">
+                    Codemarker is an application used by the
+                </p>
+                <p className="App-intro">
+                    University of Aberdeen to assess student submissions for code assignments.
+                </p>
+            </Jumbotron>
+
 
             <ConfigurableTable items={this.state.courses} link="courses" tableHeader="Course Name" tableDescription="Course Description"/>
         </div>

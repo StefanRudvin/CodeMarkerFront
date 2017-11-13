@@ -6,6 +6,7 @@
     "axios": "^0.17.0",
     "bootstrap": "^3.3.7",
     "bulma": "^0.6.1",
+    "font-awesome": "^4.7.0",
     "jest-cli": "^21.2.1",
     "material-ui": "^0.19.4",
     "react": "^16.0.0",
