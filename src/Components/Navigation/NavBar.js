@@ -9,6 +9,7 @@ class NavBar extends React.Component {
             <nav className="navbar is-transparent">
                 <div className="navbar-brand">
                     <a className="navbar-item" href="/">
+                        <img src={logo} width="40" height="80"/>
                         Codemarker
                     </a>
                     <div className="navbar-burger burger" data-target="navbarExampleTransparentExample">

@@ -10,7 +10,6 @@ class Admin extends React.Component {
         this.state = {
             courses: [],
             name: '',
-            code: '',
             description: '',
             id: '',
             updated_at: ''
@@ -18,11 +17,9 @@ class Admin extends React.Component {
 
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
-        this.handleCodeChange = this.handleCodeChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.nameWarning = ''
         this.descriptionWarning = ''
-        this.codeWarning = ''
     }
 
     componentDidMount () {
@@ -52,31 +49,38 @@ class Admin extends React.Component {
                     tableHeader="Course Name"
                     tableDescription="Course Description"
                 />
-                
-                <form onSubmit={this.handleSubmit}>
-                    <p>{this.nameWarning}</p>
-                    <input
-                        placeholder="Name"
-                        onChange={this.handleNameChange}
-                        value={this.state.name}
-                    />
-                    <p>{this.codeWarning}</p>
-                    <input
-                        placeholder="Course Code"
-                        onChange={this.handleCodeChange}
-                        value={this.state.code}
-                    />
-                    <p>{this.descriptionWarning}</p>
-                    <input
-                        placeholder="Description"
-                        onChange={this.handleDescriptionChange}
-                        value={this.state.description}
-                    />
-                    <h4>Submit</h4>
-                    <button>
-                        Add #{this.state.courses.length + 1}
-                    </button>
-                </form>
+
+                <div className="content">
+                    <div className="field">
+                        <label className="label">Name</label>
+                        <div className="control">
+                            <input
+                                className="input"
+                                onChange={this.handleNameChange}
+                                value={this.state.name}
+                                type="text"
+                                placeholder="Course Name"/>
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <div className="control">
+                            <textarea
+                                className="textarea"
+                                onChange={this.handleDescriptionChange}
+                                value={this.state.description}
+                                placeholder="Course Description">
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <div className="button" onClick={this.handleSubmit}>
+                        Submit
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
             </div>
         )
     }
@@ -84,11 +88,6 @@ class Admin extends React.Component {
     handleNameChange (e) {
         this.setState({name: e.target.value})
         this.nameWarning = ''
-    }
-
-    handleCodeChange (e) {
-        this.setState({code: e.target.value})
-        this.codeWarning = ''
     }
 
     handleDescriptionChange (e) {
@@ -104,18 +103,12 @@ class Admin extends React.Component {
             this.nameWarning = 'You must specify the course name'
             return
         }
-        if (!this.state.code.length) {
-            console.log('code warning')
-            this.codeWarning = 'You must specify the course code'
-            return
-        }
         if (!this.state.description.length) {
             this.descriptionWarning = 'You must specify the course description'
             return
         }
         const newCourse = {
             name: this.state.name,
-            code: this.state.code,
             description: this.state.description,
             id: this.state.courses.length + 1,
             updated_at: Date.now()
@@ -125,7 +118,6 @@ class Admin extends React.Component {
             description: '',
             updated_at: '',
             name: '',
-            code: '',
             id: '',
         }))
     }

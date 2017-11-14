@@ -32,14 +32,17 @@ class Submission extends React.Component {
         return (
             <div>
                 <Jumbotron>
-                    <p>{this.state.submission.status}</p>
-                    <p>{this.state.submission.marks}</p>
+                    <h1>Submission</h1>
+                    <br/>
+                    <h1>Result: {this.state.submission.result}</h1>
                 </Jumbotron>
 
-                <Col sm={12}>
-                    <p>{this.state.submission.data}</p>
-                    <p>{this.state.submission.result}</p>
-                </Col>
+                <div className="content">
+                    <h2>Marks: {this.state.submission.marks}</h2>
+                    <h2>Content Type: {this.state.submission.content_type}</h2>
+                    <h2>Status: {this.state.submission.status}</h2>
+                    <h2>Time Taken: {this.state.submission.timeTaken}s</h2>
+                </div>
 
             </div>
         )
