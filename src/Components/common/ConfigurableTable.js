@@ -5,16 +5,22 @@ import axios from 'axios'
 
 class ConfigurableTable extends React.Component {
 
+    constructor(props) {
+        super(props);
+    };
+
     deleteItem (item) {
-        this.props.items.filter(function(current){
+        /*this.props.items.filter(function(current){
             return current.id !== item.id;
-        });
-       /* axios.delete(this.props.link + '/' + item.id)
+        });*/
+        axios.delete('http://127.0.0.1:8000/api/courses/' + item.id + '/')
             .then((response) => {
-                console.log('Item ' + item.id + 'deleted via ConfigurableTable')
+                //this.props.listMethod();
             })
             .then((json) => {
-            })*/
+
+            })
+
     }
     render () {
         const tableStyle = {
@@ -40,7 +46,7 @@ class ConfigurableTable extends React.Component {
                             <td><Link to={this.props.link + '/' + item.id}>{item.name}</Link></td>
                             <td>{item.description}</td>
                             {this.props.showDelete ? (
-                                <td><a className="button" onClick={this.deleteItem(item)}>Delete</a></td>
+                                <td><a className="button" onClick={() => this.deleteItem(item)}>Delete</a></td>
                             ):null}
                         </tr>
                     ))}

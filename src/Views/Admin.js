@@ -22,7 +22,7 @@ class Admin extends React.Component {
         this.descriptionWarning = ''
     }
 
-    componentDidMount () {
+    getCourses() {
         const url = 'http://127.0.0.1:8000/api/courses/?format=json'
         axios.get(url)
             .then((response) => {
@@ -31,6 +31,10 @@ class Admin extends React.Component {
             .then((json) => {
                 this.setState({courses: json})
             })
+    }
+
+    componentDidMount () {
+        this.getCourses()
     }
 
     render () {
@@ -44,7 +48,7 @@ class Admin extends React.Component {
                 <h3>Courses</h3>
                 <ConfigurableTable
                     items={this.state.courses}
-                    showDelete={true}
+                    //showDelete={true}
                     link="courses"
                     tableHeader="Course Name"
                     tableDescription="Course Description"
@@ -113,6 +117,7 @@ class Admin extends React.Component {
             id: this.state.courses.length + 1,
             updated_at: Date.now()
         }
+        this.addCourse()
         this.setState((prevState) => ({
             courses: prevState.courses.concat(newCourse),
             description: '',
@@ -121,6 +126,23 @@ class Admin extends React.Component {
             id: '',
         }))
     }
+
+    addCourse() {
+        const url = 'http://127.0.0.1:8000/api/courses/'
+
+        let formData = new FormData();
+
+        formData.append("name", this.state.name);
+        formData.append("description", this.state.description);
+        axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => {
+            this.getCourses()
+        })
+    }
+
 }
 
 export default Admin
