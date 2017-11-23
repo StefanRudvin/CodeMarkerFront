@@ -1,9 +1,9 @@
-import { Button, Jumbotron, ListGroup, ListGroupItem, Col} from 'react-bootstrap'
+import { Button, Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
 import Dropzone from 'react-dropzone'
 
-import { ClimbingBoxLoader } from 'react-spinners';
+import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
 
 class Assessments extends React.Component {
@@ -37,11 +37,11 @@ class Assessments extends React.Component {
             })
     }
 
-    toggleModal() {
+    toggleModal () {
         if (this.state.modal) {
-            this.setState({modal:false})
+            this.setState({modal: false})
         } else {
-            this.setState({modal:true})
+            this.setState({modal: true})
         }
     }
 
@@ -49,21 +49,21 @@ class Assessments extends React.Component {
         this.setState({modal: true})
         this.setState({loading: true})
         this.setState({uploading: true})
-        let formData = new FormData();
-        formData.append("submission", files[0]);
+        let formData = new FormData()
+        formData.append('submission', files[0])
         axios.post('http://127.0.0.1:8000/api/assessments/' + this.state.assessment.id + '/upload/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
             .then((response) => {
-                this.setState({uploading: false})
-                this.processSubmission(parseInt(response.data));
-        }
-        )
+                    this.setState({uploading: false})
+                    this.processSubmission(parseInt(response.data))
+                }
+            )
     }
 
-    processSubmission(id){
+    processSubmission (id) {
         let url = 'http://127.0.0.1:8000/api/submissions/' + id + '/process/'
         axios.get(url)
             .then((json) => {
@@ -119,34 +119,40 @@ class Assessments extends React.Component {
                         <ListGroup>
                             {
                                 this.state.submissions.map(function (submission) {
-                                    return <ListGroupItem header={submission.result} href={'/submissions/' + submission.id}>Created at {submission.created_at}</ListGroupItem>
+                                    return <ListGroupItem header={submission.result}
+                                                          href={'/submissions/' + submission.id}>Created
+                                        at {submission.created_at}</ListGroupItem>
                                 })
                             }
                         </ListGroup>
                     </div>
                 </Col>
-                <div className={"modal " + (this.state.modal ? 'is-active' : '')}>
+
+                <div className={'modal ' + (this.state.modal ? 'is-active' : '')}>
                     <div className="modal-background"></div>
                     <div className="modal-card">
+
                         <header className="modal-card-head">
                             <p className="modal-card-title">Report</p>
-                            <button className="delete" onClick={this.toggleModal.bind(this)} aria-label="close"></button>
+                            <button className="delete" onClick={this.toggleModal.bind(this)}
+                                    aria-label="close"></button>
                         </header>
+
                         <section className="modal-card-body">
                             {this.props.uploading ? (
                                 <h2>Uploading...</h2>
-                            ):null}
+                            ) : null}
                             {this.props.loading ? (
                                 <h2>Loading...</h2>
-                            ):null}
+                            ) : null}
                             {!this.props.loading ? (
                                 <Report submission={this.state.submission}/>
-                            ):null}
+                            ) : null}
                             {this.props.loading ? (
                                 <ClimbingBoxLoader
                                     loading={this.state.loading}
                                 />
-                            ):null}
+                            ) : null}
                         </section>
                         <footer className="modal-card-foot">
                             <button className="button is-success" onClick={this.toggleModal.bind(this)}>Close</button>

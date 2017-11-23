@@ -1,4 +1,4 @@
-import { Button, Jumbotron, ListGroup, ListGroupItem, Col} from 'react-bootstrap'
+import { Button, Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
 
@@ -43,7 +43,6 @@ class Submission extends React.Component {
                     <h2>Status: {this.state.submission.status}</h2>
                     <h2>Time Taken: {this.state.submission.timeTaken}s</h2>
                 </div>
-
             </div>
         )
     }

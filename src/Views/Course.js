@@ -139,20 +139,20 @@ class Course extends React.Component {
         }))
     }
 
-    addAssessment() {
+    addAssessment () {
         const url = 'http://127.0.0.1:8000/api/assessments/'
 
         var self = this
 
-        let formData = new FormData();
+        let formData = new FormData()
 
-        formData.append("name", this.state.name);
-        formData.append("description", this.state.description);
-        formData.append("additional_help", this.state.additional_help);
-        formData.append("course", parseInt(this.props.match.params.id));
-        formData.append("course_id", parseInt(this.props.match.params.id));
-        formData.append("user", 1);
-        formData.append("resource_id", null);
+        formData.append('name', this.state.name)
+        formData.append('description', this.state.description)
+        formData.append('additional_help', this.state.additional_help)
+        formData.append('course', parseInt(this.props.match.params.id))
+        formData.append('course_id', parseInt(this.props.match.params.id))
+        formData.append('user', 1)
+        formData.append('resource_id', null)
         axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -161,7 +161,7 @@ class Course extends React.Component {
             self.getCourse(self.props.match.params.id)
         }).catch(function (error) {
             self.getCourse(self.props.match.params.id)
-        });
+        })
 
     }
 

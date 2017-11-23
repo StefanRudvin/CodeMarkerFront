@@ -18,11 +18,9 @@ class Admin extends React.Component {
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.nameWarning = ''
-        this.descriptionWarning = ''
     }
 
-    getCourses() {
+    getCourses () {
         const url = 'http://127.0.0.1:8000/api/courses/?format=json'
         axios.get(url)
             .then((response) => {
@@ -48,7 +46,6 @@ class Admin extends React.Component {
                 <h3>Courses</h3>
                 <ConfigurableTable
                     items={this.state.courses}
-                    //showDelete={true}
                     link="courses"
                     tableHeader="Course Name"
                     tableDescription="Course Description"
@@ -91,26 +88,15 @@ class Admin extends React.Component {
 
     handleNameChange (e) {
         this.setState({name: e.target.value})
-        this.nameWarning = ''
     }
 
     handleDescriptionChange (e) {
         this.setState({description: e.target.value})
-        this.descriptionWarning = ''
     }
 
     handleSubmit (e) {
         e.preventDefault()
         console.log('Handle submit!')
-        if (!this.state.name.length) {
-            console.log('name warning')
-            this.nameWarning = 'You must specify the course name'
-            return
-        }
-        if (!this.state.description.length) {
-            this.descriptionWarning = 'You must specify the course description'
-            return
-        }
         const newCourse = {
             name: this.state.name,
             description: this.state.description,
@@ -127,13 +113,13 @@ class Admin extends React.Component {
         }))
     }
 
-    addCourse() {
+    addCourse () {
         const url = 'http://127.0.0.1:8000/api/courses/'
 
-        let formData = new FormData();
+        let formData = new FormData()
 
-        formData.append("name", this.state.name);
-        formData.append("description", this.state.description);
+        formData.append('name', this.state.name)
+        formData.append('description', this.state.description)
         axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

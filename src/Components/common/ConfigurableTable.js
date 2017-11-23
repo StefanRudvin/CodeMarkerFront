@@ -1,5 +1,4 @@
 import React from 'react'
-import { Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -10,22 +9,13 @@ class ConfigurableTable extends React.Component {
     };
 
     deleteItem (item) {
-        /*this.props.items.filter(function(current){
-            return current.id !== item.id;
-        });*/
         axios.delete('http://127.0.0.1:8000/api/courses/' + item.id + '/')
             .then((response) => {
                 //this.props.listMethod();
             })
-            .then((json) => {
-
-            })
 
     }
     render () {
-        const tableStyle = {
-            textAlign: 'left',
-        }
         return (
             <div>
                 <table className="table">
