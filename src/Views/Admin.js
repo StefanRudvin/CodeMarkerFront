@@ -120,6 +120,7 @@ class Admin extends React.Component {
 
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
+        formData.append('user', 1)
         axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

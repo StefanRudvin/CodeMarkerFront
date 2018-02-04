@@ -51,7 +51,7 @@ class Assessments extends React.Component {
         this.setState({uploading: true})
         let formData = new FormData()
         formData.append('submission', files[0])
-        axios.post('http://127.0.0.1:8000/api/assessments/' + this.state.assessment.id + '/upload/', formData, {
+        axios.post('http://127.0.0.1:8000/api/submissions/' + this.state.assessment.id + '/upload/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
