@@ -4,10 +4,6 @@ import axios from 'axios'
 
 class ConfigurableTable extends React.Component {
 
-    constructor(props) {
-        super(props);
-    };
-
     deleteItem (item) {
         axios.delete('http://127.0.0.1:8000/api/courses/' + item.id + '/')
             .then((response) => {

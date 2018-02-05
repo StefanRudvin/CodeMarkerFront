@@ -1,10 +1,11 @@
-import { Button, Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
+import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
 import Dropzone from 'react-dropzone'
 
 import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
+import moment from 'moment'
 
 class Assessments extends React.Component {
     constructor (props) {
@@ -58,7 +59,7 @@ class Assessments extends React.Component {
         })
             .then((response) => {
                     this.setState({uploading: false})
-                    this.processSubmission(parseInt(response.data))
+                    this.processSubmission(parseInt(response.data), 1)
                 }
             )
     }
@@ -98,13 +99,15 @@ class Assessments extends React.Component {
                     <div className="content">
                         <h3>Additional Help</h3>
                         <p>{this.state.assessment.additional_help}</p>
-                        <p>Created at: {this.state.assessment.created_at}</p>
-                        <p>Updated at: {this.state.assessment.updated_at}</p>
+                        <p>Created {moment(this.state.assessment.created_at).calendar()}</p>
+                        <p>Updated {moment(this.state.assessment.updated_at).calendar()}</p>
                         <h2>Upload File</h2>
                         <br/>
-                        <Dropzone onDrop={this.onDrop.bind(this)}>
-                            <div>Try dropping some files here, or click to select files to upload.</div>
-                        </Dropzone>
+                        <div className="dropzone">
+                            <Dropzone onDrop={this.onDrop.bind(this)}>
+                                <h2>Click or drop file here</h2>
+                            </Dropzone>
+                        </div>
                         <br/>
                         <br/>
                     </div>
@@ -120,8 +123,7 @@ class Assessments extends React.Component {
                             {
                                 this.state.submissions.map(function (submission) {
                                     return <ListGroupItem header={submission.result}
-                                                          href={'/submissions/' + submission.id}>Created
-                                        at {submission.created_at}</ListGroupItem>
+                                                          href={'/submissions/' + submission.id}>Created {moment(submission.created_at).calendar()}</ListGroupItem>
                                 })
                             }
                         </ListGroup>
@@ -129,13 +131,13 @@ class Assessments extends React.Component {
                 </Col>
 
                 <div className={'modal ' + (this.state.modal ? 'is-active' : '')}>
-                    <div className="modal-background"></div>
+                    <div className="modal-background"/>
                     <div className="modal-card">
 
                         <header className="modal-card-head">
                             <p className="modal-card-title">Report</p>
                             <button className="delete" onClick={this.toggleModal.bind(this)}
-                                    aria-label="close"></button>
+                                    aria-label="close"/>
                         </header>
 
                         <section className="modal-card-body">

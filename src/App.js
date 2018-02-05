@@ -8,6 +8,7 @@ import 'bulma/css/bulma.css'
 import NavBar from './Components/Navigation/NavBar.js'
 
 //  Views
+import NewAssessmentsView from './Views/NewAssessment.js'
 import AssessmentsView from './Views/Assessments.js'
 import SubmissionsView from './Views/Submission.js'
 import CourseView from './Views/Course.js'
@@ -52,6 +53,7 @@ class App extends Component {
                             <Route path='/login' component={LoginView}/>
                             <Route path='/user' component={UserView}/>
                             <Route path='/assessments/:id' component={AssessmentsView}/>
+                            <Route path='/assessment/:id/new' component={NewAssessmentsView}/>
                         </Switch>
                     </div>
                 </div>

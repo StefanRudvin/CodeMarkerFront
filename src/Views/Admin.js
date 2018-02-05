@@ -2,6 +2,7 @@ import ConfigurableTable from './../Components/common/ConfigurableTable.js'
 import logo from './../Assets/CodeMarkerLogo.png'
 import React from 'react'
 import axios from 'axios'
+import { Jumbotron } from 'react-bootstrap'
 
 class Admin extends React.Component {
 
@@ -38,10 +39,15 @@ class Admin extends React.Component {
     render () {
         return (
             <div className="admin">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to CodeMarker</h1>
-                </header>
+
+                <Jumbotron>
+                    <img src={logo} className="App-logo" alt="logo" />
+                    <h1 className="App-title">Admin Page</h1>
+                    <br/>
+                    <p className="App-intro">
+                        Here you can administrate courses and assignments.
+                    </p>
+                </Jumbotron>
 
                 <h3>Courses</h3>
                 <ConfigurableTable

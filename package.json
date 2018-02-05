@@ -10,6 +10,7 @@
     "halogen": "^0.2.0",
     "jest-cli": "^21.2.1",
     "material-ui": "^0.19.4",
+    "moment": "^2.20.1",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",

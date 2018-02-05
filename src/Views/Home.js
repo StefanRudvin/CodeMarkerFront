@@ -2,7 +2,7 @@ import ConfigurableTable from './../Components/common/ConfigurableTable.js';
 import logo from './../Assets/CodeMarkerLogo.png';
 import React from 'react';
 import axios from 'axios';
-import { Button, Jumbotron, ListGroup, ListGroupItem, Col} from 'react-bootstrap'
+import { Jumbotron } from 'react-bootstrap'
 
 class Home extends React.Component {
 
