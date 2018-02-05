@@ -13,6 +13,14 @@
     color: white;
 }
 
+.loginButton > button{
+    background-color: crimson !important;
+}
+
+a {
+    color: crimson;
+}
+
 .App-title {
     font-size: 1.5em;
 }
