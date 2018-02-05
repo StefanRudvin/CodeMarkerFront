@@ -18,7 +18,6 @@ class Course extends React.Component {
             let id = location.pathname.slice(9)
             this.getCourse(id)
         })
-
     }
 
     getCourse (id) {
@@ -28,7 +27,7 @@ class Course extends React.Component {
                 return response.data
             })
             .then((json) => {
-                console.log(json)
+                //console.log(json)
                 this.setState({course: json})
             })
     }

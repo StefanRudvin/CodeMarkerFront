@@ -1,7 +1,12 @@
 import React from 'react'
 import logo from './../../Assets/CodeMarkerLogo.png';
+import Auth from './../../Api/auth'
 
 class NavBar extends React.Component {
+    logout() {
+        Auth.logout()
+        window.location = '/login'
+    }
     render () {
         return (
             <nav className="navbar is-transparent">
@@ -18,36 +23,52 @@ class NavBar extends React.Component {
                 </div>
                 <div id="navbarExampleTransparentExample" className="navbar-menu">
                     <div className="navbar-start">
-                        <div className="navbar-item has-dropdown is-hoverable">
-                            <a className="navbar-link" href="/">
-                                Courses
-                            </a>
-                            <div className="navbar-dropdown is-boxed">
-                                {this.props.courses.map(course => (
-                                    <a className="navbar-item" href={"/courses/" + course.id}>
-                                        {course.name}
-                                    </a>
-                                ))}
+                        {Auth.loggedIn() ? (
+                            <div className="navbar-item has-dropdown is-hoverable">
+                                <a className="navbar-link" href="/">
+                                    Courses
+                                </a>
+                                <div className="navbar-dropdown is-boxed">
+                                    {this.props.courses.map(course => (
+                                        <a className="navbar-item" href={"/courses/" + course.id}>
+                                            {course.name}
+                                        </a>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        ) : null}
                     </div>
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="field is-grouped">
-                                <p className="control">
-                                    <a className="bd-tw-button button" href="/admin">
+                                {Auth.loggedIn() ? (
+                                    <p className="control">
+                                        <a className="bd-tw-button button" href="/admin">
                                         <span>
                                         Admin
                                         </span>
-                                    </a>
-                                </p>
-                                <p className="control">
-                                    <a className="bd-tw-button button" href="/admin">
+                                        </a>
+                                    </p>
+                                ) : null}
+
+                                {Auth.loggedIn() ? (
+                                    <p className="control">
+                                        <a className="bd-tw-button button" onClick={() => {this.logout()}}>
                                         <span>
                                         Logout
                                         </span>
-                                    </a>
-                                </p>
+                                        </a>
+                                    </p>
+                                ) :
+                                    <p className="control">
+                                        <a className="bd-tw-button button" href="/login">
+                                        <span>
+                                        Login
+                                        </span>
+                                        </a>
+                                    </p>}
+
+
                             </div>
                         </div>
                     </div>

@@ -32,7 +32,7 @@ class Assessments extends React.Component {
                 return response.data
             })
             .then((json) => {
-                console.log(json)
+                //console.log(json)
                 this.setState({assessment: json})
                 this.setState({submissions: json.submissions})
             })
