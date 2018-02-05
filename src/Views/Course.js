@@ -2,6 +2,7 @@ import { Jumbotron, ListGroup, ListGroupItem } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import Routes from './../Api/routes'
 
 class Course extends React.Component {
     constructor (props) {
@@ -21,7 +22,7 @@ class Course extends React.Component {
     }
 
     getCourse (id) {
-        let url = 'http://127.0.0.1:8000/api/courses/' + id + '/?format=json'
+        let url = Routes.get.course + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data

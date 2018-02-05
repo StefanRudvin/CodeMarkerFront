@@ -3,6 +3,7 @@ import logo from './../Assets/CodeMarkerLogo.png'
 import React from 'react'
 import axios from 'axios'
 import { Jumbotron } from 'react-bootstrap'
+import Routes from './../Api/routes'
 
 class Admin extends React.Component {
 
@@ -22,8 +23,7 @@ class Admin extends React.Component {
     }
 
     getCourses () {
-        const url = 'http://127.0.0.1:8000/api/courses/?format=json'
-        axios.get(url)
+        axios.get(Routes.get.courses)
             .then((response) => {
                 return response.data
             })
@@ -120,14 +120,12 @@ class Admin extends React.Component {
     }
 
     addCourse () {
-        const url = 'http://127.0.0.1:8000/api/courses/'
-
         let formData = new FormData()
 
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
         formData.append('user', 1)
-        axios.post(url, formData, {
+        axios.post(Routes.post.courses, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

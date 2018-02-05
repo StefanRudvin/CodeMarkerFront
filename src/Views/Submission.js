@@ -1,6 +1,7 @@
 import { Jumbotron } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
+import Routes from './../Api/routes'
 
 class Submission extends React.Component {
     constructor (props) {
@@ -13,7 +14,7 @@ class Submission extends React.Component {
     }
 
     getSubmission (id) {
-        let url = 'http://127.0.0.1:8000/api/submissions/' + id + '/?format=json'
+        let url = Routes.post.submissions + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data

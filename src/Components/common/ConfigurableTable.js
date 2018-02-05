@@ -1,11 +1,12 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
+import React from 'react'
 import axios from 'axios'
+import Routes from './../../Api/routes'
 
 class ConfigurableTable extends React.Component {
 
     deleteItem (item) {
-        axios.delete('http://127.0.0.1:8000/api/courses/' + item.id + '/')
+        axios.delete(Routes.delete.courses + item.id + '/')
             .then((response) => {
                 //this.props.listMethod();
             })

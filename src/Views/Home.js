@@ -3,6 +3,7 @@ import logo from './../Assets/CodeMarkerLogo.png';
 import React from 'react';
 import axios from 'axios';
 import { Jumbotron } from 'react-bootstrap'
+import Routes from './../Api/routes'
 
 class Home extends React.Component {
 
@@ -14,8 +15,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const url = 'http://127.0.0.1:8000/api/courses/?format=json';
-        axios.get(url)
+        axios.get(Routes.get.courses)
             .then( (response) => {
                 return response.data})
             .then( (json) => {

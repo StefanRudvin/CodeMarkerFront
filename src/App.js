@@ -4,6 +4,7 @@ import axios from 'axios'
 // Components
 import NavBar from './Components/Navigation/NavBar.js'
 import Authenticator from './Components/Authenticator'
+import Routes from './Api/routes'
 
 // CSS
 import 'bulma/css/bulma.css'
@@ -19,8 +20,7 @@ class App extends Component {
     }
 
     componentDidMount () {
-        const url = 'http://127.0.0.1:8000/api/courses/?format=json'
-        axios.get(url)
+        axios.get(Routes.get.courses)
             .then((response) => {
                 return response.data
             })

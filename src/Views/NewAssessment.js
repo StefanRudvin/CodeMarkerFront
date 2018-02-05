@@ -2,6 +2,7 @@ import { Jumbotron, Col } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
 import Dropzone from 'react-dropzone'
+import Routes from './../Api/routes'
 
 import { ClimbingBoxLoader } from 'react-spinners'
 
@@ -72,14 +73,14 @@ class NewAssessment extends React.Component {
 
         formData.append('languages', this.state.languages)
 
-        axios.post('http://127.0.0.1:8000/api/assessments/' + 1 + '/upload/', formData, {
+        axios.post(Routes.get.assessments + 1 + '/upload/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
             .then((response) => {
                     this.setState({uploading: false})
-                    this.setState({assessment_url: 'http://localhost:3000/assessments/' + response.data})
+                    this.setState({assessment_url: Routes.local.assessments + response.data})
                 }
             )
             .catch(function (error) {

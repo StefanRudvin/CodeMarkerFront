@@ -5,7 +5,9 @@ import Dropzone from 'react-dropzone'
 
 import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
+import Routes from './../Api/routes'
 import moment from 'moment'
+
 
 class Assessments extends React.Component {
     constructor (props) {
@@ -26,7 +28,7 @@ class Assessments extends React.Component {
     }
 
     getAssessment (id) {
-        let url = 'http://127.0.0.1:8000/api/assessments/' + id + '/?format=json'
+        let url = Routes.get.assessments + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data
@@ -52,7 +54,7 @@ class Assessments extends React.Component {
         this.setState({uploading: true})
         let formData = new FormData()
         formData.append('submission', files[0])
-        axios.post('http://127.0.0.1:8000/api/submissions/' + this.state.assessment.id + '/upload/', formData, {
+        axios.post(Routes.post.submissions + this.state.assessment.id + '/upload/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -65,7 +67,7 @@ class Assessments extends React.Component {
     }
 
     processSubmission (id) {
-        let url = 'http://127.0.0.1:8000/api/submissions/' + id + '/process/'
+        let url = Routes.post.submissions + id + '/process/'
         axios.get(url)
             .then((json) => {
                 console.log(json)
