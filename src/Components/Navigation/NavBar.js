@@ -43,29 +43,29 @@ class NavBar extends React.Component {
                             <div className="field is-grouped">
                                 {Auth.loggedIn() ? (
                                     <p className="control">
-                                        <span className="bd-tw-button button" href="/admin">
+                                        <a className="bd-tw-button button" href="/admin">
                                         <span>
                                         Admin
                                         </span>
-                                        </span>
+                                        </a>
                                     </p>
                                 ) : null}
 
                                 {Auth.loggedIn() ? (
                                     <p className="control">
-                                        <span className="bd-tw-button button" onClick={() => {this.logout()}}>
+                                        <a className="bd-tw-button button" onClick={() => {this.logout()}}>
                                         <span>
                                         Logout
                                         </span>
-                                        </span>
+                                        </a>
                                     </p>
                                 ) :
                                     <p className="control">
-                                        <span className="bd-tw-button button" href="/login">
+                                        <a className="bd-tw-button button" href="/login">
                                         <span>
                                         Login
                                         </span>
-                                        </span>
+                                        </a>
                                     </p>}
 
 
