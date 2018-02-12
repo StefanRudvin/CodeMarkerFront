@@ -56,9 +56,19 @@ class Assessments extends React.Component {
         this.setState({ modal: true })
         this.setState({ loading: true })
         this.setState({ uploading: true })
+
+        const options = {
+            'Python2': 'python2',
+            'Python3': 'python3',
+            'Ruby': 'ruby',
+            'Java 8': 'java',
+            'C++': 'cpp',
+            'C': 'c'
+        };
+
         let formData = new FormData()
         formData.append('submission', files[0])
-        formData.append('language', this.state.language)
+        formData.append('language', options[this.state.language])
         axios.post(Routes.post.submissions + this.state.assessment.id + '/upload/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -92,11 +102,7 @@ class Assessments extends React.Component {
 
     render() {
         const options = [
-            { value: 'python', label: 'Python2' },
-            { value: 'python3', label: 'Python3' },
-            { value: 'java', label: 'Java 8' },
-            { value: 'cpp', label: 'C++/C' },
-            { value: 'ruby', label: 'Ruby' }
+            'Python2', 'Python3', 'Java 8', 'C++', 'C', 'Ruby'
         ];
         return (
             <div>
