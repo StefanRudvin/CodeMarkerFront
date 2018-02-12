@@ -2,6 +2,7 @@ import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import React from 'react'
 import axios from 'axios'
 import Dropzone from 'react-dropzone'
+import Dropdown from 'react-dropdown'
 
 import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
@@ -10,7 +11,7 @@ import moment from 'moment'
 
 
 class Assessments extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             assessment: {},
@@ -18,16 +19,19 @@ class Assessments extends React.Component {
             uploading: false,
             submissions: [],
             submission: {},
-            modal: false
+            modal: false,
+            language: ''
         }
 
         this.props.history.listen((location, action) => {
             let id = location.pathname.slice(9)
             this.getAssessment(id)
         })
+
+
     }
 
-    getAssessment (id) {
+    getAssessment(id) {
         let url = Routes.get.assessments + id + '/?format=json'
         axios.get(url)
             .then((response) => {
@@ -35,58 +39,70 @@ class Assessments extends React.Component {
             })
             .then((json) => {
                 //console.log(json)
-                this.setState({assessment: json})
-                this.setState({submissions: json.submissions})
+                this.setState({ assessment: json })
+                this.setState({ submissions: json.submissions })
             })
     }
 
-    toggleModal () {
+    toggleModal() {
         if (this.state.modal) {
-            this.setState({modal: false})
+            this.setState({ modal: false })
         } else {
-            this.setState({modal: true})
+            this.setState({ modal: true })
         }
     }
 
-    onDrop (files) {
-        this.setState({modal: true})
-        this.setState({loading: true})
-        this.setState({uploading: true})
+    onDrop(files) {
+        this.setState({ modal: true })
+        this.setState({ loading: true })
+        this.setState({ uploading: true })
         let formData = new FormData()
         formData.append('submission', files[0])
+        formData.append('language', this.state.language)
         axios.post(Routes.post.submissions + this.state.assessment.id + '/upload/', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
             .then((response) => {
-                    this.setState({uploading: false})
-                    this.processSubmission(parseInt(response.data), 1)
-                }
+                this.setState({ uploading: false })
+                this.processSubmission(parseInt(response.data), 1)
+            }
             )
     }
 
-    processSubmission (id) {
+    processSubmission(id) {
         let url = Routes.post.submissions + id + '/process/'
         axios.get(url)
             .then((json) => {
                 console.log(json)
-                this.setState({submission: json.data.fields})
-                this.setState({loading: false})
+                this.setState({ submission: json.data.fields })
+                this.setState({ loading: false })
                 this.getAssessment(this.props.match.params.id)
             })
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.getAssessment(this.props.match.params.id)
     }
 
-    render () {
+    onLanguageSelected(choice) {
+        this.setState({ language: choice.value });
+    }
+
+    render() {
+        const options = [
+            { value: 'python', label: 'Python2' },
+            { value: 'python3', label: 'Python3' },
+            { value: 'java', label: 'Java 8' },
+            { value: 'cpp', label: 'C++/C' },
+            { value: 'ruby', label: 'Ruby' }
+        ];
         return (
             <div>
                 <Jumbotron>
                     <h1>{this.state.assessment.name}</h1>
-                    <br/>
+                    <br />
                     <p>{this.state.assessment.description}</p>
                 </Jumbotron>
 
@@ -104,14 +120,15 @@ class Assessments extends React.Component {
                         <p>Created {moment(this.state.assessment.created_at).calendar()}</p>
                         <p>Updated {moment(this.state.assessment.updated_at).calendar()}</p>
                         <h2>Upload File</h2>
-                        <br/>
+                        <br />
                         <div className="dropzone">
                             <Dropzone onDrop={this.onDrop.bind(this)}>
                                 <h2>Click or drop file here</h2>
                             </Dropzone>
                         </div>
-                        <br/>
-                        <br/>
+                        <br />
+                        <Dropdown options={options} onChange={this.onLanguageSelected.bind(this)} value={this.state.language} placeholder="Click me to select your language!" />
+                        <br />
                     </div>
                 </Col>
 
@@ -125,7 +142,7 @@ class Assessments extends React.Component {
                             {
                                 this.state.submissions.map(function (submission) {
                                     return <ListGroupItem header={submission.result}
-                                                          href={'/submissions/' + submission.id}>Created {moment(submission.created_at).calendar()}</ListGroupItem>
+                                        href={'/submissions/' + submission.id}>Created {moment(submission.created_at).calendar()}</ListGroupItem>
                                 })
                             }
                         </ListGroup>
@@ -133,13 +150,13 @@ class Assessments extends React.Component {
                 </Col>
 
                 <div className={'modal ' + (this.state.modal ? 'is-active' : '')}>
-                    <div className="modal-background"/>
+                    <div className="modal-background" />
                     <div className="modal-card">
 
                         <header className="modal-card-head">
                             <p className="modal-card-title">Report</p>
                             <button className="delete" onClick={this.toggleModal.bind(this)}
-                                    aria-label="close"/>
+                                aria-label="close" />
                         </header>
 
                         <section className="modal-card-body">
@@ -150,7 +167,7 @@ class Assessments extends React.Component {
                                 <h2>Loading...</h2>
                             ) : null}
                             {!this.props.loading ? (
-                                <Report submission={this.state.submission}/>
+                                <Report submission={this.state.submission} />
                             ) : null}
                             {this.props.loading ? (
                                 <ClimbingBoxLoader
