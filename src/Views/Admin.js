@@ -4,6 +4,7 @@ import React from 'react'
 import axios from 'axios'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
+import Auth from './../Api/auth'
 
 class Admin extends React.Component {
 
@@ -23,12 +24,16 @@ class Admin extends React.Component {
     }
 
     getCourses () {
+
         axios.get(Routes.get.courses)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
                 this.setState({courses: json})
+            })
+            .catch((error) => {
+                console.log(error)
             })
     }
 

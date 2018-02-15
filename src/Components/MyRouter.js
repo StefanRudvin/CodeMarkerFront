@@ -15,7 +15,6 @@ import UserView from './../Views/User.js'
 class MyRouter extends Component {
     constructor (props) {
         super(props)
-        console.log('Router started...')
         this.state = {}
     }
 

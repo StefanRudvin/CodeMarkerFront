@@ -1,7 +1,7 @@
 import axios from 'axios'
+import Routes from './routes'
 
 export default {
-
     login: function(username, pass, loggedIn) {
         if (localStorage.token) {
             if (loggedIn) loggedIn(true)
@@ -17,6 +17,10 @@ export default {
         })
     },
 
+    token () {
+        return localStorage.token
+    },
+
     logout () {
         delete localStorage.token
     },
@@ -25,24 +29,39 @@ export default {
         return !!localStorage.token
     },
 
+    hasUserName () {
+        return localStorage.username
+    },
+
+    getUserName() {
+        if (localStorage.username) {
+            //return localStorage.username
+        }
+
+        axios.get(Routes.auth.get_user)
+            .then((response) => {
+                localStorage.username = response.data
+                return response.data
+            })
+    },
+
     getToken (username, password, cb) {
-        let url = 'http://127.0.0.1:8000/api/obtain-auth-token/'
 
         let formData = new FormData()
 
         formData.append('username', username)
         formData.append('password', password)
 
-        axios.post(url, formData)
+        axios.post(Routes.auth.obtain_token, formData)
             .then((response) => {
                 return response.data
             })
             .then((response) => {
-                console.log(response)
                 cb({
                     authenticated: true,
                     token: response.token
                 })
-            })
+                this.getUser()
+        })
     }
 }

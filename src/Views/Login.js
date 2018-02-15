@@ -59,7 +59,7 @@ class Login extends Component {
                         <TextField
                             label="secondary"
                             type="password"
-                            class="red"
+                            className="red"
                             hintText="Enter your Password"
                             floatingLabelText="Password"
                             underlineFocusStyle={styles.underlineStyle}

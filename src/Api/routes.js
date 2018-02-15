@@ -4,6 +4,11 @@ export default {
         assessments: 'http://localhost:3000/assessments/'
     },
 
+    auth : {
+        obtain_token : 'http://127.0.0.1:8000/api/obtain-auth-token/',
+        get_user: 'http://127.0.0.1:8000/api/get-user/',
+    },
+
     get : {
         courses: 'http://127.0.0.1:8000/api/courses/?format=json',
         course: 'http://127.0.0.1:8000/api/courses/',

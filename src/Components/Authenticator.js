@@ -8,7 +8,6 @@ import MyRouter from './MyRouter'
 class Authenticator extends Component {
     constructor (props) {
         super(props)
-        console.log('Authenticator started...')
         this.state = {
         }
     }
