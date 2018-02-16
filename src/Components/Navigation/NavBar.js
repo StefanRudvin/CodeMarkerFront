@@ -56,7 +56,7 @@ class NavBar extends React.Component {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="field is-grouped">
-                                {Auth.loggedIn() ? (
+                                {Auth.isAdmin() ? (
                                     <p className="control">
                                         <a className="bd-tw-button button" href="/admin">
                                         <span>

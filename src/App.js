@@ -38,6 +38,12 @@ class App extends Component {
     }
 
     componentDidMount () {
+        if (Auth.loggedIn()) {
+            this.getCourses()
+        }
+    }
+
+    getCourses () {
         axios.get(Routes.get.courses)
             .then((response) => {
                 return response.data

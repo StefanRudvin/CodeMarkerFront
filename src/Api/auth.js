@@ -30,29 +30,24 @@ export default {
 
     logout () {
         delete localStorage.token
+        delete localStorage.superuser
+        delete localStorage.username
+    },
+
+    getUserName () {
+        return localStorage.username
     },
 
     loggedIn () {
         return !!localStorage.token
     },
 
-    hasUserName () {
-        return localStorage.username
+    isAdmin () {
+        return localStorage.superuser === true;
     },
 
-    getUserName() {
-        if (localStorage.username) {
-            //return localStorage.username
-        }
-
-        axios.get(Routes.auth.get_user)
-            .then((response) => {
-                localStorage.username = response.data
-                return response.data
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+    hasUserName () {
+        return localStorage.username
     },
 
     getToken (username, password, cb) {
@@ -71,7 +66,8 @@ export default {
                     authenticated: true,
                     token: response.token
                 })
-                this.getUser()
+                localStorage.username = response.username
+                localStorage.superuser = response.superuser
         })
     }
 }
