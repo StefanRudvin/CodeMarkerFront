@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Auth from './../Api/auth.js'
 
 import NewAssessmentsView from './../Views/NewAssessment.js'
-import AssessmentsView from './../Views/Assessments.js'
+import AssessmentView from './../Views/Assessment.js'
 import SubmissionsView from './../Views/Submission.js'
 import CourseView from './../Views/Course.js'
 import LoginView from './../Views/Login.js'
@@ -26,7 +26,7 @@ class MyRouter extends Component {
                     <Route path='/courses/:id' component={CourseView}/>
                     <Route path='/submissions' component={SubmissionsView}/>
                     <Route path='/user' component={UserView}/>
-                    <Route path='/assessments/:id' component={AssessmentsView}/>
+                    <Route path='/assessments/:id' component={AssessmentView}/>
                     <Route path='/assessment/:id/new' component={NewAssessmentsView}/>
                     <Route path='/login' component={LoginView}/>
                     <Route path='/' component={HomeView}/>

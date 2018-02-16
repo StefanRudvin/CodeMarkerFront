@@ -9,18 +9,9 @@ export default {
         get_user: 'http://127.0.0.1:8000/api/get-user/',
     },
 
-    get : {
-        courses: 'http://127.0.0.1:8000/api/courses/?format=json',
-        course: 'http://127.0.0.1:8000/api/courses/',
-        assessments: 'http://127.0.0.1:8000/api/assessments/',
-    },
+    courses_json: 'http://127.0.0.1:8000/api/courses/?format=json',
+    assessments: 'http://127.0.0.1:8000/api/assessments/',
+    submissions: 'http://127.0.0.1:8000/api/submissions/',
+    courses: 'http://127.0.0.1:8000/api/courses/',
 
-    delete: {
-        courses: 'http://127.0.0.1:8000/api/courses/'
-    },
-
-    post: {
-        courses: 'http://127.0.0.1:8000/api/courses/',
-        submissions: 'http://127.0.0.1:8000/api/submissions/'
-    }
 }

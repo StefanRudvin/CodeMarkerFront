@@ -24,8 +24,7 @@ class Admin extends React.Component {
     }
 
     getCourses () {
-
-        axios.get(Routes.get.courses)
+        axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })
@@ -60,6 +59,9 @@ class Admin extends React.Component {
                     link="courses"
                     tableHeader="Course Name"
                     tableDescription="Course Description"
+                    showDelete={true}
+                    showEdit={true}
+                    DeleteRoute={Routes.courses}
                 />
 
                 <div className="content">
@@ -129,8 +131,7 @@ class Admin extends React.Component {
 
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
-        formData.append('user', 1)
-        axios.post(Routes.post.courses, formData, {
+        axios.post(Routes.courses, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

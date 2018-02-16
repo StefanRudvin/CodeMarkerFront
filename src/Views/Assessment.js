@@ -3,13 +3,14 @@ import React from 'react'
 import axios from 'axios'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
+import Auth from './../Api/auth'
 
 import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
 import Routes from './../Api/routes'
 import moment from 'moment'
 
-class Assessments extends React.Component {
+class Assessment extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
@@ -30,7 +31,7 @@ class Assessments extends React.Component {
     }
 
     getAssessment (id) {
-        let url = Routes.get.assessments + id + '/?format=json'
+        let url = Routes.assessments + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data
@@ -67,9 +68,12 @@ class Assessments extends React.Component {
         let formData = new FormData()
         formData.append('submission', files[0])
         formData.append('language', options[this.state.language])
-        axios.post(Routes.post.submissions + this.state.assessment.id + '/upload/', formData, {
+        formData.append('assessment_id', this.state.assessment.id)
+
+        let self = this
+        axios.post(Routes.submissions, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
             }
         })
             .then((response) => {
@@ -77,16 +81,26 @@ class Assessments extends React.Component {
                     this.processSubmission(parseInt(response.data), 1)
                 }
             )
+            .catch(() => {
+                self.setState({modal: false})
+                self.setState({loading: false})
+                self.setState({uploading: false})
+            })
     }
 
     processSubmission (id) {
-        let url = Routes.post.submissions + id + '/process/'
+        let url = Routes.submissions + id + '/process/'
         axios.get(url)
             .then((json) => {
                 console.log(json)
                 this.setState({submission: json.data.fields})
                 this.setState({loading: false})
                 this.getAssessment(this.props.match.params.id)
+            })
+            .catch(()=> {
+                this.setState({modal: false})
+                this.setState({loading: false})
+                this.setState({uploading: false})
             })
     }
 
@@ -111,10 +125,10 @@ class Assessments extends React.Component {
                 </Jumbotron>
 
                 <div class="modal">
-                    <div className="modal-background"></div>
+                    <div className="modal-background"/>
                     <div className="modal-content">
                     </div>
-                    <button className="modal-close is-large" aria-label="close"></button>
+                    <button className="modal-close is-large" aria-label="close"/>
                 </div>
 
                 <Col sm={6}>
@@ -195,4 +209,4 @@ class Assessments extends React.Component {
     }
 }
 
-export default Assessments
+export default Assessment

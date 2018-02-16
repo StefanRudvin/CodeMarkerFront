@@ -15,7 +15,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(Routes.get.courses)
+        axios.get(Routes.courses_json)
             .then( (response) => {
                 return response.data})
             .then( (json) => {

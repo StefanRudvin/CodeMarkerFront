@@ -6,10 +6,13 @@ import Routes from './../../Api/routes'
 class ConfigurableTable extends React.Component {
 
     deleteItem (item) {
-        axios.delete(Routes.delete.courses + item.id + '/')
+        axios.delete(Routes.courses + item.id + '/')
             .then((response) => {
-                //this.props.listMethod();
+                window.location.reload()
+                this.coursesChanged()
             })
+    }
+    coursesChanged() {
 
     }
     render () {
@@ -21,6 +24,9 @@ class ConfigurableTable extends React.Component {
                         <th>#</th>
                         <th>{this.props.tableHeader}</th>
                         <th>{this.props.tableDescription}</th>
+                        {this.props.showEdit ? (
+                            <th>Edit</th>
+                        ):null}
                         {this.props.showDelete ? (
                         <th>Delete</th>
                         ):null}
@@ -32,6 +38,9 @@ class ConfigurableTable extends React.Component {
                             <td>{item.id}</td>
                             <td><Link to={this.props.link + '/' + item.id}>{item.name}</Link></td>
                             <td>{item.description}</td>
+                            {this.props.showEdit ? (
+                                <td><a className="button">Edit</a></td>
+                            ):null}
                             {this.props.showDelete ? (
                                 <td><a className="button" onClick={() => this.deleteItem(item)}>Delete</a></td>
                             ):null}

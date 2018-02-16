@@ -44,6 +44,7 @@ class NewAssessment extends React.Component {
     toggleModal() {
         if (this.state.modal) {
             this.setState({modal: false})
+            this.setState({uploading: false});
         } else {
             this.setState({modal: true})
         }
@@ -73,8 +74,11 @@ class NewAssessment extends React.Component {
         formData.append('additional_help', this.state.additional_help);
 
         formData.append('languages', this.state.languages);
+        formData.append('course_id', this.state.course_id );
 
-        axios.post(Routes.get.assessments + this.state.course_id + '/upload/', formData, {
+        let self = this;
+
+        axios.post(Routes.assessments, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -85,7 +89,7 @@ class NewAssessment extends React.Component {
                 }
             )
             .catch(function (error) {
-                console.log(JSON.stringify(error.response.data))
+                self.toggleModal()
             });
     }
 

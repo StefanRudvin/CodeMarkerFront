@@ -1,6 +1,7 @@
+// Packages
 import React, { Component } from 'react'
-import axios from 'axios'
 import swal from 'sweetalert';
+import axios from 'axios'
 
 // Components
 import NavBar from './Components/Navigation/NavBar.js'
@@ -44,7 +45,7 @@ class App extends Component {
     }
 
     getCourses () {
-        axios.get(Routes.get.courses)
+        axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })

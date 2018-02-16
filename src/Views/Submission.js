@@ -14,7 +14,7 @@ class Submission extends React.Component {
     }
 
     getSubmission(id) {
-        let url = Routes.post.submissions + id + '/?format=json'
+        let url = Routes.submissions + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data

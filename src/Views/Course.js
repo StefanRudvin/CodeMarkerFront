@@ -23,7 +23,7 @@ class Course extends React.Component {
     }
 
     getCourse (id) {
-        let url = Routes.get.course + id + '/?format=json'
+        let url = Routes.courses + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data
@@ -50,7 +50,7 @@ class Course extends React.Component {
                     <br/>
                     <br/>
                     {Auth.isStaff() ? (
-                        <a className="bd-tw-button button" href={"/assessment/" + this.state.course.id + "/new"}>
+                        <a className="bd-tw-button button" href={'/assessment/' + this.state.course.id + '/new'}>
                             New Assessment
                         </a>
                     ) : null}
@@ -62,7 +62,7 @@ class Course extends React.Component {
                     <ListGroup>
                         {
                             this.state.course.assessments.map(function (assessment) {
-                                return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>Created {moment(assessment.created_at).calendar() }</ListGroupItem>
+                                return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>Created {moment(assessment.created_at).calendar()}</ListGroupItem>
                             })
                         }
                     </ListGroup>
