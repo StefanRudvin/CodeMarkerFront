@@ -43,11 +43,12 @@ export default {
     },
 
     isAdmin () {
-        return localStorage.superuser === true;
+        return localStorage.superuser === "true";
+
     },
 
     hasUserName () {
-        return localStorage.username
+        return !!localStorage.username;
     },
 
     getToken (username, password, cb) {
