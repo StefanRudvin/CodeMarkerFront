@@ -85,7 +85,7 @@ class NewAssessment extends React.Component {
                 }
             )
             .catch(function (error) {
-                console.log(JSON.stringify(error))
+                console.log(JSON.stringify(error.response.data))
             });
     }
 

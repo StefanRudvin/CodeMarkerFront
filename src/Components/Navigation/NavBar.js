@@ -44,7 +44,7 @@ class NavBar extends React.Component {
                             </div>
                         ) : null}
 
-                        {Auth.hasUserName() ? (
+                        {Auth.loggedIn() ? (
                             <div className="navbar-item is-hoverable">
                                 <span>
                                     {Auth.getUserName()}

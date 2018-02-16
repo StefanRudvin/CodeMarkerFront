@@ -32,6 +32,7 @@ export default {
         delete localStorage.token
         delete localStorage.superuser
         delete localStorage.username
+        delete localStorage.staff
     },
 
     getUserName () {
@@ -44,11 +45,10 @@ export default {
 
     isAdmin () {
         return localStorage.superuser === "true";
-
     },
 
-    hasUserName () {
-        return !!localStorage.username;
+    isStaff () {
+        return localStorage.staff === "true";
     },
 
     getToken (username, password, cb) {
@@ -69,6 +69,7 @@ export default {
                 })
                 localStorage.username = response.username
                 localStorage.superuser = response.superuser
+                localStorage.staff = response.staff
         })
     }
 }

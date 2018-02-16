@@ -3,6 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import moment from 'moment'
 import Routes from './../Api/routes'
+import Auth from './../Api/auth'
 
 class Course extends React.Component {
     constructor (props) {
@@ -48,9 +49,12 @@ class Course extends React.Component {
                     <small>Updated {moment(this.state.course.updated_at).calendar()}</small>
                     <br/>
                     <br/>
-                    <a class="bd-tw-button button" href={"/assessment/" + this.state.course.id + "/new"}>
-                        New Assessment
-                    </a>
+                    {Auth.isStaff() ? (
+                        <a className="bd-tw-button button" href={"/assessment/" + this.state.course.id + "/new"}>
+                            New Assessment
+                        </a>
+                    ) : null}
+
                 </Jumbotron>
 
                 <div className="content">

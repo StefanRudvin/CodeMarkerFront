@@ -24,7 +24,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    swal("Something went wrong! :(", String(error));
+    swal(String(error), String(error.response.data));
     return Promise.reject(error);
 });
 
