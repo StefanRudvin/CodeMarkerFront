@@ -2,6 +2,13 @@ import axios from 'axios'
 import Routes from './routes'
 
 export default {
+    /*
+
+    This class acts as the authentication layer for the React frontend. It sends a login()
+    request when the user logs in. If no token is present, it requests one from the
+    backend with the given username and password, and saves it into local storage.
+
+     */
     login: function(username, pass, loggedIn) {
         if (localStorage.token) {
             if (loggedIn) loggedIn(true)
@@ -42,6 +49,9 @@ export default {
             .then((response) => {
                 localStorage.username = response.data
                 return response.data
+            })
+            .catch((error) => {
+                console.log(error)
             })
     },
 
