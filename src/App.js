@@ -9,6 +9,9 @@ import Authenticator from './Components/Authenticator'
 import Routes from './Api/routes'
 import Auth from './Api/auth'
 
+// JS
+import Events from './client'
+
 // CSS
 import 'bulma/css/bulma.css'
 import './Css/App.css'
@@ -42,6 +45,9 @@ class App extends Component {
         if (Auth.loggedIn()) {
             this.getCourses()
         }
+        Events.on('onCoursesChanged', () => {
+            this.getCourses()
+        });
     }
 
     getCourses () {

@@ -2,18 +2,15 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import axios from 'axios'
 import Routes from './../../Api/routes'
+import Events from './../../client.js'
 
 class ConfigurableTable extends React.Component {
 
     deleteItem (item) {
         axios.delete(Routes.courses + item.id + '/')
-            .then((response) => {
-                window.location.reload()
-                this.coursesChanged()
+            .then(() => {
+                Events.emit('onCoursesChanged')
             })
-    }
-    coursesChanged() {
-
     }
     render () {
         return (

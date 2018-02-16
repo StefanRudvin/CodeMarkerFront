@@ -1,10 +1,11 @@
 import ConfigurableTable from './../Components/common/ConfigurableTable.js'
 import logo from './../Assets/CodeMarkerLogo.png'
-import React from 'react'
-import axios from 'axios'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
+import Events from './../client.js'
 import Auth from './../Api/auth'
+import React from 'react'
+import axios from 'axios'
 
 class Admin extends React.Component {
 
@@ -38,6 +39,9 @@ class Admin extends React.Component {
 
     componentDidMount () {
         this.getCourses()
+        Events.on('onCoursesChanged', () => {
+            this.getCourses()
+        });
     }
 
     render () {
@@ -117,6 +121,7 @@ class Admin extends React.Component {
             updated_at: Date.now()
         }
         this.addCourse()
+
         this.setState((prevState) => ({
             courses: prevState.courses.concat(newCourse),
             description: '',
@@ -136,6 +141,7 @@ class Admin extends React.Component {
                 'Content-Type': 'multipart/form-data'
             }
         }).then((response) => {
+            Events.emit('onCoursesChanged')
             this.getCourses()
         })
     }
