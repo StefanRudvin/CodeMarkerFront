@@ -3,6 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import Routes from './../../Api/routes'
 import Events from './../../client.js'
+import { toast } from 'react-toastify'
 
 class ConfigurableTable extends React.Component {
 
@@ -10,6 +11,7 @@ class ConfigurableTable extends React.Component {
         axios.delete(Routes.base + this.props.route + '/' + item.id + '/')
             .then(() => {
                 Events.emit(this.props.event)
+                toast("Item deleted");
             })
     }
 

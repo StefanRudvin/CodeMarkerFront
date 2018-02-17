@@ -1,4 +1,5 @@
 // Packages
+import { ToastContainer, toast } from 'react-toastify'
 import React, { Component } from 'react'
 import swal from 'sweetalert';
 import axios from 'axios'
@@ -63,6 +64,7 @@ class App extends Component {
     render () {
         return (
             <div className="App">
+                <ToastContainer className="toast" autoClose={3000} hideProgressBar={true} position={toast.POSITION.BOTTOM_RIGHT}/>
                 <NavBar courses={this.state.courses}/>
                 <div className="container">
                     <Authenticator/>

@@ -21,6 +21,7 @@
     "react-scripts": "1.0.14",
     "react-spinners": "^0.2.1",
     "react-tap-event-plugin": "^3.0.2",
+    "react-toastify": "^3.3.4",
     "superagent": "^3.8.1",
     "sweetalert": "^2.1.0"
   },

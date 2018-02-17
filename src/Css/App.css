@@ -66,6 +66,9 @@ a {
     padding: 10px;
 }
 
+.toast > div > div:nth-child(3) {
+    background: crimson !important;
+}
 @keyframes App-logo-spin {
     /*from { transform: rotate(0deg); }*/
     /*to { transform: rotate(360deg); }*/

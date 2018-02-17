@@ -100,12 +100,6 @@ class Admin extends React.Component {
                     route="users"
                     event="onUsersChanged"
                 />
-
-                <ConfigurableForm
-                    event="onUsersChanged"
-                    route="users"
-                    title="Create new User"
-                />
             </div>
         )
     }

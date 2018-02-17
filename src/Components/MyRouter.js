@@ -25,7 +25,7 @@ class MyRouter extends Component {
                     <Route path='/admin' component={AdminView}/>
                     <Route path='/courses/:id' component={CourseView}/>
                     <Route path='/submissions' component={SubmissionsView}/>
-                    <Route path='/user' component={UserView}/>
+                    <Route path='/users/:id' component={UserView}/>
                     <Route path='/assessments/:id' component={AssessmentView}/>
                     <Route path='/assessment/:id/new' component={NewAssessmentsView}/>
                     <Route path='/login' component={LoginView}/>

@@ -3,6 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import Routes from './../../Api/routes'
 import Events from './../../client.js'
+import { toast } from 'react-toastify'
 
 class ConfigurableForm extends React.Component {
 
@@ -63,6 +64,7 @@ class ConfigurableForm extends React.Component {
         }).then((response) => {
             Events.emit(this.props.event)
             self.reset();
+            toast("Item Added!");
         })
     }
 

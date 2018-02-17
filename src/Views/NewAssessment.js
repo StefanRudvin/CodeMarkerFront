@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone'
 import Routes from './../Api/routes'
 
 import {ClimbingBoxLoader} from 'react-spinners'
+import { toast } from 'react-toastify'
 
 class NewAssessment extends React.Component {
     constructor(props) {
@@ -86,6 +87,7 @@ class NewAssessment extends React.Component {
             .then((response) => {
                     this.setState({uploading: false});
                     this.setState({assessment_url: Routes.local.assessments + response.data})
+                    toast("Assessment Created!");
                 }
             )
             .catch(function (error) {
