@@ -37,8 +37,13 @@ class Home extends React.Component {
                 </p>
             </Jumbotron>
 
+            <ConfigurableTable
+                items={this.state.courses}
+                column1="Name"
+                column2="Description"
+                route="courses"
+            />
 
-            <ConfigurableTable items={this.state.courses} link="courses" tableHeader="Course Name" tableDescription="Course Description"/>
         </div>
     );
     }

@@ -56,11 +56,11 @@ class NavBar extends React.Component {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="field is-grouped">
-                                {Auth.isAdmin() ? (
+                                {Auth.isStaff() ? (
                                     <p className="control">
                                         <a className="bd-tw-button button" href="/admin">
                                         <span>
-                                        Admin
+                                        Manage
                                         </span>
                                         </a>
                                     </p>
