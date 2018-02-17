@@ -53,10 +53,10 @@ class ConfigurableTable extends React.Component {
                             ):null}
 
                             {this.props.showEdit ? (
-                                <td><a className="button">Edit</a></td>
+                                <td><a href={this.props.editRoute + '/' + Object.values(item)[0]} className="button">Edit</a></td>
                             ):null}
                             {this.props.showDelete ? (
-                                <td><a className="button" onClick={() => this.deleteItem(item)}>Delete</a></td>
+                                <td><a className="button" onClick={() => this.deleteItem(item)}>{this.props.deleteName ? (this.props.deleteName):'Delete'}</a></td>
                             ):null}
                         </tr>
                     ))}

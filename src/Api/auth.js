@@ -33,6 +33,7 @@ export default {
         delete localStorage.superuser
         delete localStorage.username
         delete localStorage.staff
+        delete localStorage.user_id
     },
 
     getUserName () {
@@ -70,6 +71,7 @@ export default {
                 localStorage.username = response.username
                 localStorage.superuser = response.superuser
                 localStorage.staff = response.staff
+                localStorage.user_id = response.user_id
         })
     }
 }

@@ -4,6 +4,10 @@ import Routes from './../Api/routes'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
+import CourseItem from '../Components/common/CourseItem'
+import ConfigurableTable from '../Components/common/ConfigurableTable'
+import Events from './../client.js'
 
 class User extends React.Component {
 
@@ -43,8 +47,11 @@ class User extends React.Component {
     }
 
     getUser (id) {
+        var self = this
         axios.get(Routes.users + id + '/?format=json')
             .then((response) => {
+                console.log(response)
+                localStorage.user_id = response.data.id
                 return response.data
             })
             .then((json) => {
@@ -54,7 +61,12 @@ class User extends React.Component {
                 this.setState({is_staff: this.state.user.is_staff})
                 this.setState({courses: json.courses})
                 this.setState({submissions: json.submissions})
+
             })
+    }
+
+    componentWillUnmount() {
+        delete localStorage.user_id
     }
 
     updateUser () {
@@ -75,14 +87,36 @@ class User extends React.Component {
         })
             .then((response) => {
                     self.setState({loading: false})
-                    self.getUser(this.state.user.id)
+                    self.getUser(self.state.user.id)
                     toast("User updated");
+                }
+            )
+    }
+
+    removeUserFromCourse (course_id) {
+        let formData = new FormData()
+
+        console.log(course_id)
+        console.log(this.state.user.id)
+
+        formData.append('course_id', course_id)
+        formData.append('user_id', this.state.user.id)
+
+        let self = this
+        axios.post(Routes.courses_users, formData)
+            .then((response) => {
+                    toast("User removed from course");
+                    Events.emit('onCoursesChanged')
                 }
             )
     }
 
     componentDidMount () {
         this.getUser(this.props.match.params.id)
+
+        Events.on('onCoursesChanged', () => {
+            this.getUser(this.props.match.params.id)
+        });
     }
 
     render () {
@@ -98,7 +132,7 @@ class User extends React.Component {
                     </p>
                 </Jumbotron>
 
-                <Col sm={4}>
+                <Col sm={2}>
                     <div className="content">
                         <h2>User Information</h2>
                         <label className="label">UserName</label>
@@ -125,13 +159,13 @@ class User extends React.Component {
                         </div>
                     </div>
                     <div className="field">
+                        <div className="control user-checkbox">
                         <label className="label">Staff</label>
-                        <div className="control">
-                            <input
-                                name="Is staff"
-                                type="checkbox"
-                                checked={this.state.is_staff}
-                                onChange={this.toggleStaff.bind(this)}/>
+                        <input
+                            name="Is staff"
+                            type="checkbox"
+                            checked={this.state.is_staff}
+                            onChange={this.toggleStaff.bind(this)}/>
                         </div>
                     </div>
                     <div className="button" onClick={this.updateUser.bind(this)}>
@@ -140,40 +174,32 @@ class User extends React.Component {
 
                 </Col>
 
-                <Col sm={4}>
+                <Col sm={5}>
                     <div className="content">
-                        <h2>Courses</h2>
-                        <ListGroup>
-                            {
-                                this.state.courses.map(function (course) {
-                                    return <ListGroupItem
-                                        header={course.name}
-                                        href={'/courses/' + course.id}>
-                                        Created {moment(course.created_at).calendar()}
-                                        </ListGroupItem>
-                                })
-                            }
-                        </ListGroup>
+                        <h2>Activity</h2>
+                        <CourseItem items={this.state.courses} user={this.state.user}/>
                     </div>
                 </Col>
-
-                <Col sm={4}>
-                    <div className="content">
-                        <h2>Submissions</h2>
-                        <ListGroup>
-                            {
-                                this.state.submissions.map(function (course) {
-                                    return <ListGroupItem
-                                        header={course.marks + ' marks'}
-                                        href={'/courses/' + course.id}>
-                                            Created {moment(course.created_at).calendar()}
-                                        </ListGroupItem>
-                                })
-                            }
-                        </ListGroup>
-                    </div>
+                <Col sm={5}>
+                    <table className="table">
+                        <thead>
+                        <tr>
+                                <th>#</th>
+                                <th>Course Name</th>
+                                <th>Remove user from course</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.courses.map(course => (
+                            <tr>
+                                <td>{course.id}</td>
+                                <td><Link to={'/courses/' +  course.id }>{course.name}</Link></td>
+                                <td><a className="button" onClick={() => this.removeUserFromCourse(course.id)}>Remove</a></td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </Col>
-                <br/>
             </div>
         )
     }

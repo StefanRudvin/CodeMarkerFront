@@ -6,6 +6,7 @@ import { Jumbotron } from 'react-bootstrap'
 import React, { Component } from 'react'
 import Auth from './../Api/auth'
 import {red500} from 'material-ui/styles/colors';
+import { toast } from 'react-toastify'
 
 const styles = {
     underlineStyle: {
@@ -30,6 +31,7 @@ class Login extends Component {
         Auth.login(this.state.username, this.state.password, (loggedIn) => {
             if (loggedIn) {
                 window.location = '/'
+                toast('Login Success!')
             }
         })
     }

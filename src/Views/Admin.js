@@ -97,6 +97,7 @@ class Admin extends React.Component {
                     column3="Email"
                     showDelete={true}
                     showEdit={true}
+                    editRoute="/users"
                     route="users"
                     event="onUsersChanged"
                 />

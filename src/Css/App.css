@@ -66,6 +66,21 @@ a {
     padding: 10px;
 }
 
+.user-checkbox {
+    display: flex;
+    margin: auto;
+}
+
+.user-checkbox > label{
+    margin-left: auto;
+    margin-right: 0 !important;
+}
+
+.user-checkbox > input{
+    margin-left: 0;
+    margin-right: auto;
+}
+
 .toast > div > div:nth-child(3) {
     background: crimson !important;
 }
