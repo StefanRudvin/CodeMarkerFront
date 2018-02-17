@@ -1,8 +1,9 @@
-import { Jumbotron, Col } from 'react-bootstrap'
+import { Jumbotron, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { toast } from 'react-toastify'
+import Routes from './../Api/routes'
+import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
-import Routes from './../Api/routes'
-import { toast } from 'react-toastify'
 
 class User extends React.Component {
 
@@ -42,7 +43,7 @@ class User extends React.Component {
     }
 
     getUser (id) {
-        axios.get(Routes.users + id + '/')
+        axios.get(Routes.users + id + '/?format=json')
             .then((response) => {
                 return response.data
             })
@@ -52,6 +53,7 @@ class User extends React.Component {
                 this.setState({email: this.state.user.email})
                 this.setState({is_staff: this.state.user.is_staff})
                 this.setState({courses: json.courses})
+                this.setState({submissions: json.submissions})
             })
     }
 
@@ -89,11 +91,16 @@ class User extends React.Component {
                 <Jumbotron>
                     <h1>Edit User</h1>
                     <br/>
-                    <p></p>
+                    <p>
+                        Joined {moment(this.state.user.date_joined).calendar()},
+                        takes part in {this.state.courses.length} courses
+                        and has submitted {this.state.submissions.length} times.
+                    </p>
                 </Jumbotron>
 
-                <Col sm={6}>
-                    <div className="field">
+                <Col sm={4}>
+                    <div className="content">
+                        <h2>User Information</h2>
                         <label className="label">UserName</label>
                         <div className="control">
                             <input
@@ -131,6 +138,40 @@ class User extends React.Component {
                         Update User
                     </div>
 
+                </Col>
+
+                <Col sm={4}>
+                    <div className="content">
+                        <h2>Courses</h2>
+                        <ListGroup>
+                            {
+                                this.state.courses.map(function (course) {
+                                    return <ListGroupItem
+                                        header={course.name}
+                                        href={'/courses/' + course.id}>
+                                        Created {moment(course.created_at).calendar()}
+                                        </ListGroupItem>
+                                })
+                            }
+                        </ListGroup>
+                    </div>
+                </Col>
+
+                <Col sm={4}>
+                    <div className="content">
+                        <h2>Submissions</h2>
+                        <ListGroup>
+                            {
+                                this.state.submissions.map(function (course) {
+                                    return <ListGroupItem
+                                        header={course.marks + ' marks'}
+                                        href={'/courses/' + course.id}>
+                                            Created {moment(course.created_at).calendar()}
+                                        </ListGroupItem>
+                                })
+                            }
+                        </ListGroup>
+                    </div>
                 </Col>
                 <br/>
             </div>
