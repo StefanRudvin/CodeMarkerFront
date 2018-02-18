@@ -4,7 +4,6 @@ import logo from './../Assets/CodeMarkerLogo.png'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
 import Events from './../client.js'
-import Auth from './../Api/auth'
 import React from 'react'
 import axios from 'axios'
 
@@ -30,9 +29,6 @@ class Admin extends React.Component {
             .then((json) => {
                 this.setState({users: json})
             })
-            .catch((error) => {
-                console.log(error)
-            })
     }
 
     getCourses () {
@@ -42,9 +38,6 @@ class Admin extends React.Component {
             })
             .then((json) => {
                 this.setState({courses: json})
-            })
-            .catch((error) => {
-                console.log(error)
             })
     }
 

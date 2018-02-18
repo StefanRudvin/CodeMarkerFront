@@ -1,16 +1,18 @@
-import { Jumbotron, ListGroup, ListGroupItem } from 'react-bootstrap'
-import React from 'react'
-import axios from 'axios'
-import moment from 'moment'
+import { Jumbotron, ListGroup, ListGroupItem, Col} from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import Routes from './../Api/routes'
 import Auth from './../Api/auth'
+import moment from 'moment'
+import React from 'react'
+import axios from 'axios'
 
 class Course extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
             course: {
-                'assessments': []
+                'assessments': [],
+                'students': []
             },
             name: '',
             description: '',
@@ -29,7 +31,6 @@ class Course extends React.Component {
                 return response.data
             })
             .then((json) => {
-                //console.log(json)
                 this.setState({course: json})
             })
     }
@@ -44,6 +45,7 @@ class Course extends React.Component {
                 <Jumbotron>
                     <h1>{this.state.course.name}</h1>
                     <p>{this.state.course.description}</p>
+                    <p>{this.state.course.students.length} students attending</p>
                     <small>Created {moment(this.state.course.created_at).calendar()}</small>
                     <br/>
                     <small>Updated {moment(this.state.course.updated_at).calendar()}</small>

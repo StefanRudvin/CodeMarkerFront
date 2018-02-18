@@ -10,8 +10,8 @@ class ConfigurableForm extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            name: '',
             description: '',
+            name: '',
             id: '',
         }
 
@@ -30,7 +30,6 @@ class ConfigurableForm extends React.Component {
 
     handleSubmit (e) {
         e.preventDefault()
-        console.log('Handle submit!')
         this.addItem()
 
         this.setState((prevState) => ({
@@ -51,9 +50,6 @@ class ConfigurableForm extends React.Component {
     addItem () {
         let formData = new FormData()
         let self = this
-
-        console.log(this.state.name)
-        console.log(this.state.description)
 
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)

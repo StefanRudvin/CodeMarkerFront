@@ -1,23 +1,22 @@
 import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
-import React from 'react'
-import axios from 'axios'
-import Dropzone from 'react-dropzone'
-import Dropdown from 'react-dropdown'
-import Auth from './../Api/auth'
-
 import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
+import Dropzone from 'react-dropzone'
+import Dropdown from 'react-dropdown'
 import Routes from './../Api/routes'
 import moment from 'moment'
+import React from 'react'
+import axios from 'axios'
+
 
 class Assessment extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            assessment: {},
-            loading: false,
             uploading: false,
             submissions: [],
+            loading: false,
+            assessment: {},
             submission: {},
             modal: false,
             language: ''
@@ -37,7 +36,6 @@ class Assessment extends React.Component {
                 return response.data
             })
             .then((json) => {
-                //console.log(json)
                 this.setState({assessment: json})
                 this.setState({submissions: json.submissions})
             })
@@ -59,16 +57,16 @@ class Assessment extends React.Component {
         const options = {
             'Python2': 'python2',
             'Python3': 'python3',
-            'Ruby': 'ruby',
             'Java 8': 'java',
+            'Ruby': 'ruby',
             'C++': 'cpp',
             'C': 'c'
         }
 
         let formData = new FormData()
-        formData.append('submission', files[0])
-        formData.append('language', options[this.state.language])
         formData.append('assessment_id', this.state.assessment.id)
+        formData.append('language', options[this.state.language])
+        formData.append('submission', files[0])
 
         let self = this
         axios.post(Routes.submissions, formData, {
@@ -92,7 +90,6 @@ class Assessment extends React.Component {
         let url = Routes.submissions + id + '/process/'
         axios.get(url)
             .then((json) => {
-                console.log(json)
                 this.setState({submission: json.data.fields})
                 this.setState({loading: false})
                 this.getAssessment(this.props.match.params.id)
