@@ -1,9 +1,10 @@
 import ConfigurableTable from './../Components/common/ConfigurableTable.js';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import logo from './../Assets/CodeMarkerLogo.png';
-import React from 'react';
-import axios from 'axios';
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
+import React from 'react';
+import axios from 'axios';
 
 class Home extends React.Component {
 
@@ -24,7 +25,13 @@ class Home extends React.Component {
     }
     render() {
     return (
-        <div className="home">
+        <ReactCSSTransitionGroup
+        transitionAppear={true}
+        transitionAppearTimeout={600}
+        transitionEnterTimeout={600}
+        transitionLeaveTimeout={300}
+        transitionName="SlideIn"
+        className="home">
             <Jumbotron>
                 <img src={logo} className="App-logo" alt="logo" />
                 <h1 className="App-title">Welcome to CodeMarker</h1>
@@ -44,7 +51,7 @@ class Home extends React.Component {
                 route="courses"
             />
 
-        </div>
+        </ReactCSSTransitionGroup>
     );
     }
 }

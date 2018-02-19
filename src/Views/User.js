@@ -1,5 +1,7 @@
-import { Jumbotron, Col } from 'react-bootstrap'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import CourseItem from '../Components/common/CourseItem'
+import { Jumbotron, Col } from 'react-bootstrap'
+import UserChart from './../Components/UserChart'
 import { Link } from 'react-router-dom'
 import Dropdown from 'react-dropdown'
 import { toast } from 'react-toastify'
@@ -8,8 +10,6 @@ import Events from './../client.js'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
-
-import UserChart from './../Components/UserChart'
 
 class User extends React.Component {
 
@@ -186,7 +186,13 @@ class User extends React.Component {
 
     render () {
         return (
-            <div>
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+                className="transition-item">
                 <Jumbotron>
                     <h1>User Profile</h1>
                     <br/>
@@ -281,7 +287,7 @@ class User extends React.Component {
                         <CourseItem items={this.state.courses} user={this.state.user}/>
                     </div>
                 </Col>
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 }

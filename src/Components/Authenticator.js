@@ -21,7 +21,7 @@ class Authenticator extends Component {
             return (<LoginView/>)
         } else {
             return (
-                <MyRouter/>
+                    <MyRouter/>
             )
         }
     }

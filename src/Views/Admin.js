@@ -1,11 +1,13 @@
 import ConfigurableTable from './../Components/common/ConfigurableTable.js'
 import ConfigurableForm from './../Components/common/ConfigurableForm.js'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import logo from './../Assets/CodeMarkerLogo.png'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
 import Events from './../client.js'
 import React from 'react'
 import axios from 'axios'
+
 
 class Admin extends React.Component {
 
@@ -54,8 +56,14 @@ class Admin extends React.Component {
 
     render () {
         return (
-            <div className="admin">
-
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+                className="admin"
+            >
                 <Jumbotron>
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title">Admin Page</h1>
@@ -80,6 +88,7 @@ class Admin extends React.Component {
                     event="onCoursesChanged"
                     route="courses"
                     title="Create new Course"
+
                 />
 
                 <h3>Users</h3>
@@ -95,7 +104,7 @@ class Admin extends React.Component {
                     route="users"
                     event="onUsersChanged"
                 />
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 

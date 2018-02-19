@@ -52,7 +52,7 @@ class CourseEdit extends React.Component {
             }
         })
             .then((response) => {
-                    toast('User added to course')
+                    toast('Course updated')
                     Events.emit('onCoursesChanged')
                     Events.emit('onCourseEditComplete')
                 }

@@ -1,4 +1,5 @@
 import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
 import Dropzone from 'react-dropzone'
@@ -20,8 +21,9 @@ class Assessment extends React.Component {
             submission: {},
             modal: false,
             language: '',
-            users: {}
+            users: []
         }
+
 
         this.props.history.listen((location, action) => {
             let id = location.pathname.slice(9)
@@ -127,7 +129,14 @@ class Assessment extends React.Component {
             'Python2', 'Python3', 'Java 8', 'C++', 'C', 'Ruby'
         ]
         return (
-            <div>
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+                className="transition-item"
+            >
                 <Jumbotron>
                     <h1>{this.state.assessment.name}</h1>
                     <br/>
@@ -218,7 +227,7 @@ class Assessment extends React.Component {
                         </footer>
                     </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 }

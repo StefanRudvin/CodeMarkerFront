@@ -1,3 +1,4 @@
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Jumbotron, ListGroup, ListGroupItem} from 'react-bootstrap'
 import CourseEdit from '../Components/Course/CourseEdit'
 import Col from 'react-bootstrap/es/Col'
@@ -62,13 +63,10 @@ class Course extends React.Component {
         let submissionPassCount = 0
         let totalScore = 0
 
-        console.log(this.state.course)
-
         if (this.state.course.assessments != null) {
             this.state.course.assessments.forEach(assessment => {
                 if (assessment.submissions == null) { return }
                 assessment.submissions.forEach(submission => {
-                    console.log('wazaa')
                     if (submission.result == "pass") {
                         totalScore += submission.marks
                         submissionPassCount ++
@@ -105,7 +103,14 @@ class Course extends React.Component {
 
     render () {
         return (
-            <div>
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+                className="transition-item"
+            >
                 <Jumbotron>
                     <h1>{this.state.course.name}</h1>
                     <p>{this.state.course.description}</p>
@@ -174,7 +179,7 @@ class Course extends React.Component {
                         </ListGroup>
                     </div>
                 </Col>
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 

@@ -1,7 +1,8 @@
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { Jumbotron } from 'react-bootstrap'
+import Routes from './../Api/routes'
 import React from 'react'
 import axios from 'axios'
-import Routes from './../Api/routes'
 
 class Submission extends React.Component {
     constructor(props) {
@@ -43,7 +44,13 @@ class Submission extends React.Component {
 
     render() {
         return (
-            <div>
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+                className="transition-item">
                 <Jumbotron>
                     <h1>Submission by: {this.state.user.username}</h1>
                     <br />
@@ -57,7 +64,7 @@ class Submission extends React.Component {
                     <h2>Time Taken: {this.state.submission.timeTaken}s</h2>
                     <h2>More info: {this.state.submission.info}</h2>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 
