@@ -19,14 +19,15 @@ class Assessment extends React.Component {
             assessment: {},
             submission: {},
             modal: false,
-            language: ''
+            language: '',
+            users: {}
         }
 
         this.props.history.listen((location, action) => {
             let id = location.pathname.slice(9)
             this.getAssessment(id)
         })
-
+        this.getUsers()
     }
 
     getAssessment (id) {
@@ -36,6 +37,7 @@ class Assessment extends React.Component {
                 return response.data
             })
             .then((json) => {
+                console.log(json)
                 this.setState({assessment: json})
                 this.setState({submissions: json.submissions})
             })
@@ -86,6 +88,17 @@ class Assessment extends React.Component {
             })
     }
 
+    getUsers () {
+        let url = Routes.users + '?format=json'
+        axios.get(url)
+            .then((response) => {
+                return response.data
+            })
+            .then((json) => {
+                this.setState({ users: json })
+            })
+    }
+
     processSubmission (id) {
         let url = Routes.submissions + id + '/process/'
         axios.get(url)
@@ -119,6 +132,10 @@ class Assessment extends React.Component {
                     <h1>{this.state.assessment.name}</h1>
                     <br/>
                     <p>{this.state.assessment.description}</p>
+                    {this.state.assessment.submissions != null ? (
+                        <p>This assessment has {this.state.assessment.submissions.length} submissions.</p>
+                    ) : null}
+
                 </Jumbotron>
 
                 <div class="modal">
@@ -162,9 +179,9 @@ class Assessment extends React.Component {
                         <ListGroup>
                             {
                                 this.state.submissions.map(function (submission) {
-                                    return <ListGroupItem header={submission.result}
+                                    return <ListGroupItem header={submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username}
                                                           href={'/submissions/' + submission.id}>Created {moment(submission.created_at).calendar()}</ListGroupItem>
-                                })
+                                }.bind(this))
                             }
                         </ListGroup>
                     </div>

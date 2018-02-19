@@ -8,9 +8,9 @@ class Submission extends React.Component {
         super(props)
         this.state = {
             loading: true,
+            user: {},
             submission: {}
         }
-        this.getSubmission(this.props.location.pathname.slice(13))
     }
 
     getSubmission(id) {
@@ -21,19 +21,31 @@ class Submission extends React.Component {
             })
             .then((json) => {
                 this.setState({ submission: json })
+                this.getUser(json.user)
+            })
+    }
+
+    getUser(id) {
+        let url = Routes.users + id + '/?format=json'
+        axios.get(url)
+            .then((response) => {
+                return response.data
+            })
+            .then((json) => {
+                this.setState({ user: json })
                 this.loading = false
             })
     }
 
     componentDidMount() {
-        this.getSubmission(this.props.match.params.id)
+        this.getSubmission(this.props.location.pathname.slice(13))
     }
 
     render() {
         return (
             <div>
                 <Jumbotron>
-                    <h1>Submission</h1>
+                    <h1>Submission by: {this.state.user.username}</h1>
                     <br />
                     <h1>Result: {this.state.submission.result}</h1>
                 </Jumbotron>

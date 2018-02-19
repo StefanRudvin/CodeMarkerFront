@@ -1,5 +1,6 @@
 import { Jumbotron, ListGroup, ListGroupItem} from 'react-bootstrap'
 import CourseEdit from '../Components/Course/CourseEdit'
+import Col from 'react-bootstrap/es/Col'
 import Routes from './../Api/routes'
 import Events from './../client.js'
 import Auth from './../Api/auth'
@@ -21,6 +22,10 @@ class Course extends React.Component {
                 'assessments': [],
                 'students': []
             },
+            submissionCount: 0,
+            submissionFailCount: 0,
+            submissionPassCount: 0,
+            submissionAverageMark: 0
         }
     }
 
@@ -47,7 +52,40 @@ class Course extends React.Component {
             .then((json) => {
                 this.setState({course: json})
                 Events.emit('onCourseRetrieved', json)
+                this.getSubmissionStats()
             })
+    }
+
+    getSubmissionStats() {
+        let submissionCount = 0
+        let submissionFailCount = 0
+        let submissionPassCount = 0
+        let totalScore = 0
+
+        console.log(this.state.course)
+
+        if (this.state.course.assessments != null) {
+            this.state.course.assessments.forEach(assessment => {
+                if (assessment.submissions == null) { return }
+                assessment.submissions.forEach(submission => {
+                    console.log('wazaa')
+                    if (submission.result == "pass") {
+                        totalScore += submission.marks
+                        submissionPassCount ++
+                    } else {
+                        submissionFailCount ++
+                    }
+                    submissionCount ++
+                })
+            })
+        }
+
+        console.log(submissionCount)
+
+        this.setState({submissionCount: submissionCount})
+        this.setState({submissionFailCount: submissionFailCount})
+        this.setState({submissionPassCount: submissionPassCount})
+        this.setState({submissionAverageMark: totalScore/submissionPassCount})
     }
 
     toggleModal() {
@@ -116,17 +154,26 @@ class Course extends React.Component {
                     </div>
                 </div>
 
-                <div className="content">
-                    <h2>Assessments</h2>
-                    <ListGroup>
-                        {
-                            this.state.course.assessments.map(function (assessment) {
-                                return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>Created {moment(assessment.created_at).calendar()}</ListGroupItem>
-                            })
-                        }
-                    </ListGroup>
-                </div>
+                <Col sm={12}>
+                    <div className="content">
+                        <h2>Overview</h2>
+                        <p>This course has {this.state.course.assessments.length} assessments and  {this.state.submissionCount} submissions. {this.state.submissionPassCount} submissions passed with an average of {this.state.submissionAverageMark.toFixed(2)} marks and {this.state.submissionFailCount} failed. </p>
+                        <br/>
+                    </div>
+                </Col>
 
+                <Col sm={12}>
+                    <div className="content">
+                        <h2>Assessments</h2>
+                        <ListGroup>
+                            {
+                                this.state.course.assessments.map(function (assessment) {
+                                    return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>{assessment.submissions.length} submissions, Created {moment(assessment.created_at).calendar()}</ListGroupItem>
+                                })
+                            }
+                        </ListGroup>
+                    </div>
+                </Col>
             </div>
         )
     }
