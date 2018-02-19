@@ -9,6 +9,8 @@ import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
 
+import UserChart from './../Components/UserChart'
+
 class User extends React.Component {
 
     constructor (props) {
@@ -62,7 +64,7 @@ class User extends React.Component {
                 this.setState({is_staff: this.state.user.is_staff})
                 this.setState({courses: json.courses})
                 this.setState({submissions: json.submissions})
-                console.log(this.state.courses)
+                Events.emit('onUserRetrieved', json)
             })
     }
 
@@ -74,17 +76,20 @@ class User extends React.Component {
             .then((json) => {
                 this.setState({allCourses: json})
                 let coursesAr = []
-                json.map(course => (
-                    coursesAr.push(course.name)
-                ))
-                this.setState({allCoursesAr: coursesAr})
 
+                let courseIds = this.state.courses.map(course => course.id)
+
+                json.forEach(function (course) {
+                    if (!courseIds.includes(course.id)) {
+                        coursesAr.push(course.name)
+                    }
+                })
+                this.setState({allCoursesAr: coursesAr})
             })
     }
 
     onCourseSelected (choice) {
         let formData = new FormData()
-        let self = this
 
         let course = this.state.allCourses.filter(function (course) {
             return course.name === choice.value
@@ -96,7 +101,7 @@ class User extends React.Component {
         axios.post(Routes.courses_users_add, formData)
             .then((response) => {
                     toast('User added to course')
-                    self.getUser(self.state.user.id)
+                    Events.emit('onCoursesChanged')
                 }
             )
     }
@@ -150,13 +155,11 @@ class User extends React.Component {
 
         Events.on('onCoursesChanged', () => {
             this.getUser(this.props.match.params.id)
+            this.getAllCourses()
         })
     }
 
     getAverageSubmissionScore (assessments) {
-        console.log('********************************')
-        console.log(assessments)
-
         let ScoreNum = 0
         let ScoreTotal = 0
 
@@ -173,7 +176,7 @@ class User extends React.Component {
             }
         })
 
-        if (ScoreNum === 0){
+        if (ScoreNum === 0) {
             return 0
         }
 
@@ -193,7 +196,7 @@ class User extends React.Component {
                     </p>
                 </Jumbotron>
 
-                <Col sm={2}>
+                <Col sm={4}>
                     <div className="content">
                         <h2>User Information</h2>
                         <label className="label">UserName</label>
@@ -235,13 +238,7 @@ class User extends React.Component {
 
                 </Col>
 
-                <Col sm={5}>
-                    <div className="content">
-                        <h2>Activity</h2>
-                        <CourseItem items={this.state.courses} user={this.state.user}/>
-                    </div>
-                </Col>
-                <Col sm={5}>
+                <Col sm={8}>
                     <table className="table">
                         <thead>
                         <tr>
@@ -272,6 +269,16 @@ class User extends React.Component {
                         value={this.state.language}
                         placeholder="Select Course"/>
                     <br/>
+                </Col>
+                <Col sm={12}>
+                    <UserChart/>
+                </Col>
+
+                <Col sm={12}>
+                    <div className="content">
+                        <h2>Activity</h2>
+                        <CourseItem items={this.state.courses} user={this.state.user}/>
+                    </div>
                 </Col>
             </div>
         )
