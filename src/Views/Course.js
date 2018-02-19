@@ -31,6 +31,10 @@ class Course extends React.Component {
                 //console.log(json)
                 this.setState({course: json})
             })
+            .catch(error =>  {
+                console.log("dadsada:", error)
+            })
+
     }
 
     componentDidMount () {

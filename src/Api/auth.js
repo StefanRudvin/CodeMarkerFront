@@ -1,4 +1,6 @@
 import axios from 'axios'
+import swal from 'sweetalert2'
+
 
 export default {
 
@@ -13,6 +15,7 @@ export default {
                 if (loggedIn) loggedIn(true)
             } else {
                 if (loggedIn) loggedIn(false)
+                console.log("No credentials")
             }
         })
     },
@@ -38,10 +41,16 @@ export default {
                 return response.data
             })
             .then((response) => {
-                console.log(response)
                 cb({
                     authenticated: true,
                     token: response.token
+                })
+            })
+            .catch(error=> {
+                console.log("error: ", error)
+                swal({
+                    type: 'error',
+                    title: 'Wrong credentials',
                 })
             })
     }

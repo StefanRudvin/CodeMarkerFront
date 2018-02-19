@@ -20,7 +20,8 @@
     "react-scripts": "1.0.14",
     "react-spinners": "^0.2.1",
     "react-tap-event-plugin": "^3.0.2",
-    "superagent": "^3.8.1"
+    "superagent": "^3.8.1",
+    "sweetalert2": "^7.12.9"
   },
   "scripts": {
     "start": "react-scripts start",

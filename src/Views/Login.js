@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField'
 import { Jumbotron } from 'react-bootstrap'
 import React, { Component } from 'react'
 import Auth from './../Api/auth'
-import {red500} from 'material-ui/styles/colors';
+import {red500} from 'material-ui/styles/colors'
 
 const styles = {
     underlineStyle: {
@@ -21,8 +21,9 @@ class Login extends Component {
         super(props)
         this.state = {
             username: '',
-            password: ''
+            password: '',
         }
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     login () {
@@ -34,6 +35,13 @@ class Login extends Component {
         })
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+
+        this.login();
+
+    }
+    
     render () {
         return (
             <div>
@@ -48,6 +56,7 @@ class Login extends Component {
                     </Jumbotron>
 
                     <div className="login">
+                        <form onSubmit={this.handleSubmit}>
                         <TextField
                             hintText="Enter your Username"
                             floatingLabelText="Username"
@@ -67,8 +76,8 @@ class Login extends Component {
                             onChange={(event, newValue) => this.setState({password: newValue})}
                         />
                         <br/>
-                        <RaisedButton className="loginButton" label="Submit" primary={true} style={style}
-                                      onClick={() => {this.login()}}/>
+                            <RaisedButton className="loginButton" label="Submit" type="submit" primary={true} style={style}/>
+                        </form>
                     </div>
                 </MuiThemeProvider>
             </div>
