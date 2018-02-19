@@ -38,6 +38,17 @@ class User extends React.Component {
         this.handleEmailChange = this.handleEmailChange.bind(this)
     }
 
+    componentDidMount () {
+        this.getUser(this.props.match.params.id)
+        this.getAllCourses()
+        let self = this
+
+        Events.on('onCoursesChanged', () => {
+            this.getUser(this.props.match.params.id)
+            this.getAllCourses()
+        })
+    }
+
     toggleStaff () {
         this.setState({is_staff: !this.state.is_staff})
     }
@@ -147,16 +158,6 @@ class User extends React.Component {
                     Events.emit('onCoursesChanged')
                 }
             )
-    }
-
-    componentDidMount () {
-        this.getUser(this.props.match.params.id)
-        this.getAllCourses()
-
-        Events.on('onCoursesChanged', () => {
-            this.getUser(this.props.match.params.id)
-            this.getAllCourses()
-        })
     }
 
     getAverageSubmissionScore (assessments) {

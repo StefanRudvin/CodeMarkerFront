@@ -72,6 +72,7 @@ class Admin extends React.Component {
                     column2="Description"
                     showDelete={true}
                     showEdit={true}
+                    editRoute="/courses"
                     route="courses"
                     event="onCoursesChanged"
                 />
