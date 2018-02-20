@@ -22,8 +22,9 @@ class Login extends Component {
         super(props)
         this.state = {
             username: '',
-            password: ''
+            password: '',
         }
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     login () {
@@ -36,6 +37,13 @@ class Login extends Component {
         })
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+
+        this.login();
+
+    }
+    
     render () {
         return (
             <div>
@@ -50,6 +58,7 @@ class Login extends Component {
                     </Jumbotron>
 
                     <div className="login">
+                        <form onSubmit={this.handleSubmit}>
                         <TextField
                             hintText="Enter your Username"
                             floatingLabelText="Username"
@@ -69,8 +78,8 @@ class Login extends Component {
                             onChange={(event, newValue) => this.setState({password: newValue})}
                         />
                         <br/>
-                        <RaisedButton className="loginButton" label="Submit" primary={true} style={style}
-                                      onClick={() => {this.login()}}/>
+                            <RaisedButton className="loginButton" label="Submit" type="submit" primary={true} style={style}/>
+                        </form>
                     </div>
                 </MuiThemeProvider>
             </div>

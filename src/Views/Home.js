@@ -21,7 +21,12 @@ class Home extends React.Component {
                 return response.data})
             .then( (json) => {
                 this.setState({courses: json});
-            });
+            })
+            .catch(error =>  {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            })
     }
     render() {
     return (

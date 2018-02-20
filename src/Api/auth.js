@@ -1,4 +1,5 @@
 import axios from 'axios'
+import swal from 'sweetalert2'
 import Routes from './routes'
 
 export default {
@@ -20,6 +21,7 @@ export default {
                 if (loggedIn) loggedIn(true)
             } else {
                 if (loggedIn) loggedIn(false)
+                console.log("No credentials")
             }
         })
     },
@@ -72,6 +74,14 @@ export default {
                 localStorage.superuser = response.superuser
                 localStorage.staff = response.staff
                 localStorage.user_id = response.user_id
+            })
+            .catch(error=> {
+                console.log("error: ", error)
+                swal({
+                    type: 'error',
+                    title: 'Wrong credentials',
+                })
+            })
         })
     }
 }

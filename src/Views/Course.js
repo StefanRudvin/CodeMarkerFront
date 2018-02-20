@@ -55,6 +55,10 @@ class Course extends React.Component {
                 Events.emit('onCourseRetrieved', json)
                 this.getSubmissionStats()
             })
+            .catch(error =>  {
+                console.log("dadsada:", error)
+            })
+
     }
 
     getSubmissionStats() {
