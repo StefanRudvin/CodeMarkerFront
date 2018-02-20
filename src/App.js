@@ -1,7 +1,7 @@
 // Packages
 import { ToastContainer, toast } from 'react-toastify'
 import React, { Component } from 'react'
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 import axios from 'axios'
 
 // Components
@@ -35,14 +35,14 @@ axios.interceptors.response.use(function (response) {
 
 class App extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             courses: [],
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         if (Auth.loggedIn()) {
             this.getCourses()
         }
@@ -51,23 +51,23 @@ class App extends Component {
         });
     }
 
-    getCourses () {
+    getCourses() {
         axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({courses: json})
+                this.setState({ courses: json })
             })
     }
 
-    render () {
+    render() {
         return (
             <div className="App">
-                <ToastContainer className="toast" autoClose={3000} hideProgressBar={true} position={toast.POSITION.BOTTOM_RIGHT}/>
-                <NavBar courses={this.state.courses}/>
+                <ToastContainer className="toast" autoClose={3000} hideProgressBar={true} position={toast.POSITION.BOTTOM_RIGHT} />
+                <NavBar courses={this.state.courses} />
                 <div className="container">
-                    <Authenticator/>
+                    <Authenticator />
                 </div>
             </div>
         )

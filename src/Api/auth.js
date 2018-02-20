@@ -10,7 +10,7 @@ export default {
     backend with the given username and password, and saves it into local storage.
 
      */
-    login: function(username, pass, loggedIn) {
+    login: function (username, pass, loggedIn) {
         if (localStorage.token) {
             if (loggedIn) loggedIn(true)
             return
@@ -26,11 +26,11 @@ export default {
         })
     },
 
-    token () {
+    token() {
         return localStorage.token
     },
 
-    logout () {
+    logout() {
         delete localStorage.token
         delete localStorage.superuser
         delete localStorage.username
@@ -38,23 +38,23 @@ export default {
         delete localStorage.user_id
     },
 
-    getUserName () {
+    getUserName() {
         return localStorage.username
     },
 
-    loggedIn () {
+    loggedIn() {
         return !!localStorage.token
     },
 
-    isAdmin () {
+    isAdmin() {
         return localStorage.superuser === "true";
     },
 
-    isStaff () {
+    isStaff() {
         return localStorage.staff === "true";
     },
 
-    getToken (username, password, cb) {
+    getToken(username, password, cb) {
 
         let formData = new FormData()
 
@@ -75,13 +75,12 @@ export default {
                 localStorage.staff = response.staff
                 localStorage.user_id = response.user_id
             })
-            .catch(error=> {
+            .catch(error => {
                 console.log("error: ", error)
                 swal({
                     type: 'error',
                     title: 'Wrong credentials',
                 })
             })
-        })
     }
 }
