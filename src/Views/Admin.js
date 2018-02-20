@@ -1,9 +1,13 @@
 import ConfigurableTable from './../Components/common/ConfigurableTable.js'
+import ConfigurableForm from './../Components/common/ConfigurableForm.js'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import logo from './../Assets/CodeMarkerLogo.png'
-import React from 'react'
-import axios from 'axios'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
+import Events from './../client.js'
+import React from 'react'
+import axios from 'axios'
+
 
 class Admin extends React.Component {
 
@@ -14,16 +18,23 @@ class Admin extends React.Component {
             name: '',
             description: '',
             id: '',
-            updated_at: ''
+            updated_at: '',
+            users: []
         }
+    }
 
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
-        this.handleNameChange = this.handleNameChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
+    getUsers () {
+        axios.get(Routes.users_json)
+            .then((response) => {
+                return response.data
+            })
+            .then((json) => {
+                this.setState({users: json})
+            })
     }
 
     getCourses () {
-        axios.get(Routes.get.courses)
+        axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })
@@ -34,12 +45,25 @@ class Admin extends React.Component {
 
     componentDidMount () {
         this.getCourses()
+        this.getUsers()
+        Events.on('onCoursesChanged', () => {
+            this.getCourses()
+        });
+        Events.on('onUsersChanged', () => {
+            this.getUsers()
+        });
     }
 
     render () {
         return (
-            <div className="admin">
-
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+                className="admin"
+            >
                 <Jumbotron>
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title">Admin Page</h1>
@@ -52,86 +76,36 @@ class Admin extends React.Component {
                 <h3>Courses</h3>
                 <ConfigurableTable
                     items={this.state.courses}
-                    link="courses"
-                    tableHeader="Course Name"
-                    tableDescription="Course Description"
+                    column1="Name"
+                    column2="Description"
+                    showDelete={true}
+                    showEdit={true}
+                    editRoute="/courses"
+                    route="courses"
+                    event="onCoursesChanged"
+                />
+                <ConfigurableForm
+                    event="onCoursesChanged"
+                    route="courses"
+                    title="Create new Course"
+
                 />
 
-                <div className="content">
-                    <div className="field">
-                        <label className="label">Name</label>
-                        <div className="control">
-                            <input
-                                className="input"
-                                onChange={this.handleNameChange}
-                                value={this.state.name}
-                                type="text"
-                                placeholder="Course Name"/>
-                        </div>
-                    </div>
+                <h3>Users</h3>
 
-                    <div className="field">
-                        <div className="control">
-                            <textarea
-                                className="textarea"
-                                onChange={this.handleDescriptionChange}
-                                value={this.state.description}
-                                placeholder="Course Description">
-                            </textarea>
-                        </div>
-                    </div>
-
-                    <div className="button" onClick={this.handleSubmit}>
-                        Submit
-                    </div>
-                    <br/>
-                    <br/>
-                    <br/>
-                </div>
-            </div>
+                <ConfigurableTable
+                    items={this.state.users}
+                    column1="UserName"
+                    column2="Date joined"
+                    column3="Email"
+                    showDelete={true}
+                    showEdit={true}
+                    editRoute="/users"
+                    route="users"
+                    event="onUsersChanged"
+                />
+            </ReactCSSTransitionGroup>
         )
-    }
-
-    handleNameChange (e) {
-        this.setState({name: e.target.value})
-    }
-
-    handleDescriptionChange (e) {
-        this.setState({description: e.target.value})
-    }
-
-    handleSubmit (e) {
-        e.preventDefault()
-        console.log('Handle submit!')
-        const newCourse = {
-            name: this.state.name,
-            description: this.state.description,
-            id: this.state.courses.length + 1,
-            updated_at: Date.now()
-        }
-        this.addCourse()
-        this.setState((prevState) => ({
-            courses: prevState.courses.concat(newCourse),
-            description: '',
-            updated_at: '',
-            name: '',
-            id: '',
-        }))
-    }
-
-    addCourse () {
-        let formData = new FormData()
-
-        formData.append('name', this.state.name)
-        formData.append('description', this.state.description)
-        formData.append('user', 1)
-        axios.post(Routes.post.courses, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then((response) => {
-            this.getCourses()
-        })
     }
 
 }

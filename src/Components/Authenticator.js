@@ -8,7 +8,6 @@ import MyRouter from './MyRouter'
 class Authenticator extends Component {
     constructor (props) {
         super(props)
-        console.log('Authenticator started...')
         this.state = {
         }
     }
@@ -22,7 +21,7 @@ class Authenticator extends Component {
             return (<LoginView/>)
         } else {
             return (
-                <MyRouter/>
+                    <MyRouter/>
             )
         }
     }

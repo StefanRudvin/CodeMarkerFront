@@ -1,14 +1,15 @@
-import {Jumbotron, Col} from 'react-bootstrap'
-import React from 'react'
-import axios from 'axios'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { ClimbingBoxLoader } from 'react-spinners'
+import { Jumbotron, Col } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 import Dropzone from 'react-dropzone'
 import Routes from './../Api/routes'
-
-import {ClimbingBoxLoader} from 'react-spinners'
+import React from 'react'
+import axios from 'axios'
 
 class NewAssessment extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.state = {
             assessment: {},
             loading: false,
@@ -31,68 +32,73 @@ class NewAssessment extends React.Component {
                 CPlus: true,
                 Java: true
             }
-        };
+        }
 
-        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleAdditionalHelpChange = this.handleAdditionalHelpChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.setState({course_id: this.props.match.params.id});
-        this.state.course_id = this.props.match.params.id;
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
+        this.handleNameChange = this.handleNameChange.bind(this)
+        this.handleAdditionalHelpChange = this.handleAdditionalHelpChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.setState({course_id: this.props.match.params.id})
+        this.state.course_id = this.props.match.params.id
     }
 
-    toggleModal() {
+    toggleModal () {
         if (this.state.modal) {
             this.setState({modal: false})
+            this.setState({uploading: false})
         } else {
             this.setState({modal: true})
         }
     }
 
-    onSampleCodeDrop(files) {
-        this.setState({sample_code: files[0]});
+    onSampleCodeDrop (files) {
+        this.setState({sample_code: files[0]})
         this.setState({sampleCodeUploaded: true})
     }
 
-    onInputGeneratorDrop(files) {
-        this.setState({input_generator: files[0]});
+    onInputGeneratorDrop (files) {
+        this.setState({input_generator: files[0]})
         this.setState({inputGeneratorUploaded: true})
     }
 
-    upload() {
-        this.setState({modal: true});
-        this.setState({loading: true});
-        this.setState({uploading: true});
-        let formData = new FormData();
+    upload () {
+        this.setState({modal: true})
+        this.setState({loading: true})
+        this.setState({uploading: true})
+        let formData = new FormData()
 
-        formData.append('resource', this.state.sample_code);
-        formData.append('input_generator', this.state.input_generator);
+        formData.append('resource', this.state.sample_code)
+        formData.append('input_generator', this.state.input_generator)
 
-        formData.append('name', this.state.name);
-        formData.append('description', this.state.description);
-        formData.append('additional_help', this.state.additional_help);
+        formData.append('name', this.state.name)
+        formData.append('description', this.state.description)
+        formData.append('additional_help', this.state.additional_help)
 
-        formData.append('languages', this.state.languages);
+        formData.append('languages', this.state.languages)
+        formData.append('course_id', this.state.course_id)
 
-        axios.post(Routes.get.assessments + this.state.course_id + '/upload/', formData, {
+        let self = this
+
+        axios.post(Routes.assessments, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
             .then((response) => {
-                    this.setState({uploading: false});
+                    this.setState({uploading: false})
                     this.setState({assessment_url: Routes.local.assessments + response.data})
+                    toast('Assessment Created!')
                 }
             )
             .catch(function (error) {
-                console.log(JSON.stringify(error))
-            });
+                self.toggleModal()
+            })
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
+    handleSubmit (e) {
+        e.preventDefault()
 
-        this.upload();
+        this.upload()
 
         this.setState((prevState) => ({
             description: '',
@@ -103,57 +109,63 @@ class NewAssessment extends React.Component {
         }))
     }
 
-    handleNameChange(e) {
+    handleNameChange (e) {
         this.setState({name: e.target.value})
     }
 
-    handleDescriptionChange(e) {
+    handleDescriptionChange (e) {
         this.setState({description: e.target.value})
     }
 
-    handleAdditionalHelpChange(e) {
+    handleAdditionalHelpChange (e) {
         this.setState({additional_help: e.target.value})
     }
 
-    togglePython2() {
-        let langCopy = this.state.languages;
-        langCopy.Python2 = !langCopy.Python2;
-        this.setState({languages: langCopy});
+    togglePython2 () {
+        let langCopy = this.state.languages
+        langCopy.Python2 = !langCopy.Python2
+        this.setState({languages: langCopy})
     }
 
-    togglePython3() {
-        let langCopy = this.state.languages;
-        langCopy.Python3 = !langCopy.Python3;
-        this.setState({languages: langCopy});
+    togglePython3 () {
+        let langCopy = this.state.languages
+        langCopy.Python3 = !langCopy.Python3
+        this.setState({languages: langCopy})
     }
 
-    toggleJava() {
-        let langCopy = this.state.languages;
-        langCopy.Java = !langCopy.Java;
-        this.setState({languages: langCopy});
+    toggleJava () {
+        let langCopy = this.state.languages
+        langCopy.Java = !langCopy.Java
+        this.setState({languages: langCopy})
     }
 
-    toggleRuby() {
-        let langCopy = this.state.languages;
-        langCopy.Ruby = !langCopy.Ruby;
-        this.setState({languages: langCopy});
+    toggleRuby () {
+        let langCopy = this.state.languages
+        langCopy.Ruby = !langCopy.Ruby
+        this.setState({languages: langCopy})
     }
 
-    toggleC() {
-        let langCopy = this.state.languages;
-        langCopy.C = !langCopy.C;
-        this.setState({languages: langCopy});
+    toggleC () {
+        let langCopy = this.state.languages
+        langCopy.C = !langCopy.C
+        this.setState({languages: langCopy})
     }
 
-    toggleCPlus() {
-        let langCopy = this.state.languages;
-        langCopy.CPlus = !langCopy.CPlus;
-        this.setState({languages: langCopy});
+    toggleCPlus () {
+        let langCopy = this.state.languages
+        langCopy.CPlus = !langCopy.CPlus
+        this.setState({languages: langCopy})
     }
 
-    render() {
+    render () {
         return (
-            <div>
+            <ReactCSSTransitionGroup
+                transitionAppear={true}
+                transitionAppearTimeout={600}
+                transitionEnterTimeout={600}
+                transitionLeaveTimeout={300}
+                transitionName="SlideIn"
+            >
                 <Jumbotron>
                     <h1>Create New Assessment</h1>
                 </Jumbotron>
@@ -345,7 +357,7 @@ class NewAssessment extends React.Component {
                         </footer>
                     </div>
                 </div>
-            </div>
+            </ReactCSSTransitionGroup>
         )
     }
 }

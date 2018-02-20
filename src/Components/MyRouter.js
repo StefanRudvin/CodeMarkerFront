@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Auth from './../Api/auth.js'
 
 import NewAssessmentsView from './../Views/NewAssessment.js'
-import AssessmentsView from './../Views/Assessments.js'
+import AssessmentView from './../Views/Assessment.js'
 import SubmissionsView from './../Views/Submission.js'
 import CourseView from './../Views/Course.js'
 import LoginView from './../Views/Login.js'
@@ -15,7 +15,6 @@ import UserView from './../Views/User.js'
 class MyRouter extends Component {
     constructor (props) {
         super(props)
-        console.log('Router started...')
         this.state = {}
     }
 
@@ -26,8 +25,8 @@ class MyRouter extends Component {
                     <Route path='/admin' component={AdminView}/>
                     <Route path='/courses/:id' component={CourseView}/>
                     <Route path='/submissions' component={SubmissionsView}/>
-                    <Route path='/user' component={UserView}/>
-                    <Route path='/assessments/:id' component={AssessmentsView}/>
+                    <Route path='/users/:id' component={UserView}/>
+                    <Route path='/assessments/:id' component={AssessmentView}/>
                     <Route path='/assessment/:id/new' component={NewAssessmentsView}/>
                     <Route path='/login' component={LoginView}/>
                     <Route path='/' component={HomeView}/>

@@ -4,18 +4,22 @@ export default {
         assessments: 'http://localhost:3000/assessments/'
     },
 
-    get : {
-        courses: 'http://127.0.0.1:8000/api/courses/?format=json',
-        course: 'http://127.0.0.1:8000/api/courses/',
-        assessments: 'http://127.0.0.1:8000/api/assessments/',
+    auth : {
+        obtain_token : 'http://127.0.0.1:8000/api/obtain-auth-token/',
+        get_user: 'http://127.0.0.1:8000/api/get-user/',
     },
 
-    delete: {
-        courses: 'http://127.0.0.1:8000/api/courses/'
-    },
+    courses_json: 'http://127.0.0.1:8000/api/courses/?format=json',
+    users_json: 'http://127.0.0.1:8000/api/users/?format=json',
 
-    post: {
-        courses: 'http://127.0.0.1:8000/api/courses/',
-        submissions: 'http://127.0.0.1:8000/api/submissions/'
-    }
+    courses_users_delete: 'http://127.0.0.1:8000/api/courses/users/delete/',
+    courses_users_add: 'http://127.0.0.1:8000/api/courses/users/add/',
+
+    assessments: 'http://127.0.0.1:8000/api/assessments/',
+    submissions: 'http://127.0.0.1:8000/api/submissions/',
+    courses: 'http://127.0.0.1:8000/api/courses/',
+    users: 'http://127.0.0.1:8000/api/users/',
+
+    base: 'http://127.0.0.1:8000/api/',
+
 }

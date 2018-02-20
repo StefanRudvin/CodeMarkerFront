@@ -1,9 +1,15 @@
 import axios from 'axios'
 import swal from 'sweetalert2'
-
+import Routes from './routes'
 
 export default {
+    /*
 
+    This class acts as the authentication layer for the React frontend. It sends a login()
+    request when the user logs in. If no token is present, it requests one from the
+    backend with the given username and password, and saves it into local storage.
+
+     */
     login: function(username, pass, loggedIn) {
         if (localStorage.token) {
             if (loggedIn) loggedIn(true)
@@ -20,23 +26,42 @@ export default {
         })
     },
 
+    token () {
+        return localStorage.token
+    },
+
     logout () {
         delete localStorage.token
+        delete localStorage.superuser
+        delete localStorage.username
+        delete localStorage.staff
+        delete localStorage.user_id
+    },
+
+    getUserName () {
+        return localStorage.username
     },
 
     loggedIn () {
         return !!localStorage.token
     },
 
+    isAdmin () {
+        return localStorage.superuser === "true";
+    },
+
+    isStaff () {
+        return localStorage.staff === "true";
+    },
+
     getToken (username, password, cb) {
-        let url = 'http://127.0.0.1:8000/api/obtain-auth-token/'
 
         let formData = new FormData()
 
         formData.append('username', username)
         formData.append('password', password)
 
-        axios.post(url, formData)
+        axios.post(Routes.auth.obtain_token, formData)
             .then((response) => {
                 return response.data
             })
@@ -45,6 +70,10 @@ export default {
                     authenticated: true,
                     token: response.token
                 })
+                localStorage.username = response.username
+                localStorage.superuser = response.superuser
+                localStorage.staff = response.staff
+                localStorage.user_id = response.user_id
             })
             .catch(error=> {
                 console.log("error: ", error)
@@ -53,5 +82,6 @@ export default {
                     title: 'Wrong credentials',
                 })
             })
+        })
     }
 }
