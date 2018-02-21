@@ -73,8 +73,8 @@ class NewAssessment extends React.Component {
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
         formData.append('additional_help', this.state.additional_help)
-
-        formData.append('languages', this.state.languages)
+        console.log(this.state.languages)
+        formData.append('languages',JSON.stringify( this.state.languages))
         formData.append('course_id', this.state.course_id)
 
         let self = this

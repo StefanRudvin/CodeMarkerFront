@@ -8,6 +8,7 @@ import Routes from './../Api/routes'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 
 class Assessment extends React.Component {
@@ -207,20 +208,18 @@ class Assessment extends React.Component {
                         </header>
 
                         <section className="modal-card-body">
-                            {this.props.uploading ? (
+                            {this.state.uploading ? (
                                 <h2>Uploading...</h2>
                             ) : null}
-                            {this.props.loading ? (
-                                <h2>Loading...</h2>
+                            {this.state.loading ? (
+                                <h2>Running your code...</h2>
                             ) : null}
-                            {!this.props.loading ? (
-                                <Report submission={this.state.submission}/>
-                            ) : null}
-                            {this.props.loading ? (
-                                <ClimbingBoxLoader
-                                    loading={this.state.loading}
+                            {this.state.loading ? (
+                                // TODO: fix the allignment
+                                <ClimbingBoxLoader style="text-align: center;"
+                                loading={this.state.loading}
                                 />
-                            ) : null}
+                            ) : <Report submission={this.state.submission}/>}
                         </section>
                         <footer className="modal-card-foot">
                             <button className="button is-success" onClick={this.toggleModal.bind(this)}>Close</button>
@@ -230,6 +229,10 @@ class Assessment extends React.Component {
             </ReactCSSTransitionGroup>
         )
     }
+}
+
+const style = {
+    margin: 'auto'
 }
 
 export default Assessment
