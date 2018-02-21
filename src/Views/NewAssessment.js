@@ -8,7 +8,7 @@ import React from 'react'
 import axios from 'axios'
 
 class NewAssessment extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             assessment: {},
@@ -38,33 +38,33 @@ class NewAssessment extends React.Component {
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleAdditionalHelpChange = this.handleAdditionalHelpChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.setState({course_id: this.props.match.params.id})
+        this.setState({ course_id: this.props.match.params.id })
         this.state.course_id = this.props.match.params.id
     }
 
-    toggleModal () {
+    toggleModal() {
         if (this.state.modal) {
-            this.setState({modal: false})
-            this.setState({uploading: false})
+            this.setState({ modal: false })
+            this.setState({ uploading: false })
         } else {
-            this.setState({modal: true})
+            this.setState({ modal: true })
         }
     }
 
-    onSampleCodeDrop (files) {
-        this.setState({sample_code: files[0]})
-        this.setState({sampleCodeUploaded: true})
+    onSampleCodeDrop(files) {
+        this.setState({ sample_code: files[0] })
+        this.setState({ sampleCodeUploaded: true })
     }
 
-    onInputGeneratorDrop (files) {
-        this.setState({input_generator: files[0]})
-        this.setState({inputGeneratorUploaded: true})
+    onInputGeneratorDrop(files) {
+        this.setState({ input_generator: files[0] })
+        this.setState({ inputGeneratorUploaded: true })
     }
 
-    upload () {
-        this.setState({modal: true})
-        this.setState({loading: true})
-        this.setState({uploading: true})
+    upload() {
+        this.setState({ modal: true })
+        this.setState({ loading: true })
+        this.setState({ uploading: true })
         let formData = new FormData()
 
         formData.append('resource', this.state.sample_code)
@@ -73,8 +73,13 @@ class NewAssessment extends React.Component {
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
         formData.append('additional_help', this.state.additional_help)
-        console.log(this.state.languages)
-        formData.append('languages',JSON.stringify( this.state.languages))
+
+        let choices = [];
+        for (var i in this.state.languages) {
+            if (this.state.languages[i]) choices.push(i);
+        }
+
+        formData.append('languages', JSON.stringify(choices))
         formData.append('course_id', this.state.course_id)
 
         let self = this
@@ -85,17 +90,17 @@ class NewAssessment extends React.Component {
             }
         })
             .then((response) => {
-                    this.setState({uploading: false})
-                    this.setState({assessment_url: Routes.local.assessments + response.data})
-                    toast('Assessment Created!')
-                }
+                this.setState({ uploading: false })
+                this.setState({ assessment_url: Routes.local.assessments + response.data })
+                toast('Assessment Created!')
+            }
             )
             .catch(function (error) {
                 self.toggleModal()
             })
     }
 
-    handleSubmit (e) {
+    handleSubmit(e) {
         e.preventDefault()
 
         this.upload()
@@ -109,55 +114,55 @@ class NewAssessment extends React.Component {
         }))
     }
 
-    handleNameChange (e) {
-        this.setState({name: e.target.value})
+    handleNameChange(e) {
+        this.setState({ name: e.target.value })
     }
 
-    handleDescriptionChange (e) {
-        this.setState({description: e.target.value})
+    handleDescriptionChange(e) {
+        this.setState({ description: e.target.value })
     }
 
-    handleAdditionalHelpChange (e) {
-        this.setState({additional_help: e.target.value})
+    handleAdditionalHelpChange(e) {
+        this.setState({ additional_help: e.target.value })
     }
 
-    togglePython2 () {
+    togglePython2() {
         let langCopy = this.state.languages
         langCopy.Python2 = !langCopy.Python2
-        this.setState({languages: langCopy})
+        this.setState({ languages: langCopy })
     }
 
-    togglePython3 () {
+    togglePython3() {
         let langCopy = this.state.languages
         langCopy.Python3 = !langCopy.Python3
-        this.setState({languages: langCopy})
+        this.setState({ languages: langCopy })
     }
 
-    toggleJava () {
+    toggleJava() {
         let langCopy = this.state.languages
         langCopy.Java = !langCopy.Java
-        this.setState({languages: langCopy})
+        this.setState({ languages: langCopy })
     }
 
-    toggleRuby () {
+    toggleRuby() {
         let langCopy = this.state.languages
         langCopy.Ruby = !langCopy.Ruby
-        this.setState({languages: langCopy})
+        this.setState({ languages: langCopy })
     }
 
-    toggleC () {
+    toggleC() {
         let langCopy = this.state.languages
         langCopy.C = !langCopy.C
-        this.setState({languages: langCopy})
+        this.setState({ languages: langCopy })
     }
 
-    toggleCPlus () {
+    toggleCPlus() {
         let langCopy = this.state.languages
         langCopy.CPlus = !langCopy.CPlus
-        this.setState({languages: langCopy})
+        this.setState({ languages: langCopy })
     }
 
-    render () {
+    render() {
         return (
             <ReactCSSTransitionGroup
                 transitionAppear={true}
@@ -171,10 +176,10 @@ class NewAssessment extends React.Component {
                 </Jumbotron>
 
                 <div className="modal">
-                    <div className="modal-background"/>
+                    <div className="modal-background" />
                     <div className="modal-content">
                     </div>
-                    <button className="modal-close is-large" aria-label="close"/>
+                    <button className="modal-close is-large" aria-label="close" />
                 </div>
 
                 <div className="new-assessment">
@@ -185,7 +190,7 @@ class NewAssessment extends React.Component {
                                 onChange={this.handleNameChange}
                                 value={this.state.name}
                                 type="text"
-                                placeholder="Assessment Name"/>
+                                placeholder="Assessment Name" />
                         </div>
                     </div>
 
@@ -213,81 +218,81 @@ class NewAssessment extends React.Component {
 
                     <Col sm={4}>
                         <h1>Choose Available Languages</h1>
-                        <br/>
+                        <br />
                         <table className="table">
                             <tbody>
-                            <tr>
-                                <th>
-                                    <input
-                                        name="Python2"
-                                        type="checkbox"
-                                        checked={this.state.languages.Python2}
-                                        onChange={this.togglePython2.bind(this)}/>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="Python2"
+                                            type="checkbox"
+                                            checked={this.state.languages.Python2}
+                                            onChange={this.togglePython2.bind(this)} />
+                                    </th>
+                                    <th>
+                                        Python2
                                 </th>
-                                <th>
-                                    Python2
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="Python3"
+                                            type="checkbox"
+                                            checked={this.state.languages.Python3}
+                                            onChange={this.togglePython3.bind(this)} />
+                                    </th>
+                                    <th>
+                                        Python3
                                 </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input
-                                        name="Python3"
-                                        type="checkbox"
-                                        checked={this.state.languages.Python3}
-                                        onChange={this.togglePython3.bind(this)}/>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="Java"
+                                            type="checkbox"
+                                            checked={this.state.languages.Java}
+                                            onChange={this.toggleJava.bind(this)} />
+                                    </th>
+                                    <th>
+                                        Java
                                 </th>
-                                <th>
-                                    Python3
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="Ruby"
+                                            type="checkbox"
+                                            checked={this.state.languages.Ruby}
+                                            onChange={this.toggleRuby.bind(this)} />
+                                    </th>
+                                    <th>
+                                        Ruby
                                 </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input
-                                        name="Java"
-                                        type="checkbox"
-                                        checked={this.state.languages.Java}
-                                        onChange={this.toggleJava.bind(this)}/>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="C"
+                                            type="checkbox"
+                                            checked={this.state.languages.C}
+                                            onChange={this.toggleC.bind(this)} />
+                                    </th>
+                                    <th>
+                                        C
                                 </th>
-                                <th>
-                                    Java
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="C++"
+                                            type="checkbox"
+                                            checked={this.state.languages.CPlus}
+                                            onChange={this.toggleCPlus.bind(this)} />
+                                    </th>
+                                    <th>
+                                        C++
                                 </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input
-                                        name="Ruby"
-                                        type="checkbox"
-                                        checked={this.state.languages.Ruby}
-                                        onChange={this.toggleRuby.bind(this)}/>
-                                </th>
-                                <th>
-                                    Ruby
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input
-                                        name="C"
-                                        type="checkbox"
-                                        checked={this.state.languages.C}
-                                        onChange={this.toggleC.bind(this)}/>
-                                </th>
-                                <th>
-                                    C
-                                </th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input
-                                        name="C++"
-                                        type="checkbox"
-                                        checked={this.state.languages.CPlus}
-                                        onChange={this.toggleCPlus.bind(this)}/>
-                                </th>
-                                <th>
-                                    C++
-                                </th>
-                            </tr>
+                                </tr>
                             </tbody>
                         </table>
                     </Col>
@@ -315,20 +320,20 @@ class NewAssessment extends React.Component {
                             </div>
                         </div>
                     </Col>
-                    <br/>
+                    <br />
                     <div className="button" onClick={this.handleSubmit}>
                         Submit
                     </div>
                 </div>
 
                 <div className={'modal ' + (this.state.modal ? 'is-active' : '')}>
-                    <div className="modal-background"/>
+                    <div className="modal-background" />
                     <div className="modal-card">
 
                         <header className="modal-card-head">
                             <p className="modal-card-title">Report</p>
                             <button className="delete" onClick={this.toggleModal.bind(this)}
-                                    aria-label="close"/>
+                                aria-label="close" />
                         </header>
 
                         <section className="modal-card-body">
@@ -339,9 +344,9 @@ class NewAssessment extends React.Component {
                                 <h2>Loading...</h2>
                             ) : null}
                             {!this.props.loading ? (
-                                <div><h1>Assessment created</h1><br/><a className="bd-tw-button button"
-                                                                        href={this.state.assessment_url}>
-                                        <span>
+                                <div><h1>Assessment created</h1><br /><a className="bd-tw-button button"
+                                    href={this.state.assessment_url}>
+                                    <span>
                                         Open Assessment
                                         </span>
                                 </a></div>
