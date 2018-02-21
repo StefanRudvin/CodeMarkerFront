@@ -3,6 +3,7 @@ import { ClimbingBoxLoader } from 'react-spinners'
 import { Jumbotron, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import Dropzone from 'react-dropzone'
+import Dropdown from 'react-dropdown'
 import Routes from './../Api/routes'
 import React from 'react'
 import axios from 'axios'
@@ -24,6 +25,7 @@ class NewAssessment extends React.Component {
             assessment_url: '',
             sampleCodeUploaded: false,
             inputGeneratorUploaded: false,
+            solution_language: '',
             languages: {
                 Python2: true,
                 Python3: true,
@@ -73,6 +75,10 @@ class NewAssessment extends React.Component {
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
         formData.append('additional_help', this.state.additional_help)
+
+        console.log(this.state.solution_language)
+
+        formData.append('selected_language', this.state.solution_language)
 
         let choices = [];
         for (var i in this.state.languages) {
@@ -162,7 +168,19 @@ class NewAssessment extends React.Component {
         this.setState({ languages: langCopy })
     }
 
+    onLanguageSelected(choice) {
+        this.setState({ solution_language: choice.value })
+    }
+
     render() {
+        const options = [
+            'Python2',
+            'Python3',
+            'Java',
+            'Ruby',
+            'CPlus',
+            'C'
+        ]
         return (
             <ReactCSSTransitionGroup
                 transitionAppear={true}
@@ -296,6 +314,15 @@ class NewAssessment extends React.Component {
                             </tbody>
                         </table>
                     </Col>
+                    <div>
+                        <Dropdown
+                            className="dropDown"
+                            options={options}
+                            onChange={this.onLanguageSelected.bind(this)}
+                            value={this.state.solution_language}
+                            placeholder="Select SolutionLanguage" />
+                        <br />
+                    </div>
 
                     <Col sm={4}>
                         <div className="content">
@@ -311,6 +338,7 @@ class NewAssessment extends React.Component {
 
                     <Col sm={4}>
                         <div className="content">
+
                             <div className="dropzone">
                                 <Dropzone onDrop={this.onInputGeneratorDrop.bind(this)}>
                                     {this.state.inputGeneratorUploaded ? (
