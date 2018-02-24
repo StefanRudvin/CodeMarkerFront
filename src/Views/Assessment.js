@@ -45,6 +45,11 @@ class Assessment extends React.Component {
                 this.setState({ assessment: json })
                 this.setState({ submissions: json.submissions })
                 this.setState({ possibleLanguages: JSON.parse(json.languages.replace(/'/g, '"')) })
+                if (this.state.possibleLanguages.includes('CPlus')) {
+                    var index = this.state.possibleLanguages.indexOf('CPlus');
+                    this.state.possibleLanguages.splice(index, 1, 'C++');
+
+                }
             })
     }
 
@@ -66,7 +71,7 @@ class Assessment extends React.Component {
             'Python3': 'python3',
             'Java': 'java',
             'Ruby': 'ruby',
-            'CPlus': 'cpp',
+            'C++': 'cpp',
             'C': 'c'
         }
 

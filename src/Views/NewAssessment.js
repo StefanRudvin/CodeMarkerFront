@@ -174,12 +174,12 @@ class NewAssessment extends React.Component {
 
     render() {
         const options = [
-            'Python2',
-            'Python3',
-            'Java',
-            'Ruby',
-            'CPlus',
-            'C'
+            { label: 'Python2', value: 'python2' },
+            { label: 'Python3', value: 'python3' },
+            { label: 'Java 8', value: 'java' },
+            { label: 'Ruby', value: 'ruby' },
+            { label: 'C++', value: 'cpp' },
+            { label: 'C', value: 'c' },
         ]
         return (
             <ReactCSSTransitionGroup
@@ -272,7 +272,7 @@ class NewAssessment extends React.Component {
                                             onChange={this.toggleJava.bind(this)} />
                                     </th>
                                     <th>
-                                        Java
+                                        Java 8
                                 </th>
                                 </tr>
                                 <tr>
