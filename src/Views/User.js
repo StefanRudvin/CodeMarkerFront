@@ -10,6 +10,7 @@ import Events from './../client.js'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 class User extends React.Component {
 
@@ -147,18 +148,35 @@ class User extends React.Component {
 
     removeUserFromCourse (course_id) {
         let formData = new FormData()
+                
+            formData.append('course_id', course_id)
+            formData.append('user_id', this.state.user.id)
 
-        formData.append('course_id', course_id)
-        formData.append('user_id', this.state.user.id)
+            //deleting warning
+        swal({
+            title: 'Are you sure?',
+            text: 'Once deleted, you will not be able to undo this action.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            confirmButtonClass: 'confirm-class',
+            cancelButtonClass: 'cancel-class',
+            closeOnConfirm: false,
+            closeOnCancel: false
 
-        let self = this
-        axios.post(Routes.courses_users_delete, formData)
-            .then((response) => {
-                    toast('User removed from course')
-                    Events.emit('onCoursesChanged')
-                }
-            )
+        }).then((result) => {
+            if (result.value){
+                
+            let self = this
+                axios.post(Routes.courses_users_delete, formData)
+                .then((response) => {
+                        toast('User removed from course')
+                        Events.emit('onCoursesChanged')
+                })
+            }})
+     
     }
+    
 
     getAverageSubmissionScore (assessments) {
         let ScoreNum = 0
