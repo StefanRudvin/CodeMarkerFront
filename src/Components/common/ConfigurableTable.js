@@ -4,15 +4,35 @@ import axios from 'axios'
 import Routes from './../../Api/routes'
 import Events from './../../client.js'
 import { toast } from 'react-toastify'
+import swal from 'sweetalert2'
 
 class ConfigurableTable extends React.Component {
 
     deleteItem (item) {
-        axios.delete(Routes.base + this.props.route + '/' + item.id + '/')
+
+        //deleting warning
+        swal({
+            title: 'Are you sure?',
+            text: 'Once deleted, you will not be able to undo this action.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            confirmButtonClass: 'confirm-class',
+            cancelButtonClass: 'cancel-class',
+            closeOnConfirm: false,
+            closeOnCancel: false
+
+        }).then((result) => {
+            if (result.value){
+                axios.delete(Routes.base + this.props.route + '/' + item.id + '/')
             .then(() => {
                 Events.emit(this.props.event)
                 toast("Item deleted");
-            })
+            
+                })
+            }})
+        
+            
     }
 
     render () {
