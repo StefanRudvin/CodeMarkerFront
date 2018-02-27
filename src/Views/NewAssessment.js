@@ -320,7 +320,7 @@ class NewAssessment extends React.Component {
                             options={options}
                             onChange={this.onLanguageSelected.bind(this)}
                             value={this.state.solution_language}
-                            placeholder="Select SolutionLanguage" />
+                            placeholder="Select Solution Language" />
                         <br />
                     </div>
 
