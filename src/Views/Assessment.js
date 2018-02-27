@@ -144,7 +144,7 @@ class Assessment extends React.Component {
                     <h1>{this.state.assessment.name}</h1>
                     <br/>
                     <p>{this.state.assessment.description}</p>
-                    {this.state.assessment.submissions !== null ? (
+                    {this.state.assessment.submissions != null ? (
                         <p>This assessment has {this.state.assessment.submissions.length} submissions.</p>
                     ) : null}
 

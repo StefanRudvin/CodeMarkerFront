@@ -23,16 +23,14 @@ class ConfigurableTable extends React.Component {
             closeOnCancel: false
 
         }).then((result) => {
-            if (result.value){
+            if (result.value) {
                 axios.delete(Routes.base + this.props.route + '/' + item.id + '/')
-            .then(() => {
-                Events.emit(this.props.event)
-                toast("Item deleted");
-            
-                })
-            }})
-        
-            
+                    .then(() => {
+                        Events.emit(this.props.event)
+                        toast('Item deleted')
+                    })
+            }
+        })
     }
 
     render () {
@@ -44,19 +42,19 @@ class ConfigurableTable extends React.Component {
                         <th>#</th>
                         {this.props.column1 ? (
                             <th>{this.props.column1}</th>
-                        ):null}
+                        ) : null}
                         {this.props.column2 ? (
                             <th>{this.props.column2}</th>
-                        ):null}
+                        ) : null}
                         {this.props.column3 ? (
                             <th>{this.props.column3}</th>
-                        ):null}
+                        ) : null}
                         {this.props.showEdit ? (
                             <th>Edit</th>
-                        ):null}
+                        ) : null}
                         {this.props.showDelete ? (
-                        <th>Delete</th>
-                        ):null}
+                            <th>Delete</th>
+                        ) : null}
                     </tr>
                     </thead>
                     <tbody>
@@ -67,17 +65,20 @@ class ConfigurableTable extends React.Component {
 
                             {this.props.column2 ? (
                                 <td>{Object.values(item)[2]}</td>
-                            ):null}
+                            ) : null}
                             {this.props.column3 ? (
                                 <td>{Object.values(item)[3]}</td>
-                            ):null}
+                            ) : null}
 
                             {this.props.showEdit ? (
-                                <td><a href={this.props.editRoute + '/' + Object.values(item)[0]} className="button">Edit</a></td>
-                            ):null}
+                                <td><a href={this.props.editRoute + '/' + Object.values(item)[0]} className="button">Edit</a>
+                                </td>
+                            ) : null}
                             {this.props.showDelete ? (
-                                <td><a className="button" onClick={() => this.deleteItem(item)}>{this.props.deleteName ? (this.props.deleteName):'Delete'}</a></td>
-                            ):null}
+                                <td><a className="button"
+                                       onClick={() => this.deleteItem(item)}>{this.props.deleteName ? (this.props.deleteName) : 'Delete'}</a>
+                                </td>
+                            ) : null}
                         </tr>
                     ))}
                     </tbody>
