@@ -63,7 +63,6 @@ class User extends React.Component {
     }
 
     getUser (id) {
-        var self = this
         axios.get(Routes.users + id + '/?format=json')
             .then((response) => {
                 localStorage.user_id = response.data.id
@@ -155,7 +154,7 @@ class User extends React.Component {
             //deleting warning
         swal({
             title: 'Are you sure?',
-            text: 'Once deleted, you will not be able to undo this action.',
+            text: 'You can add the user back with the dropdown below.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',

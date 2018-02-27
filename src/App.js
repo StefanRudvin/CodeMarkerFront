@@ -29,7 +29,16 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    swal(String(error), String(error.response.data));
+    if (error.response !== undefined) {
+        if (error.response.data !== undefined) {
+            swal(String(error), String(error.response.data));
+        } else {
+            swal(String(error), String(error.response));
+        }
+    } else {
+        swal(String(error), String('Something is wrong with the backend server.'));
+    }
+
     return Promise.reject(error);
 });
 

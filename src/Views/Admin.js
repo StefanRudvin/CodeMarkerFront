@@ -88,7 +88,6 @@ class Admin extends React.Component {
                     event="onCoursesChanged"
                     route="courses"
                     title="Create new Course"
-
                 />
 
                 <h3>Users</h3>

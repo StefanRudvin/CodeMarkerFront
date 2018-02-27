@@ -1,4 +1,4 @@
-import { Line } from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2'
 import Dropdown from 'react-dropdown'
 import Events from './../client.js'
 import moment from 'moment'
@@ -83,11 +83,11 @@ class UserChart extends React.Component {
                 }
             })
             if (bestSubmission != null) {
-                let date = moment(bestSubmission.updated_at)
-
-                data.labels.push(date.format('DD/MM'))
-                dataset.data.push({x: date, y: bestSubmission.marks})
-
+                data.labels.push(assessment.name)
+                dataset.data.push({x: assessment.name, y: bestSubmission.marks})
+            } else {
+                data.labels.push(assessment.name)
+                dataset.data.push({x: assessment.name, y: 0})
             }
         })
         data.datasets.push(dataset)
@@ -112,7 +112,7 @@ class UserChart extends React.Component {
     render () {
         return (
             <div>
-                <Line data={this.state.data} options={this.state.options} width={400} height={80}/>
+                <Bar data={this.state.data} options={this.state.options} width={400} height={80}/>
                 <br/>
                 <Dropdown
                     className="dropDown"
