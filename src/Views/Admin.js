@@ -1,5 +1,6 @@
 import ConfigurableTable from './../Components/common/ConfigurableTable.js'
 import ConfigurableForm from './../Components/common/ConfigurableForm.js'
+import UserForm from './../Components/UserForm.js'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import logo from './../Assets/CodeMarkerLogo.png'
 import { Jumbotron } from 'react-bootstrap'
@@ -103,6 +104,12 @@ class Admin extends React.Component {
                     route="users"
                     event="onUsersChanged"
                 />
+
+                <UserForm route="users" event="onUsersChanged">
+
+                </UserForm>
+
+                <br/>
             </ReactCSSTransitionGroup>
         )
     }
