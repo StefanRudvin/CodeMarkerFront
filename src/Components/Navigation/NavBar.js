@@ -31,7 +31,7 @@ class NavBar extends React.Component {
                     <div className="navbar-start">
                         {Auth.loggedIn() ? (
                             <div className="navbar-item has-dropdown is-hoverable">
-                                <a className="navbar-link" href="/courses/">
+                                <a className="navbar-link" href="/">
                                     Courses
                                 </a>
                                 <div className="navbar-dropdown is-boxed">

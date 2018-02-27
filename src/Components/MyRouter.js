@@ -7,6 +7,7 @@ import NewAssessmentsView from './../Views/NewAssessment.js'
 import AssessmentView from './../Views/Assessment.js'
 import SubmissionsView from './../Views/Submission.js'
 import CourseView from './../Views/Course.js'
+import NotFoundView from '../Views/NotFound'
 import LoginView from './../Views/Login.js'
 import AdminView from './../Views/Admin.js'
 import HomeView from './../Views/Home.js'
@@ -29,7 +30,8 @@ class MyRouter extends Component {
                     <Route path='/assessments/:id' component={AssessmentView}/>
                     <Route path='/assessment/:id/new' component={NewAssessmentsView}/>
                     <Route path='/login' component={LoginView}/>
-                    <Route path='/' component={HomeView}/>
+                    <Route exact path='/' component={HomeView}/>
+                    <Route path='*' component={NotFoundView}/>
                 </Switch>
             </Router>
         )
