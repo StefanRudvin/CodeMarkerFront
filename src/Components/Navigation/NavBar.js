@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from './../../Assets/CodeMarkerLogo.png'
 import Auth from './../../Api/auth'
+import * as ReactDOM from 'react-dom'
 
 class NavBar extends React.Component {
 
@@ -13,6 +14,14 @@ class NavBar extends React.Component {
         window.location = '/login'
     }
 
+    toggleBurger () {
+        let burger = ReactDOM.findDOMNode(this.refs.burger);
+        burger.classList.toggle('is-active');
+
+        let menu = ReactDOM.findDOMNode(this.refs.menu);
+        menu.classList.toggle('is-active');
+    }
+
     render () {
         return (
             <nav className="navbar is-transparent">
@@ -22,12 +31,12 @@ class NavBar extends React.Component {
                         Codemarker
                     </a>
                 </div>
-                <div className="navbar-burger burger" data-target="navbarExampleTransparentExample">
+                <div ref="burger" className="navbar-burger burger" data-target="navbarExampleTransparentExample" onClick={this.toggleBurger.bind(this)}>
                     <span/>
                     <span/>
                     <span/>
                 </div>
-                <div id="navbarExampleTransparentExample" className="navbar-menu">
+                <div ref="menu"id="navbarExampleTransparentExample" className="navbar-menu">
                     <div className="navbar-start">
                         {Auth.loggedIn() ? (
                             <div className="navbar-item has-dropdown is-hoverable">

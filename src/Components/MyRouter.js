@@ -14,11 +14,6 @@ import HomeView from './../Views/Home.js'
 import UserView from './../Views/User.js'
 
 class MyRouter extends Component {
-    constructor (props) {
-        super(props)
-        this.state = {}
-    }
-
     render () {
         return (
             <Router>

@@ -77,10 +77,10 @@ class User extends React.Component {
             .then((json) => {
                 this.setState({user: json})
                 this.setState({username: this.state.user.username})
-                this.setState({email: this.state.user.email})
                 this.setState({is_staff: this.state.user.is_staff})
-                this.setState({courses: json.courses})
+                this.setState({email: this.state.user.email})
                 this.setState({submissions: json.submissions})
+                this.setState({courses: json.courses})
                 Events.emit('onUserRetrieved', json)
             })
     }
@@ -159,20 +159,19 @@ class User extends React.Component {
 
             //deleting warning
         swal({
-            title: 'Are you sure?',
             text: 'You can add the user back with the dropdown below.',
-            type: 'warning',
-            showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
             confirmButtonClass: 'confirm-class',
             cancelButtonClass: 'cancel-class',
+            title: 'Are you sure?',
+            showCancelButton: true,
             closeOnConfirm: false,
-            closeOnCancel: false
+            closeOnCancel: false,
+            type: 'warning',
 
         }).then((result) => {
             if (result.value){
                 
-            let self = this
                 axios.post(Routes.courses_users_delete, formData)
                 .then((response) => {
                         toast('User removed from course')
@@ -210,10 +209,10 @@ class User extends React.Component {
     render () {
         return (
             <ReactCSSTransitionGroup
-                transitionAppear={true}
                 transitionAppearTimeout={600}
                 transitionEnterTimeout={600}
                 transitionLeaveTimeout={300}
+                transitionAppear={true}
                 transitionName="SlideIn"
                 className="transition-item">
                 <Jumbotron>
@@ -265,7 +264,6 @@ class User extends React.Component {
                     <div className="button" onClick={this.updateUser.bind(this)}>
                         Update User
                     </div>
-
                 </Col>
 
                 <Col sm={8}>

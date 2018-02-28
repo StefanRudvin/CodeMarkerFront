@@ -233,7 +233,6 @@ class Assessment extends React.Component {
                                 <h2>Running your code...</h2>
                             ) : null}
                             {this.state.loading ? (
-                                // TODO: fix the allignment
                                 <ClimbingBoxLoader style="text-align: center;"
                                                    loading={this.state.loading}
                                 />
