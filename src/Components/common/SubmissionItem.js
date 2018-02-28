@@ -21,7 +21,7 @@ class SubmissionItem extends React.Component {
                             return <div>
                                 {submission.user == localStorage.user_id ? (
                                     <ListGroupItem
-                                        header={'Submission id: ' + submission.id + ' Marks: ' + submission.marks}
+                                        header={'Late: ' + submission.late + ' Marks: ' + submission.marks}
                                         href={'/submissions/' + submission.id}>
                                         Created {moment(submission.created_at).calendar()}
                                     </ListGroupItem>
@@ -31,7 +31,6 @@ class SubmissionItem extends React.Component {
                     }
                 </ListGroup>
             </div>
-
         )
     }
 }

@@ -8,6 +8,7 @@ import Routes from './../Api/routes'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 class Assessment extends React.Component {
     constructor (props) {
@@ -38,7 +39,6 @@ class Assessment extends React.Component {
                 return response.data
             })
             .then((json) => {
-                console.log(json)
                 this.setState({assessment: json})
                 this.setState({submissions: json.submissions})
                 this.setState({possibleLanguages: JSON.parse(json.languages.replace(/'/g, '"'))})
@@ -75,6 +75,13 @@ class Assessment extends React.Component {
         formData.append('assessment_id', this.state.assessment.id)
         formData.append('language', options[this.state.language])
         formData.append('submission', files[0])
+
+        if (moment(this.state.assessment.deadline).isBefore(moment())) {
+            toast('Submitting assessment late...')
+            formData.append('late', 1)
+        } else {
+            formData.append('late', 0)
+        }
 
         let self = this
         axios.post(Routes.submissions, formData, {
@@ -128,9 +135,15 @@ class Assessment extends React.Component {
         this.setState({language: choice.value})
     }
 
+    headerText(submission) {
+        if (submission.late) {
+            return 'Late ' +  submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username + ' (' + submission.marks + ')'
+        }
+        return  submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username + ' (' + submission.marks + ')'
+    }
+
     render () {
         const options = this.state.assessment.languages
-        console.log(options)
         return (
             <ReactCSSTransitionGroup
                 transitionAppear={true}
@@ -148,9 +161,11 @@ class Assessment extends React.Component {
                         <p>This assessment has {this.state.assessment.submissions.length} submissions.</p>
                     ) : null}
 
+                    <p>Deadline: {moment(this.state.assessment.deadline).calendar()}</p>
+
                 </Jumbotron>
 
-                <div class="modal">
+                <div className="modal">
                     <div className="modal-background"/>
                     <div className="modal-content">
                     </div>
@@ -192,7 +207,7 @@ class Assessment extends React.Component {
                             {
                                 this.state.submissions.map(function (submission) {
                                     return <ListGroupItem
-                                        header={submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username}
+                                        header={this.headerText(submission)}
                                         href={'/submissions/' + submission.id}>Created {moment(submission.created_at).calendar()}</ListGroupItem>
                                 }.bind(this))
                             }

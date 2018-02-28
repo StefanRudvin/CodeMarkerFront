@@ -1,13 +1,8 @@
-import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
-import { ClimbingBoxLoader } from 'react-spinners'
-import Dropzone from 'react-dropzone'
-import Dropdown from 'react-dropdown'
-import moment from 'moment'
-import React from 'react'
-import axios from 'axios'
+import { toast } from 'react-toastify'
 import Events from './../../client.js'
 import Routes from '../../Api/routes'
-import { toast } from 'react-toastify'
+import React from 'react'
+import axios from 'axios'
 
 class CourseEdit extends React.Component {
 
@@ -24,7 +19,6 @@ class CourseEdit extends React.Component {
 
     componentDidMount () {
         Events.on('onCourseRetrieved', (course) => {
-            console.log(course)
             this.setState({name: course.name})
             this.setState({description: course.description})
             this.setState({course_id: course.id})

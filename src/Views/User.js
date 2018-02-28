@@ -11,12 +11,14 @@ import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import AssessmentItem from '../Components/common/AssessmentItem'
 
 class User extends React.Component {
 
     constructor (props) {
         super(props)
         this.state = {
+            selectedCourse: '',
             allCoursesAr: [],
             is_staff: false,
             submissions: [],
@@ -47,6 +49,10 @@ class User extends React.Component {
         Events.on('onCoursesChanged', () => {
             this.getUser(this.props.match.params.id)
             this.getAllCourses()
+        })
+
+        Events.on('onCourseSelected', (course) => {
+            this.setState({selectedCourse: course})
         })
     }
 
@@ -300,8 +306,12 @@ class User extends React.Component {
 
                 <Col sm={12}>
                     <div className="content">
-                        <h2>Activity</h2>
-                        <CourseItem items={this.state.courses} user={this.state.user}/>
+                        {this.state.selectedCourse ? (
+                            <div>
+                                <h2>Activity</h2>
+                                <AssessmentItem items={this.state.selectedCourse.assessments}/>
+                            </div>
+                        ) : null}
                     </div>
                 </Col>
             </ReactCSSTransitionGroup>

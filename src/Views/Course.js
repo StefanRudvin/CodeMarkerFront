@@ -56,7 +56,7 @@ class Course extends React.Component {
                 this.getSubmissionStats()
             })
             .catch(error =>  {
-                console.log("dadsada:", error)
+                console.log(error)
             })
 
     }
@@ -118,7 +118,7 @@ class Course extends React.Component {
                 <Jumbotron>
                     <h1>{this.state.course.name}</h1>
                     <p>{this.state.course.description}</p>
-                    <p>{this.state.course.students.length} students attending</p>
+                    <p>{this.state.course.students.length} student(s) attending</p>
                     <small>Created {moment(this.state.course.created_at).calendar()}</small>
                     <br/>
                     <small>Updated {moment(this.state.course.updated_at).calendar()}</small>

@@ -9,10 +9,10 @@ class UserChart extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
+            selectedCourse: '',
+            courseNames: [],
             id: '',
             user: [],
-            courseNames: [],
-            selectedCourse: '',
             username: '',
             options: {
                 legend: {
@@ -53,7 +53,6 @@ class UserChart extends React.Component {
 
         if (this.state.selectedCourse == '') {
             course = this.state.user.courses.filter(course => course.assessments.length > 0)[0]
-            console.log(course)
             if (course == null) {
                 this.setCourseNames()
                 return
@@ -61,6 +60,8 @@ class UserChart extends React.Component {
         } else {
             course = this.state.user.courses.filter(course => course.name == this.state.selectedCourse)[0]
         }
+
+        Events.emit('onCourseSelected', course)
 
         let dataset = []
         dataset.data = []
