@@ -1,6 +1,6 @@
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { ClimbingBoxLoader } from 'react-spinners'
-import { Jumbotron, Col } from 'react-bootstrap'
+import { Jumbotron, Col, Row } from 'react-bootstrap'
 import DatePicker from 'react-date-picker';
 import { toast } from 'react-toastify'
 import Dropzone from 'react-dropzone'
@@ -9,6 +9,7 @@ import Routes from './../Api/routes'
 import React from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import NumericInput from 'react-numeric-input';
 
 class NewAssessment extends React.Component {
     constructor(props) {
@@ -36,7 +37,14 @@ class NewAssessment extends React.Component {
                 C: true,
                 CPlus: true,
                 Java: true
-            }
+            },
+            dynamicInput: false,
+            staticInput: false,
+            numOfStatic: 0,
+            staticInputs: [{}],
+            staticOutputs: [{}],
+            staticInputsUploaded: [],
+            staticOutputsUploaded: [],
         }
 
         this.handleAdditionalHelpChange = this.handleAdditionalHelpChange.bind(this)
@@ -94,6 +102,16 @@ class NewAssessment extends React.Component {
 
         formData.append('languages', JSON.stringify(choices))
         formData.append('course_id', this.state.course_id)
+
+
+        formData.append('dynamicInput', this.state.dynamicInput)
+        formData.append('staticInput', this.state.staticInput)
+        formData.append('numOfStatic', this.state.numOfStatic)
+
+        for (var i = 0; i < this.state.numOfStatic; i++) {
+            formData.append('inputFile' + i, this.state.staticInputs[i])
+            formData.append('outputFile' + i, this.state.staticOutputs[i])
+        }
 
         let self = this
 
@@ -175,8 +193,62 @@ class NewAssessment extends React.Component {
         this.setState({ languages: langCopy })
     }
 
+    toggleStaticInput() {
+        this.setState({ staticInput: !this.state.staticInput })
+    }
+
+    toggleDynamicInput() {
+        if (!this.state.dynamicInput) {
+            this.setState({ input_generator: {} })
+            this.setState({ sample_code: {} })
+            this.setState({ inputGeneratorUploaded: false })
+            this.setState({ sampleCodeUploaded: false })
+        }
+        this.setState({ dynamicInput: !this.state.dynamicInput })
+
+    }
+
     onLanguageSelected(choice) {
         this.setState({ solution_language: choice.value })
+    }
+
+    changeStaticQuantity(quantity) {
+        this.setState({ numOfStatic: quantity })
+
+        let newFiles = []
+        let newStates = []
+        for (var i = 0; i < quantity; i++) {
+            newFiles.push({})
+            newStates.push(false);
+        }
+        this.setState({ staticInputs: newFiles })
+        this.setState({ staticInputsUploaded: newStates })
+
+        newFiles = []
+        newStates = []
+        for (var i = 0; i < quantity; i++) {
+            newFiles.push({})
+            newStates.push(false);
+        }
+        this.setState({ staticOutputs: newFiles })
+        this.setState({ staticOutputsUploaded: newStates })
+    }
+
+    onStaticInputDrop(i, file) {
+        let filesAray = this.state.staticInputs
+        filesAray[i] = file[0]
+        let uploaded = this.state.staticInputsUploaded
+        uploaded[i] = true;
+        this.setState({ staticInputs: filesAray })
+        this.setState({ staticInputsUploaded: uploaded })
+    }
+    onStaticOutputDrop(i, file) {
+        let filesAray = this.state.staticOutputs
+        filesAray[i] = file[0]
+        let uploaded = this.state.staticOutputsUploaded
+        uploaded[i] = true;
+        this.setState({ staticOutputs: filesAray })
+        this.setState({ staticOutputsUploaded: uploaded })
     }
 
     render() {
@@ -337,43 +409,116 @@ class NewAssessment extends React.Component {
                             </tbody>
                         </table>
                     </Col>
-                    <Col sm={8}>
-                        <div>
-                            <Dropdown
-                                className="dropDown"
-                                options={options}
-                                onChange={this.onLanguageSelected.bind(this)}
-                                value={this.state.solution_language}
-                                placeholder="Select Solution Language" />
-                            <br />
-                        </div>
+                    <Col sm={5}>
+                        <table className="table">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="Generator"
+                                            type="checkbox"
+                                            checked={this.state.dynamicInput}
+                                            onChange={this.toggleDynamicInput.bind(this)} />
+                                    </th>
+                                    <th>
+                                        Include dynamically generated input
+                                    </th>
+
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input
+                                            name="Static"
+                                            type="checkbox"
+                                            checked={this.state.staticInput}
+                                            onChange={this.toggleStaticInput.bind(this)} />
+                                    </th>
+                                    <th>
+                                        Include static input. Select quantity:
+                                    </th>
+                                    <th>
+                                        <NumericInput
+                                            min={0}
+                                            max={100}
+                                            value={0}
+                                            style={{ input: { width: 50 } }}
+                                            onChange={this.changeStaticQuantity.bind(this)}
+                                            value={this.state.numOfStatic} />
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
                     </Col>
-                    <Col sm={4}>
-                        <div className="content">
-                            <div className="dropzone">
-                                <Dropzone onDrop={this.onSampleCodeDrop.bind(this)}>
-                                    {this.state.sampleCodeUploaded ? (
-                                        <h2>{this.state.sample_code.name}</h2>
-                                    ) : <h2>Upload Sample Code</h2>}
-                                </Dropzone>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col sm={4}>
-                        <div className="content">
-                            <div className="dropzone">
-                                <Dropzone onDrop={this.onInputGeneratorDrop.bind(this)}>
-                                    {this.state.inputGeneratorUploaded ? (
-                                        <h2>{this.state.input_generator.name}</h2>
-                                    ) : <h2>Upload input generator file</h2>}
-                                </Dropzone>
-                            </div>
-                        </div>
-                    </Col>
-                    <br />
-                    <div className="button" onClick={this.handleSubmit}>
-                        Submit
+                    <Col>
+                        <div className="button" onClick={this.handleSubmit}>
+                            Submit
                     </div>
+                    </Col>
+                    {this.state.dynamicInput && <div>
+                        <Col sm={8}>
+                            <div>
+                                <Dropdown
+                                    className="dropDown"
+                                    options={options}
+                                    onChange={this.onLanguageSelected.bind(this)}
+                                    value={this.state.solution_language}
+                                    placeholder="Select Solution Language" />
+                                <br />
+                            </div>
+                        </Col>
+                        <Col sm={4}>
+                            <div className="content">
+                                <div className="dropzone">
+                                    <Dropzone onDrop={this.onSampleCodeDrop.bind(this)}>
+                                        {this.state.sampleCodeUploaded ? (
+                                            <h2>{this.state.sample_code.name}</h2>
+                                        ) : <h2>Upload Sample Code</h2>}
+                                    </Dropzone>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col sm={4}>
+                            <div className="content">
+                                <div className="dropzone">
+                                    <Dropzone onDrop={this.onInputGeneratorDrop.bind(this)}>
+                                        {this.state.inputGeneratorUploaded ? (
+                                            <h2>{this.state.input_generator.name}</h2>
+                                        ) : <h2>Upload input generator file</h2>}
+                                    </Dropzone>
+                                </div>
+                            </div>
+                        </Col></div>}
+                    <br />
+                    <br />
+
+                    {this.state.staticInput && this.state.numOfStatic != 0 &&
+                        [...Array(this.state.numOfStatic)].map((x, i) =>
+                            <div>
+                                <Col sm={4}>
+                                    <div className="content">
+                                        <div className="dropzone">
+                                            <Dropzone onDrop={this.onStaticInputDrop.bind(this, i)}>
+                                                {this.state.staticInputsUploaded[i] ? (
+                                                    <h2>{this.state.staticInputs[i].name}</h2>
+                                                ) : <h2>Upload input file number {i + 1}</h2>}
+                                            </Dropzone>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col sm={4}>
+                                    <div className="content">
+                                        <div className="dropzone">
+                                            <Dropzone onDrop={this.onStaticOutputDrop.bind(this, i)}>
+                                                {this.state.staticOutputsUploaded[i] ? (
+                                                    <h2>{this.state.staticOutputs[i].name}</h2>
+                                                ) : <h2>Upload output file number {i + 1}</h2>}
+                                            </Dropzone>
+                                        </div>
+                                    </div>
+                                </Col>
+                            </div>)}
+
+
                 </div>
 
                 <div className={'modal ' + (this.state.modal ? 'is-active' : '')}>
