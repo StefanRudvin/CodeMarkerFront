@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Auth from './../Api/auth.js'
+import Auth from './../Services/Auth'
 
 import LoginView from './../Views/Login.js'
 import MyRouter from './MyRouter'
@@ -12,12 +12,12 @@ class Authenticator extends Component {
         }
     }
 
-    requireAuth () {
+    static requireAuth () {
         return !Auth.loggedIn()
     }
 
     render () {
-        if(this.requireAuth()) {
+        if(Authenticator.requireAuth()) {
             return (<LoginView/>)
         } else {
             return (

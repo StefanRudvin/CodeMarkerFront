@@ -1,6 +1,6 @@
 import { Bar } from 'react-chartjs-2'
 import Dropdown from 'react-dropdown'
-import Events from './../client.js'
+import Events from '../Services/EventEmitter.js'
 import moment from 'moment'
 import React from 'react'
 

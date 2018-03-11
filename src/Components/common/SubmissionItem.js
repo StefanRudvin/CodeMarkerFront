@@ -3,13 +3,15 @@ import { toast } from 'react-toastify'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
+import UserActions from '../../Services/User/UserActions'
 
 class SubmissionItem extends React.Component {
 
     constructor (props) {
         super(props)
-        this.state = {}
-
+        this.state = {
+            user_id: UserActions.getUser().id
+        }
     }
 
     render () {
@@ -19,7 +21,7 @@ class SubmissionItem extends React.Component {
                     {
                         this.props.items.map(function (submission) {
                             return <div>
-                                {submission.user == localStorage.user_id ? (
+                                {submission.user == this.state.user_id ? (
                                     <ListGroupItem
                                         header={'Late: ' + submission.late + ' Marks: ' + submission.marks}
                                         href={'/submissions/' + submission.id}>

@@ -5,7 +5,7 @@ import DatePicker from 'react-date-picker';
 import { toast } from 'react-toastify'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
-import Routes from './../Api/routes'
+import Routes from './../Services/Routes'
 import React from 'react'
 import axios from 'axios'
 import moment from 'moment'

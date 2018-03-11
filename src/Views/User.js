@@ -5,8 +5,8 @@ import UserChart from './../Components/UserChart'
 import { Link } from 'react-router-dom'
 import Dropdown from 'react-dropdown'
 import { toast } from 'react-toastify'
-import Routes from './../Api/routes'
-import Events from './../client.js'
+import Routes from './../Services/Routes'
+import Events from '../Services/EventEmitter.js'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
@@ -71,7 +71,6 @@ class User extends React.Component {
     getUser (id) {
         axios.get(Routes.users + id + '/?format=json')
             .then((response) => {
-                localStorage.user_id = response.data.id
                 return response.data
             })
             .then((json) => {
@@ -121,10 +120,6 @@ class User extends React.Component {
                     Events.emit('onCoursesChanged')
                 }
             )
-    }
-
-    componentWillUnmount () {
-        delete localStorage.user_id
     }
 
     updateUser () {

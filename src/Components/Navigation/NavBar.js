@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from './../../Assets/CodeMarkerLogo.png'
-import Auth from './../../Api/auth'
+import Auth from './../../Services/Auth'
 import * as ReactDOM from 'react-dom'
 
 class NavBar extends React.Component {

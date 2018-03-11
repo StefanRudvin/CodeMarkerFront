@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
-import Routes from './../Api/routes'
-import Events from './../client.js'
+import Routes from './../Services/Routes'
+import Events from '../Services/EventEmitter.js'
 import { toast } from 'react-toastify'
 
 class UserForm extends React.Component {

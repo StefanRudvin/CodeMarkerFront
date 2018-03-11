@@ -1,25 +1,18 @@
 // Packages
-import { ToastContainer, toast } from 'react-toastify'
 import React, { Component } from 'react'
 import swal from 'sweetalert2';
 import axios from 'axios'
 
-// Components
-import NavBar from './Components/Navigation/NavBar.js'
-import Authenticator from './Components/Authenticator'
-import Routes from './Api/routes'
-import Auth from './Api/auth'
-
-// JS
-import Events from './client'
-
 // CSS
 import 'bulma/css/bulma.css'
 import './Css/App.css'
+import Container from './Services/Container'
+import UserActions from './Services/User/UserActions'
 
+// TODO Refactor the following out
 // Set token to all requests
 axios.interceptors.request.use(function (config) {
-    config.headers.authorization = 'Token ' + Auth.token()
+    config.headers.authorization = 'Token ' + UserActions.getUser().token
     return config
 }, function (error) {
     return Promise.reject(error);
@@ -44,40 +37,10 @@ axios.interceptors.response.use(function (response) {
 
 class App extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            courses: [],
-        }
-    }
-
-    componentDidMount() {
-        if (Auth.loggedIn()) {
-            this.getCourses()
-        }
-        Events.on('onCoursesChanged', () => {
-            this.getCourses()
-        });
-    }
-
-    getCourses() {
-        axios.get(Routes.courses_json)
-            .then((response) => {
-                return response.data
-            })
-            .then((json) => {
-                this.setState({ courses: json })
-            })
-    }
-
     render() {
         return (
             <div className="App">
-                <ToastContainer className="toast" autoClose={3000} hideProgressBar={true} position={toast.POSITION.BOTTOM_RIGHT} />
-                <NavBar courses={this.state.courses} />
-                <div className="container">
-                    <Authenticator />
-                </div>
+                <Container />
             </div>
         )
     }

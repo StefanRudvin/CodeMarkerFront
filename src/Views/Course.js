@@ -2,9 +2,9 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Jumbotron, ListGroup, ListGroupItem} from 'react-bootstrap'
 import CourseEdit from '../Components/Course/CourseEdit'
 import Col from 'react-bootstrap/es/Col'
-import Routes from './../Api/routes'
-import Events from './../client.js'
-import Auth from './../Api/auth'
+import Routes from './../Services/Routes'
+import Events from '../Services/EventEmitter.js'
+import Auth from './../Services/Auth'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
@@ -166,7 +166,7 @@ class Course extends React.Component {
                 <Col sm={12}>
                     <div className="content">
                         <h2>Overview</h2>
-                        <p>This course has {this.state.course.assessments.length} assessments and  {this.state.submissionCount} submissions. {this.state.submissionPassCount} submissions passed with an average of {this.state.submissionAverageMark.toFixed(2)} marks and {this.state.submissionFailCount} failed. </p>
+                        <p>This course has {this.state.course.assessments.length} assessments and  {this.state.submissionCount} total submissions. {this.state.submissionPassCount} submissions passed with an average of {this.state.submissionAverageMark.toFixed(2)} marks and {this.state.submissionFailCount} failed. </p>
                         <br/>
                     </div>
                 </Col>
@@ -177,7 +177,7 @@ class Course extends React.Component {
                         <ListGroup>
                             {
                                 this.state.course.assessments.map(function (assessment) {
-                                    return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>{assessment.submissions.length} submissions, Created {moment(assessment.created_at).calendar()}</ListGroupItem>
+                                    return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>{assessment.submissions.length} total submissions, Created {moment(assessment.created_at).calendar()}</ListGroupItem>
                                 })
                             }
                         </ListGroup>

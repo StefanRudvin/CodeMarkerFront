@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
-import Events from './../../client.js'
-import Routes from '../../Api/routes'
+import Events from '../../Services/EventEmitter.js'
+import Routes from '../../Services/Routes'
 import React from 'react'
 import axios from 'axios'
 

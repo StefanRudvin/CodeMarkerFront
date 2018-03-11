@@ -4,8 +4,8 @@ import UserForm from './../Components/UserForm.js'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import logo from './../Assets/CodeMarkerLogo.png'
 import { Jumbotron } from 'react-bootstrap'
-import Routes from './../Api/routes'
-import Events from './../client.js'
+import Routes from './../Services/Routes'
+import Events from '../Services/EventEmitter.js'
 import React from 'react'
 import axios from 'axios'
 

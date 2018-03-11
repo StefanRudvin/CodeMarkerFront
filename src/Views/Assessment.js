@@ -4,11 +4,13 @@ import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
-import Routes from './../Api/routes'
+import Routes from './../Services/Routes'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import Auth from '../Services/Auth'
+import UserActions from '../Services/User/UserActions'
 
 class Assessment extends React.Component {
     constructor (props) {
@@ -21,7 +23,6 @@ class Assessment extends React.Component {
             submission: {},
             modal: false,
             language: '',
-            users: [],
             possibleLanguages: []
         }
 
@@ -29,7 +30,15 @@ class Assessment extends React.Component {
             let id = location.pathname.slice(9)
             this.getAssessment(id)
         })
-        this.getUsers()
+    }
+
+    filterSubmissions (submissions) {
+        console.log(submissions)
+        submissions = submissions.filter( function (submission) {
+            return submission.user === UserActions.getUser().id
+        })
+        console.log(submissions)
+        this.setState({submissions: submissions})
     }
 
     getAssessment (id) {
@@ -40,7 +49,7 @@ class Assessment extends React.Component {
             })
             .then((json) => {
                 this.setState({assessment: json})
-                this.setState({submissions: json.submissions})
+                this.filterSubmissions(json.submissions)
                 this.setState({possibleLanguages: JSON.parse(json.languages.replace(/'/g, '"'))})
                 if (this.state.possibleLanguages.includes('CPlus')) {
                     let index = this.state.possibleLanguages.indexOf('CPlus')
@@ -101,17 +110,6 @@ class Assessment extends React.Component {
             })
     }
 
-    getUsers () {
-        let url = Routes.users + '?format=json'
-        axios.get(url)
-            .then((response) => {
-                return response.data
-            })
-            .then((json) => {
-                this.setState({users: json})
-            })
-    }
-
     processSubmission (id) {
         let url = Routes.submissions + id + '/process/'
         axios.get(url)
@@ -135,13 +133,6 @@ class Assessment extends React.Component {
         this.setState({language: choice.value})
     }
 
-    headerText(submission) {
-        if (submission.late) {
-            return 'Late ' +  submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username + ' (' + submission.marks + ')'
-        }
-        return  submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username + ' (' + submission.marks + ')'
-    }
-
     render () {
         const options = this.state.assessment.languages
         return (
@@ -157,9 +148,19 @@ class Assessment extends React.Component {
                     <h1>{this.state.assessment.name}</h1>
                     <br/>
                     <p>{this.state.assessment.description}</p>
-                    {this.state.assessment.submissions != null ? (
-                        <p>This assessment has {this.state.assessment.submissions.length} submissions.</p>
-                    ) : null}
+                    {Auth.isStaff() ? (
+                        <div>
+                            {this.state.submissions != null ? (
+                                <p>This assessment has {this.state.submissions.length} submissions.</p>
+                            ) : null}
+                        </div>
+                    ) : <div>
+                        {this.state.submissions != null ? (
+                            <p>You have {this.state.submissions.length} submissions to this assessment.</p>
+                        ) : null}
+                    </div>}
+
+
 
                     <p>Deadline: {moment(this.state.assessment.deadline).calendar()}</p>
 
@@ -207,7 +208,7 @@ class Assessment extends React.Component {
                             {
                                 this.state.submissions.map(function (submission) {
                                     return <ListGroupItem
-                                        header={this.headerText(submission)}
+                                        header={submission.result + ' ' + submission.marks}
                                         href={'/submissions/' + submission.id}>Created {moment(submission.created_at).calendar()}</ListGroupItem>
                                 }.bind(this))
                             }

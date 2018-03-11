@@ -1,6 +1,7 @@
-import axios from 'axios'
 import swal from 'sweetalert2'
-import Routes from './routes'
+import Routes from './Routes'
+import axios from 'axios'
+import UserActions from './User/UserActions'
 
 export default {
     /*
@@ -11,50 +12,45 @@ export default {
 
      */
     login: function (username, pass, loggedIn) {
-        if (localStorage.token) {
-            if (loggedIn) loggedIn(true)
-            return
-        }
+
         this.getToken(username, pass, (res) => {
             if (res.authenticated) {
-                localStorage.token = res.token
                 if (loggedIn) loggedIn(true)
             } else {
                 if (loggedIn) loggedIn(false)
-                console.log("No credentials")
+                console.log('No credentials')
             }
         })
     },
 
-    token() {
-        return localStorage.token
+    token () {
+        return UserActions.getUser().token
     },
 
-    logout() {
-        delete localStorage.token
-        delete localStorage.superuser
-        delete localStorage.username
-        delete localStorage.staff
-        delete localStorage.user_id
+    logout (id) {
+        UserActions.logout(id)
     },
 
-    getUserName() {
-        return localStorage.username
+    getUserName () {
+        return UserActions.getUser().username
     },
 
-    loggedIn() {
-        return !!localStorage.token
+    loggedIn () {
+        console.log(UserActions.getUser())
+
+        return UserActions.getUser() !== false;
+
     },
 
-    isAdmin() {
-        return localStorage.superuser === "true";
+    isAdmin () {
+        return UserActions.getUser().superuser
     },
 
-    isStaff() {
-        return localStorage.staff === "true";
+    isStaff () {
+        return UserActions.getUser().staff
     },
 
-    getToken(username, password, cb) {
+    getToken (username, password, callback) {
 
         let formData = new FormData()
 
@@ -66,17 +62,23 @@ export default {
                 return response.data
             })
             .then((response) => {
-                cb({
+                callback({
                     authenticated: true,
                     token: response.token
                 })
-                localStorage.username = response.username
-                localStorage.superuser = response.superuser
-                localStorage.staff = response.staff
-                localStorage.user_id = response.user_id
+
+                UserActions.login(
+                    response.id,
+                    response.token,
+                    response.username,
+                    response.superuser,
+                    response.staff
+                )
+
+                console.log(UserActions.getUser())
             })
             .catch(error => {
-                console.log("error: ", error)
+                console.log('error: ', error)
                 swal({
                     type: 'error',
                     title: 'Wrong credentials',

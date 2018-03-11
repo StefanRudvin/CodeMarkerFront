@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
-
-import Auth from './../Api/auth.js'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import NewAssessmentsView from './../Views/NewAssessment.js'
 import AssessmentView from './../Views/Assessment.js'

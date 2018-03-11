@@ -4,9 +4,10 @@ import logo from './../Assets/CodeMarkerLogo.png'
 import TextField from 'material-ui/TextField'
 import { Jumbotron } from 'react-bootstrap'
 import React, { Component } from 'react'
-import Auth from './../Api/auth'
+import Auth from './../Services/Auth'
 import {red500} from 'material-ui/styles/colors';
 import { toast } from 'react-toastify'
+import Redirect from 'react-router-dom/es/Redirect'
 
 const styles = {
     underlineStyle: {
@@ -41,7 +42,6 @@ class Login extends Component {
         event.preventDefault();
 
         this.login();
-
     }
     
     render () {
