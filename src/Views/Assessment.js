@@ -4,6 +4,7 @@ import { ClimbingBoxLoader } from 'react-spinners'
 import Report from '../Components/Report'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
+import ReactMarkdown from 'react-markdown'
 import Routes from './../Api/routes'
 import moment from 'moment'
 import React from 'react'
@@ -12,7 +13,7 @@ import { toast } from 'react-toastify'
 import Auth from '../Api/auth'
 
 class Assessment extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             uploading: false,
@@ -57,7 +58,7 @@ class Assessment extends React.Component {
         this.setState({submissions: submissions})
     }
 
-    getAssessment (id) {
+    getAssessment(id) {
         let url = Routes.assessments + id + '/?format=json'
         axios.get(url)
             .then((response) => {
@@ -67,6 +68,7 @@ class Assessment extends React.Component {
                 this.setState({assessment: json})
                 this.filterSubmissions(json.submissions)
                 this.setState({possibleLanguages: JSON.parse(json.languages.replace(/'/g, '"'))})
+
                 if (this.state.possibleLanguages.includes('CPlus')) {
                     let index = this.state.possibleLanguages.indexOf('CPlus')
                     this.state.possibleLanguages.splice(index, 1, 'C++')
@@ -74,18 +76,18 @@ class Assessment extends React.Component {
             })
     }
 
-    toggleModal () {
+    toggleModal() {
         if (this.state.modal) {
-            this.setState({modal: false})
+            this.setState({ modal: false })
         } else {
-            this.setState({modal: true})
+            this.setState({ modal: true })
         }
     }
 
-    onDrop (files) {
-        this.setState({modal: true})
-        this.setState({loading: true})
-        this.setState({uploading: true})
+    onDrop(files) {
+        this.setState({ modal: true })
+        this.setState({ loading: true })
+        this.setState({ uploading: true })
 
         const options = {
             'Python2': 'python2',
@@ -115,14 +117,14 @@ class Assessment extends React.Component {
             }
         })
             .then((response) => {
-                    this.setState({uploading: false})
-                    this.processSubmission(parseInt(response.data), 1)
-                }
+                this.setState({ uploading: false })
+                this.processSubmission(parseInt(response.data), 1)
+            }
             )
             .catch(() => {
-                self.setState({modal: false})
-                self.setState({loading: false})
-                self.setState({uploading: false})
+                self.setState({ modal: false })
+                self.setState({ loading: false })
+                self.setState({ uploading: false })
             })
     }
 
@@ -138,18 +140,18 @@ class Assessment extends React.Component {
             })
     }
 
-    processSubmission (id) {
+    processSubmission(id) {
         let url = Routes.submissions + id + '/process/'
         axios.get(url)
             .then((json) => {
-                this.setState({submission: json.data.fields})
-                this.setState({loading: false})
+                this.setState({ submission: json.data.fields })
+                this.setState({ loading: false })
                 this.getAssessment(this.props.match.params.id)
             })
             .catch(() => {
-                this.setState({modal: false})
-                this.setState({loading: false})
-                this.setState({uploading: false})
+                this.setState({ modal: false })
+                this.setState({ loading: false })
+                this.setState({ uploading: false })
             })
     }
 
@@ -157,8 +159,8 @@ class Assessment extends React.Component {
         this.getUserAndUsersAndAssessment()
     }
 
-    onLanguageSelected (choice) {
-        this.setState({language: choice.value})
+    onLanguageSelected(choice) {
+        this.setState({ language: choice.value })
     }
 
     headerText (submission) {
@@ -168,7 +170,7 @@ class Assessment extends React.Component {
         return submission.result + ' by ' + this.state.users.filter(user => user.id == submission.user)[0].username + ' (' + submission.marks + ')'
     }
 
-    render () {
+    render() {
         const options = this.state.assessment.languages
         return (
             <ReactCSSTransitionGroup
@@ -201,16 +203,16 @@ class Assessment extends React.Component {
                 </Jumbotron>
 
                 <div className="modal">
-                    <div className="modal-background"/>
+                    <div className="modal-background" />
                     <div className="modal-content">
                     </div>
-                    <button className="modal-close is-large" aria-label="close"/>
+                    <button className="modal-close is-large" aria-label="close" />
                 </div>
 
                 <Col sm={6}>
-                    <div className="content">
+                    <div className="content description">
                         <h3>Additional Help</h3>
-                        <p>{this.state.assessment.additional_help}</p>
+                        <p> <ReactMarkdown source={this.state.assessment.additional_help} /></p>
                         <p>Created {moment(this.state.assessment.created_at).calendar()}</p>
                         <p>Updated {moment(this.state.assessment.updated_at).calendar()}</p>
                         <h2>Upload File</h2>
@@ -219,15 +221,15 @@ class Assessment extends React.Component {
                             options={this.state.possibleLanguages}
                             onChange={this.onLanguageSelected.bind(this)}
                             value={this.state.language}
-                            placeholder="Select Language"/>
-                        <br/>
+                            placeholder="Select Language" />
+                        <br />
 
                         <div className="dropzone">
                             <Dropzone onDrop={this.onDrop.bind(this)}>
                                 <h2>Click or drop file here</h2>
                             </Dropzone>
                         </div>
-                        <br/>
+                        <br />
 
                     </div>
                 </Col>
@@ -251,13 +253,13 @@ class Assessment extends React.Component {
                 </Col>
 
                 <div className={'modal ' + (this.state.modal ? 'is-active' : '')}>
-                    <div className="modal-background"/>
+                    <div className="modal-background" />
                     <div className="modal-card">
 
                         <header className="modal-card-head">
                             <p className="modal-card-title">Report</p>
                             <button className="delete" onClick={this.toggleModal.bind(this)}
-                                    aria-label="close"/>
+                                aria-label="close" />
                         </header>
 
                         <section className="modal-card-body">
@@ -269,9 +271,9 @@ class Assessment extends React.Component {
                             ) : null}
                             {this.state.loading ? (
                                 <ClimbingBoxLoader style="text-align: center;"
-                                                   loading={this.state.loading}
+                                    loading={this.state.loading}
                                 />
-                            ) : <Report submission={this.state.submission}/>}
+                            ) : <Report submission={this.state.submission} />}
                         </section>
                         <footer className="modal-card-foot">
                             <button className="button is-success" onClick={this.toggleModal.bind(this)}>Close</button>

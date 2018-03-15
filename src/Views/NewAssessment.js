@@ -297,7 +297,7 @@ class NewAssessment extends React.Component {
                                 className="textarea"
                                 onChange={this.handleDescriptionChange}
                                 value={this.state.description}
-                                placeholder="Assessment Description">
+                                placeholder="Assessment Description (Markdown Supported)">
                             </textarea>
                         </div>
                     </div>
@@ -308,7 +308,7 @@ class NewAssessment extends React.Component {
                                 className="textarea"
                                 onChange={this.handleAdditionalHelpChange}
                                 value={this.state.additional_help}
-                                placeholder="Assessment Additional Information">
+                                placeholder="Assessment Additional Information (Markdown Supported)">
                             </textarea>
                         </div>
                     </div>
