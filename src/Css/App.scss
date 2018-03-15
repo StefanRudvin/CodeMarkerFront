@@ -7,6 +7,13 @@
     height: 80px;
 }
 
+.userNameLink{
+    color: #4a4a4a;
+    :hover {
+        color: #3273dc;
+    }
+}
+
 .App-header {
     height: 150px;
     padding: 20px;
@@ -17,6 +24,9 @@
     background-color: crimson !important;
 }
 
+a:hover {
+    color: crimson !important;
+}
 a {
     color: crimson;
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import swal from 'sweetalert2'
 import Routes from './routes'
+import Events from './../client.js'
 
 export default {
     /*
@@ -21,40 +22,46 @@ export default {
                 if (loggedIn) loggedIn(true)
             } else {
                 if (loggedIn) loggedIn(false)
-                console.log("No credentials")
+                console.log('No credentials')
             }
         })
     },
 
-    token() {
+    token () {
         return localStorage.token
     },
 
-    logout() {
+    logout () {
         delete localStorage.token
-        delete localStorage.superuser
-        delete localStorage.username
-        delete localStorage.staff
-        delete localStorage.user_id
     },
 
-    getUserName() {
-        return localStorage.username
+    getUser() {
+        axios.post(Routes.auth.get_user)
+            .then((response) => {
+                return response.data
+            })
+            .then((response) => {
+
+                let user = {
+                    username: response.username,
+                    superuser: response.superuser,
+                    staff: response.staff,
+                    user_id: response.user_id
+                }
+
+                Events.emit('onUserLogin', user)
+
+            })
+            .catch(error => {
+                console.log('error: ', error)
+            })
     },
 
-    loggedIn() {
+    loggedIn () {
         return !!localStorage.token
     },
 
-    isAdmin() {
-        return localStorage.superuser === "true";
-    },
-
-    isStaff() {
-        return localStorage.staff === "true";
-    },
-
-    getToken(username, password, cb) {
+    getToken (username, password, cb) {
 
         let formData = new FormData()
 
@@ -70,13 +77,9 @@ export default {
                     authenticated: true,
                     token: response.token
                 })
-                localStorage.username = response.username
-                localStorage.superuser = response.superuser
-                localStorage.staff = response.staff
-                localStorage.user_id = response.user_id
             })
             .catch(error => {
-                console.log("error: ", error)
+                console.log('error: ', error)
                 swal({
                     type: 'error',
                     title: 'Wrong credentials',

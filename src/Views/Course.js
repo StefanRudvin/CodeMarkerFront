@@ -1,5 +1,5 @@
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Jumbotron, ListGroup, ListGroupItem} from 'react-bootstrap'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { Jumbotron, ListGroup, ListGroupItem } from 'react-bootstrap'
 import CourseEdit from '../Components/Course/CourseEdit'
 import Col from 'react-bootstrap/es/Col'
 import Routes from './../Api/routes'
@@ -26,12 +26,17 @@ class Course extends React.Component {
             submissionCount: 0,
             submissionFailCount: 0,
             submissionPassCount: 0,
-            submissionAverageMark: 0
+            submissionAverageMark: 0,
+            user: {
+                is_superuser: false,
+                is_staff: false,
+                username: ''
+            }
         }
     }
 
     componentDidMount () {
-        this.getCourse()
+        this.getUserAndCourse()
 
         Events.on('onCourseEditComplete', () => {
             this.setState({loading: false})
@@ -46,22 +51,47 @@ class Course extends React.Component {
 
     getCourse () {
         let url = Routes.courses + this.props.match.params.id + '/?format=json'
+        let self = this
         axios.get(url)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
+                let assessments = json.assessments
+
+                if (!self.state.user.is_staff && !self.state.user.is_superuser) {
+                    assessments.forEach(function (assessment) {
+                        assessment.submissions = assessment.submissions.filter(function(submission) {
+                            return submission.user == self.state.user.id
+                        })
+                    })
+                }
+                json.assessments = assessments
+
                 this.setState({course: json})
                 Events.emit('onCourseRetrieved', json)
                 this.getSubmissionStats()
             })
-            .catch(error =>  {
+            .catch(error => {
                 console.log(error)
             })
-
     }
 
-    getSubmissionStats() {
+    getUserAndCourse() {
+        axios.post(Routes.auth.get_user)
+            .then((response) => {
+                return response.data
+            })
+            .then((response) => {
+                this.setState({user: response})
+                this.getCourse()
+            })
+            .catch(error => {
+                console.log('error: ', error)
+            })
+    }
+
+    getSubmissionStats () {
         let submissionCount = 0
         let submissionFailCount = 0
         let submissionPassCount = 0
@@ -71,13 +101,13 @@ class Course extends React.Component {
             this.state.course.assessments.forEach(assessment => {
                 if (assessment.submissions == null) { return }
                 assessment.submissions.forEach(submission => {
-                    if (submission.result == "pass") {
+                    if (submission.result == 'pass') {
                         totalScore += submission.marks
-                        submissionPassCount ++
+                        submissionPassCount++
                     } else {
-                        submissionFailCount ++
+                        submissionFailCount++
                     }
-                    submissionCount ++
+                    submissionCount++
                 })
             })
         }
@@ -87,19 +117,19 @@ class Course extends React.Component {
         this.setState({submissionCount: submissionCount})
         this.setState({submissionFailCount: submissionFailCount})
         this.setState({submissionPassCount: submissionPassCount})
-        this.setState({submissionAverageMark: totalScore/submissionPassCount})
+        this.setState({submissionAverageMark: totalScore / submissionPassCount})
     }
 
-    toggleModal() {
+    toggleModal () {
         if (this.state.modal) {
             this.setState({modal: false})
-            this.setState({uploading: false});
+            this.setState({uploading: false})
         } else {
             this.setState({modal: true})
         }
     }
 
-    editModal() {
+    editModal () {
         this.setState({modal: true})
         this.setState({loading: true})
         this.setState({uploading: true})
@@ -124,12 +154,12 @@ class Course extends React.Component {
                     <small>Updated {moment(this.state.course.updated_at).calendar()}</small>
                     <br/>
                     <br/>
-                    {Auth.isStaff() ? (
+                    {this.state.user.is_staff || this.state.user.is_superuser ? (
                         <a className="bd-tw-button button" href={'/assessment/' + this.state.course.id + '/new'}>
                             New Assessment
                         </a>
                     ) : null}
-                    {Auth.isStaff() ? (
+                    {this.state.user.is_staff || this.state.user.is_superuser ? (
                         <div className="bd-tw-button button" onClick={this.editModal.bind(this)}>
                             Edit Course
                         </div>
@@ -166,7 +196,10 @@ class Course extends React.Component {
                 <Col sm={12}>
                     <div className="content">
                         <h2>Overview</h2>
-                        <p>This course has {this.state.course.assessments.length} assessments and  {this.state.submissionCount} submissions. {this.state.submissionPassCount} submissions passed with an average of {this.state.submissionAverageMark.toFixed(2)} marks and {this.state.submissionFailCount} failed. </p>
+                        <p>This course has {this.state.course.assessments.length} assessments
+                            and {this.state.submissionCount} submissions. {this.state.submissionPassCount} submissions
+                            passed with an average of {this.state.submissionAverageMark.toFixed(2)} marks
+                            and {this.state.submissionFailCount} failed. </p>
                         <br/>
                     </div>
                 </Col>
@@ -177,7 +210,10 @@ class Course extends React.Component {
                         <ListGroup>
                             {
                                 this.state.course.assessments.map(function (assessment) {
-                                    return <ListGroupItem header={assessment.name} href={'/assessments/' + assessment.id}>{assessment.submissions.length} submissions, Created {moment(assessment.created_at).calendar()}</ListGroupItem>
+                                    return <ListGroupItem
+                                        header={assessment.name}
+                                        href={'/assessments/' + assessment.id}>{assessment.submissions.length} submissions, Created {moment(assessment.created_at).calendar()}
+                                    </ListGroupItem>
                                 })
                             }
                         </ListGroup>

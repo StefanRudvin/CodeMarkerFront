@@ -1,7 +1,7 @@
 // Packages
 import { ToastContainer, toast } from 'react-toastify'
 import React, { Component } from 'react'
-import swal from 'sweetalert2';
+import swal from 'sweetalert2'
 import axios from 'axios'
 
 // Components
@@ -17,66 +17,74 @@ import Events from './client'
 import 'bulma/css/bulma.css'
 import './Css/App.css'
 
+// Configure environment variables
+require('dotenv').config()
+
 // Set token to all requests
 axios.interceptors.request.use(function (config) {
     config.headers.authorization = 'Token ' + Auth.token()
     return config
 }, function (error) {
-    return Promise.reject(error);
-});
+    return Promise.reject(error)
+})
 
 // Log all error messages
 axios.interceptors.response.use(function (response) {
-    return response;
+    return response
 }, function (error) {
-    if (error.response !== undefined) {
+    console.log(error.response)
+    if (parseInt(error.response.status) == 403) {
+
+        swal(String(error), error.response.data + error.response.data.detail)
+    } else if (error.response !== undefined) {
         if (error.response.data !== undefined) {
-            swal(String(error), String(error.response.data));
+            swal(String(error), String(error.response.data + error.response.data.detail))
         } else {
-            swal(String(error), String(error.response));
+            swal(String(error), String(error.response  + error.response.data.detail))
         }
     } else {
-        swal(String(error), String('Something is wrong with the backend server.'));
+        swal(String(error), String('Something is wrong with the backend server.'))
     }
 
-    return Promise.reject(error);
-});
+    return Promise.reject(error)
+})
 
 class App extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             courses: [],
         }
     }
 
-    componentDidMount() {
+    componentDidMount () {
         if (Auth.loggedIn()) {
             this.getCourses()
         }
         Events.on('onCoursesChanged', () => {
             this.getCourses()
-        });
+        })
     }
 
-    getCourses() {
+    getCourses () {
         axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({ courses: json })
+                this.setState({courses: json})
             })
     }
 
-    render() {
+    render () {
         return (
             <div className="App">
-                <ToastContainer className="toast" autoClose={3000} hideProgressBar={true} position={toast.POSITION.BOTTOM_RIGHT} />
-                <NavBar courses={this.state.courses} />
+                <ToastContainer className="toast" autoClose={3000} hideProgressBar={true}
+                                position={toast.POSITION.BOTTOM_RIGHT}/>
+                <NavBar courses={this.state.courses}/>
                 <div className="container">
-                    <Authenticator />
+                    <Authenticator/>
                 </div>
             </div>
         )

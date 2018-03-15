@@ -18,6 +18,10 @@ class User extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
+            currentUser: {
+                is_staff: false,
+                is_superuser: false
+            },
             selectedCourse: '',
             allCoursesAr: [],
             is_staff: false,
@@ -31,17 +35,12 @@ class User extends React.Component {
             id: '',
         }
 
-        this.props.history.listen((location, action) => {
-            let id = location.pathname.slice(9)
-            this.setState({id: id})
-            this.getUser(id)
-        })
-
         this.handleUsernameChange = this.handleUsernameChange.bind(this)
         this.handleEmailChange = this.handleEmailChange.bind(this)
     }
 
     componentDidMount () {
+        this.getCurrentUser()
         this.getUser(this.props.match.params.id)
         this.getAllCourses()
         let self = this
@@ -68,10 +67,23 @@ class User extends React.Component {
         this.setState({email: e.target.value})
     }
 
+    getCurrentUser () {
+        axios.post(Routes.auth.get_user)
+            .then((response) => {
+                return response.data
+            })
+            .then((response) => {
+                this.setState({currentUser: response})
+                this.getCourse()
+            })
+            .catch(error => {
+                console.log('error: ', error)
+            })
+    }
+
     getUser (id) {
         axios.get(Routes.users + id + '/?format=json')
             .then((response) => {
-                localStorage.user_id = response.data.id
                 return response.data
             })
             .then((json) => {
@@ -153,11 +165,11 @@ class User extends React.Component {
 
     removeUserFromCourse (course_id) {
         let formData = new FormData()
-                
-            formData.append('course_id', course_id)
-            formData.append('user_id', this.state.user.id)
 
-            //deleting warning
+        formData.append('course_id', course_id)
+        formData.append('user_id', this.state.user.id)
+
+        //deleting warning
         swal({
             text: 'You can add the user back with the dropdown below.',
             confirmButtonText: 'Yes, delete it!',
@@ -170,17 +182,17 @@ class User extends React.Component {
             type: 'warning',
 
         }).then((result) => {
-            if (result.value){
-                
+            if (result.value) {
+
                 axios.post(Routes.courses_users_delete, formData)
-                .then((response) => {
+                    .then((response) => {
                         toast('User removed from course')
                         Events.emit('onCoursesChanged')
-                })
-            }})
-     
+                    })
+            }
+        })
+
     }
-    
 
     getAverageSubmissionScore (assessments) {
         let ScoreNum = 0
@@ -224,80 +236,105 @@ class User extends React.Component {
                         and has submitted {this.state.submissions.length} times.
                     </p>
                 </Jumbotron>
+                {
+                    this.state.user.is_superuser || this.state.user.is_staff ? <Col sm={4}>
+                            <div className="content">
+                                <h2>User Information</h2>
+                                <label className="label">UserName</label>
+                                <div className="control">
+                                    <input
+                                        ref="nameTextArea"
+                                        className="input"
+                                        onChange={this.handleUsernameChange}
+                                        value={this.state.username}
+                                        type="text"
+                                        placeholder="Username"/>
+                                </div>
+                            </div>
+                            <div className="field">
+                                <label className="label">Email</label>
+                                <div className="control">
+                                    <input
+                                        ref="nameTextArea"
+                                        className="input"
+                                        onChange={this.handleEmailChange}
+                                        value={this.state.email}
+                                        type="text"
+                                        placeholder="User Email"/>
+                                </div>
+                            </div>
+                            <div className="field">
+                                <div className="control user-checkbox">
+                                    <label className="label">Staff</label>
+                                    <input
+                                        name="Is staff"
+                                        type="checkbox"
+                                        checked={this.state.is_staff}
+                                        onChange={this.toggleStaff.bind(this)}/>
+                                </div>
+                            </div>
+                            <div className="button" onClick={this.updateUser.bind(this)}>
+                                Update User
+                            </div>
+                        </Col>
+                        : null
+                }
 
-                <Col sm={4}>
-                    <div className="content">
-                        <h2>User Information</h2>
-                        <label className="label">UserName</label>
-                        <div className="control">
-                            <input
-                                ref="nameTextArea"
-                                className="input"
-                                onChange={this.handleUsernameChange}
-                                value={this.state.username}
-                                type="text"
-                                placeholder="Username"/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <label className="label">Email</label>
-                        <div className="control">
-                            <input
-                                ref="nameTextArea"
-                                className="input"
-                                onChange={this.handleEmailChange}
-                                value={this.state.email}
-                                type="text"
-                                placeholder="User Email"/>
-                        </div>
-                    </div>
-                    <div className="field">
-                        <div className="control user-checkbox">
-                            <label className="label">Staff</label>
-                            <input
-                                name="Is staff"
-                                type="checkbox"
-                                checked={this.state.is_staff}
-                                onChange={this.toggleStaff.bind(this)}/>
-                        </div>
-                    </div>
-                    <div className="button" onClick={this.updateUser.bind(this)}>
-                        Update User
-                    </div>
-                </Col>
+                {
+                    this.state.user.is_superuser || this.state.user.is_staff ? <Col sm={8}>
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Name</th>
+                                    <th>Average Score</th>
+                                    <th>Remove user from course</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.courses.map(course => (
+                                    <tr>
+                                        <td>{course.id}</td>
+                                        <td><Link to={'/courses/' + course.id}>{course.name}</Link></td>
+                                        <td>{this.getAverageSubmissionScore(course.assessments)}</td>
+                                        <td><a className="button"
+                                               onClick={() => this.removeUserFromCourse(course.id)}>Remove</a></td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                            <h1>Add user to course</h1>
+                            <br/>
+                            <Dropdown
+                                className="dropDown"
+                                options={this.state.allCoursesAr}
+                                onChange={this.onCourseSelected.bind(this)}
+                                value={this.state.language}
+                                placeholder="Select Course"/>
+                            <br/>
+                        </Col>
+                        : <Col sm={12}>
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course Name</th>
+                                    <th>Average Score</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.courses.map(course => (
+                                    <tr>
+                                        <td>{course.id}</td>
+                                        <td><Link to={'/courses/' + course.id}>{course.name}</Link></td>
+                                        <td>{this.getAverageSubmissionScore(course.assessments)}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </Col>
+                }
 
-                <Col sm={8}>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Course Name</th>
-                            <th>Average Score</th>
-                            <th>Remove user from course</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.state.courses.map(course => (
-                            <tr>
-                                <td>{course.id}</td>
-                                <td><Link to={'/courses/' + course.id}>{course.name}</Link></td>
-                                <td>{this.getAverageSubmissionScore(course.assessments)}</td>
-                                <td><a className="button"
-                                       onClick={() => this.removeUserFromCourse(course.id)}>Remove</a></td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    <h1>Add user to course</h1>
-                    <br/>
-                    <Dropdown
-                        className="dropDown"
-                        options={this.state.allCoursesAr}
-                        onChange={this.onCourseSelected.bind(this)}
-                        value={this.state.language}
-                        placeholder="Select Course"/>
-                    <br/>
-                </Col>
                 <Col sm={12}>
                     <UserChart/>
                 </Col>

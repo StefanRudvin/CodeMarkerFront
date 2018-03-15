@@ -1,12 +1,40 @@
-import React from 'react'
 import logo from './../../Assets/CodeMarkerLogo.png'
-import Auth from './../../Api/auth'
 import * as ReactDOM from 'react-dom'
+import Routes from '../../Api/routes'
+import Auth from './../../Api/auth'
+import React from 'react'
+import axios from 'axios'
 
 class NavBar extends React.Component {
 
+    constructor (props) {
+        super(props)
+        this.state = {
+            user: {
+                is_superuser: false,
+                is_staff: false,
+                username: ''
+            }
+        }
+    }
+
     componentDidMount () {
-        Auth.getUserName()
+        if (Auth.loggedIn()){
+            this.getUser()
+        }
+    }
+
+    getUser() {
+        axios.post(Routes.auth.get_user)
+            .then((response) => {
+                return response.data
+            })
+            .then((response) => {
+                this.setState({user: response})
+            })
+            .catch(error => {
+                console.log('error: ', error)
+            })
     }
 
     static logout () {
@@ -55,9 +83,9 @@ class NavBar extends React.Component {
 
                         {Auth.loggedIn() ? (
                             <div className="navbar-item is-hoverable">
-                                <span>
-                                    {Auth.getUserName()}
-                                </span>
+                                <a href={"/users/" + this.state.user.id} className="userNameLink">
+                                    {this.state.user.username}
+                                </a>
                             </div>
                         ) : null}
 
@@ -65,7 +93,7 @@ class NavBar extends React.Component {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="field is-grouped">
-                                {Auth.isStaff() ? (
+                                {this.state.user.is_staff || this.state.user.is_superuser ? (
                                     <p className="control">
                                         <a className="bd-tw-button button" href="/admin">
                                         <span>

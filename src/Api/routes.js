@@ -1,3 +1,4 @@
+import config from './../env'
 export default {
 
     local: {
@@ -5,21 +6,20 @@ export default {
     },
 
     auth : {
-        obtain_token : 'http://127.0.0.1:8000/api/obtain-auth-token/',
-        get_user: 'http://127.0.0.1:8000/api/get-user/',
+        obtain_token : config.API_URL + 'obtain-auth-token/',
+        get_user: config.API_URL + 'get-user/',
     },
 
-    courses_json: 'http://127.0.0.1:8000/api/courses/?format=json',
-    users_json: 'http://127.0.0.1:8000/api/users/?format=json',
+    courses_json: config.API_URL + 'courses/?format=json',
+    users_json: config.API_URL + 'users/?format=json',
 
-    courses_users_delete: 'http://127.0.0.1:8000/api/courses/users/delete/',
-    courses_users_add: 'http://127.0.0.1:8000/api/courses/users/add/',
+    courses_users_delete: config.API_URL + 'courses/users/delete/',
+    courses_users_add: config.API_URL + 'courses/users/add/',
 
-    assessments: 'http://127.0.0.1:8000/api/assessments/',
-    submissions: 'http://127.0.0.1:8000/api/submissions/',
-    courses: 'http://127.0.0.1:8000/api/courses/',
-    users: 'http://127.0.0.1:8000/api/users/',
+    assessments: config.API_URL + 'assessments/',
+    submissions: config.API_URL + 'submissions/',
+    courses: config.API_URL + 'courses/',
+    users: config.API_URL + 'users/',
 
-    base: 'http://127.0.0.1:8000/api/',
-
+    base: config.API_URL
 }

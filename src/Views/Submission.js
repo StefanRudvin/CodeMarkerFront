@@ -10,8 +10,12 @@ class Submission extends React.Component {
         super(props)
         this.state = {
             loading: true,
-            user: {},
-            submission: {}
+            user: {
+                is_staff: false,
+                is_superuser: false
+            },
+            submission: {},
+            submissionUser: {username: ''}
         }
 
         this.handleMarksChange = this.handleMarksChange.bind(this)
@@ -26,24 +30,38 @@ class Submission extends React.Component {
             })
             .then((json) => {
                 this.setState({submission: json})
-                this.getUser(json.user)
+                this.getSubmissionUser(json.user)
             })
     }
 
-    getUser (id) {
+    getUser () {
+        axios.post(Routes.auth.get_user)
+            .then((response) => {
+                return response.data
+            })
+            .then((response) => {
+                this.setState({user: response})
+            })
+            .catch(error => {
+                console.log('error: ', error)
+            })
+    }
+
+    getSubmissionUser (id) {
         let url = Routes.users + id + '/?format=json'
         axios.get(url)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({user: json})
+                this.setState({submissionUser: json})
                 this.loading = false
             })
     }
 
     componentDidMount () {
         this.getSubmission(this.props.location.pathname.slice(13))
+        this.getUser()
     }
 
     toggleLateness () {
@@ -64,13 +82,13 @@ class Submission extends React.Component {
         formData.append('marks', this.state.submission.marks)
         formData.append('late', this.state.submission.late)
 
-        axios.patch(Routes.submissions +this.state.submission.id + '/', formData, {
+        axios.patch(Routes.submissions + this.state.submission.id + '/', formData, {
             headers: {
-                "Content-Type": "multipart/form-data"
+                'Content-Type': 'multipart/form-data'
             }
         })
             .then((response) => {
-                    toast("Submission updated")
+                    toast('Submission updated')
                 }
             )
             .catch(function (error) {
@@ -87,41 +105,56 @@ class Submission extends React.Component {
                 transitionName="SlideIn"
                 className="transition-item">
                 <Jumbotron>
-                    <h1>Submission by: {this.state.user.username}</h1>
+                    <h1>Submission by: {this.state.submissionUser.username}</h1>
                     <br/>
                     <h1>Result: {this.state.submission.result}</h1>
                 </Jumbotron>
 
                 <div className="content well submission">
 
-                        <div>
-                            <h3>Mark</h3>
-                            <input
-                                className="input"
-                                onChange={this.handleMarksChange}
-                                value={this.state.submission.marks}
-                                type="text"
-                                placeholder="Submission Mark"/>
-                        </div>
+                    <div>
 
-                        <h3>Language: {this.state.submission.language}</h3>
-                        <h3>Status: {this.state.submission.status}</h3>
-                        <h3>Time Taken: {this.state.submission.timeTaken}s</h3>
-                        <div>
 
-                            <h3>Late: <input
-                                name="Lateness"
-                                type="checkbox"
-                                checked={this.state.submission.late}
-                                onChange={this.toggleLateness.bind(this)}/> </h3>
+                        {
+                            this.state.user.is_superuser || this.state.user.is_staff ? <div>
+                                    <h3>Mark</h3>
+                                    <input
+                                        className="input"
+                                        onChange={this.handleMarksChange}
+                                        value={this.state.submission.marks}
+                                        type="text"
+                                        placeholder="Submission Mark"/>
+                                </div>
+                                : <div>
+                                    <h3>Mark: {this.state.submission.marks}</h3>
+                                </div>
+                        }
+                    </div>
 
-                        </div>
+                    <h3>Language: {this.state.submission.language}</h3>
+                    <h3>Status: {this.state.submission.status}</h3>
+                    <h3>Time Taken: {this.state.submission.timeTaken}s</h3>
+                    <div>
+                        {
+                            this.state.user.is_superuser || this.state.user.is_staff ? <h3>Late: <input
+                                    name="Lateness"
+                                    type="checkbox"
+                                    checked={this.state.submission.late}
+                                    onChange={this.toggleLateness.bind(this)}/></h3>
+                                : <h3>Late: {String(this.state.submission.late)}</h3>
+                        }
 
-                        <h3>More info: {this.state.submission.info}</h3>
 
-                        <div className="button" onClick={this.handleSubmit}>
-                            Submit
-                        </div>
+                    </div>
+
+                    <h3>More info: {this.state.submission.info}</h3>
+                    {
+                        this.state.user.is_superuser || this.state.user.is_staff ? <div className="button" onClick={this.handleSubmit}>
+                                Submit
+                            </div>
+                            : null
+                    }
+
                 </div>
             </ReactCSSTransitionGroup>
         )
