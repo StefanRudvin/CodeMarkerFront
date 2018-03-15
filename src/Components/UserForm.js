@@ -3,6 +3,9 @@ import axios from 'axios'
 import Routes from './../Api/routes'
 import Events from './../client.js'
 import { toast } from 'react-toastify'
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
+import {required, email, password} from './../Validator'
 
 class UserForm extends React.Component {
 
@@ -43,10 +46,10 @@ class UserForm extends React.Component {
         }))
     }
 
-    reset() {
-        this.refs.usernameTextArea.value =''
-        this.refs.passwordTextArea.value =''
-        this.refs.emailTextArea.value =''
+    reset () {
+        this.refs.usernameTextArea.value = ''
+        this.refs.passwordTextArea.value = ''
+        this.refs.emailTextArea.value = ''
         this.setState({username: ''})
         this.setState({email: ''})
         this.setState({password: ''})
@@ -65,56 +68,64 @@ class UserForm extends React.Component {
             }
         }).then((response) => {
             Events.emit(this.props.event)
-            self.reset();
-            toast("Item Added!");
+            self.reset()
+            toast('Item Added!')
         })
     }
 
     render () {
         return (
-            <div className="content">
-                <div className="field">
-                    <label className="label">Add new User</label>
-                    <div className="control">
-                        <input
+            <Form>
+                <label className="label">Add new User</label>
+                <div>
+                    <label className="wideForm">
+                        Username
+                        <Input
                             ref="usernameTextArea"
+                            name="username"
                             className="input"
                             onChange={this.handleUserNameChange}
                             value={this.state.username}
                             type="text"
-                            placeholder="User Name"/>
+                            placeholder="User Name"
+                            validations={[required]}/>
+                    </label>
+                </div>
+                <div>
+                    <label className="wideForm">
+                        Email
+                        <Input
+                            name="email"
+                            className="input"
+                            type="email"
+                            placeholder="Email address"
+                            onChange={this.handleEmailChange}
+                            value={this.state.email}
+                            ref="emailTextArea"
+                            validations={[required, email]}/>
+                    </label>
+                </div>
+                <div>
+                    <label className="wideForm">
+                        Password
+                        <Input
+                            name="password"
+                            ref="passwordTextArea"
+                            className="input"
+                            onChange={this.handlePasswordChange}
+                            value={this.state.password}
+                            placeholder="Password"
+                            type="password"
+                            validations={[required]}>
+                        </Input>
+                    </label>
+                </div>
+                <div>
+                    <div className="button" onClick={this.handleSubmit}>
+                        Submit
                     </div>
                 </div>
-
-                <div className="field">
-                    <div className="control">
-                            <input
-                                ref="emailTextArea"
-                                className="input"
-                                onChange={this.handleEmailChange}
-                                value={this.state.email}
-                                placeholder="Email">
-                            </input>
-                    </div>
-                </div>
-
-                <div className="field">
-                    <div className="control">
-                            <input
-                                ref="passwordTextArea"
-                                className="input"
-                                onChange={this.handlePasswordChange}
-                                value={this.state.password}
-                                placeholder="Password"
-                                type="password">
-                            </input>
-                    </div>
-                </div>
-
-                <div className="button" onClick={this.handleSubmit}>
-                    Submit
-                </div>
-            </div>
+            </Form>
         )
     }
 }

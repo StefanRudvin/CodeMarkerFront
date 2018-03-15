@@ -17,9 +17,6 @@ import Events from './client'
 import 'bulma/css/bulma.css'
 import './Css/App.css'
 
-// Configure environment variables
-require('dotenv').config()
-
 // Set token to all requests
 axios.interceptors.request.use(function (config) {
     config.headers.authorization = 'Token ' + Auth.token()
@@ -38,9 +35,11 @@ axios.interceptors.response.use(function (response) {
         swal(String(error), error.response.data + error.response.data.detail)
     } else if (error.response !== undefined) {
         if (error.response.data !== undefined) {
-            swal(String(error), String(error.response.data + error.response.data.detail))
+            if (error.response.data !== undefined) {
+                swal(String(error), String(error.response.data + error.response.data.detail))
+            }
         } else {
-            swal(String(error), String(error.response  + error.response.data.detail))
+            swal(String(error), String(error.response + error.response.data.detail))
         }
     } else {
         swal(String(error), String('Something is wrong with the backend server.'))

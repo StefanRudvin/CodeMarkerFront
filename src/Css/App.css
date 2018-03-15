@@ -15,6 +15,9 @@
   padding: 20px;
   color: white; }
 
+.wideForm {
+  width: 100%; }
+
 .loginButton > button {
   background-color: crimson !important; }
 
@@ -116,10 +119,6 @@ a {
 .submission {
   width: 50%;
   margin: auto; }
-
-.description {
-  text-align: left;
-}
 
 @keyframes App-logo-spin {
   /*from { transform: rotate(0deg); }*/
