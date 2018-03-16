@@ -198,7 +198,7 @@ class Assessment extends React.Component {
                         ) : null}
                     </div>}
 
-                    <p>Deadline: {moment(this.state.assessment.deadline).calendar()}</p>
+                    <p>Deadline: {moment(this.state.assessment.deadline).format('DD/MM/YYYY hh:mm:ss')}</p>
 
                 </Jumbotron>
 
