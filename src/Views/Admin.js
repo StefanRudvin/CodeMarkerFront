@@ -3,15 +3,19 @@ import ConfigurableForm from './../Components/common/ConfigurableForm.js'
 import UserForm from './../Components/UserForm.js'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import logo from './../Assets/CodeMarkerLogo.png'
-import { Jumbotron } from 'react-bootstrap'
+import { Jumbotron, Button } from 'react-bootstrap'
 import Routes from './../Api/routes'
 import Events from './../client.js'
 import React from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import Dropzone from 'react-dropzone'
+import swal from 'sweetalert2'
+import Auth from '../Api/auth'
 
 class Admin extends React.Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             courses: [],
@@ -23,37 +27,39 @@ class Admin extends React.Component {
             user: {
                 is_superuser: false,
                 is_staff: false
-            }
+            },
+            backupUploaded: false,
+            backup: {}
         }
     }
 
-    getUsers () {
+    getUsers() {
         axios.get(Routes.users_json)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({users: json})
+                this.setState({ users: json })
             })
     }
 
-    getCourses () {
+    getCourses() {
         axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({courses: json})
+                this.setState({ courses: json })
             })
     }
 
-    getUser () {
+    getUser() {
         axios.post(Routes.auth.get_user)
             .then((response) => {
                 return response.data
             })
             .then((response) => {
-                this.setState({user: response})
+                this.setState({ user: response })
                 Events.emit('onUserRetrieved')
             })
             .catch(error => {
@@ -61,7 +67,7 @@ class Admin extends React.Component {
             })
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.getUser()
         Events.on('onUserRetrieved', () => {
             this.getCourses()
@@ -75,7 +81,58 @@ class Admin extends React.Component {
         })
     }
 
-    render () {
+    createBackup() {
+        axios.post(Routes.create_backup, { responseType: 'application/zip' })
+            .then((response) => {
+                toast("Check your email for requested backup!")
+            })
+            .catch(error => {
+                console.log('error: ', error)
+            })
+    }
+
+    uploadBackup(files) {
+        let formData = new FormData()
+        formData.append('backup', files[0])
+
+        axios.post(Routes.restore_backup, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+            .then((response) => {
+                Auth.logout()
+                window.location = '/login'
+            })
+            .catch(() => {
+                console.error("error uploading backup")
+            })
+    }
+
+    onBackupDrop(files) {
+        this.setState({ backup: files[0] })
+        this.setState({ backupUploaded: true })
+
+        swal({
+            title: 'Are you sure?',
+            text: 'All current data will be replaced by a provided backup. Current data will be send to you via email. Upon completion you will be logged out and redirected to home',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            confirmButtonClass: 'confirm-class',
+            cancelButtonClass: 'cancel-class'
+        })
+            .then((willDelete) => {
+                if (willDelete.value) {
+                    this.uploadBackup(files);
+
+                } else {
+                    swal("Operation cancelled!");
+                }
+            });
+    }
+
+    render() {
         return (
             <div>
                 {
@@ -88,9 +145,9 @@ class Admin extends React.Component {
                         className="admin"
                     >
                         <Jumbotron>
-                            <img src={logo} className="App-logo" alt="logo"/>
+                            <img src={logo} className="App-logo" alt="logo" />
                             <h1 className="App-title">Admin Page</h1>
-                            <br/>
+                            <br />
                             <p className="App-intro">
                                 Here you can administrate courses and assignments.
                             </p>
@@ -131,7 +188,22 @@ class Admin extends React.Component {
 
                         </UserForm>
 
-                        <br/>
+                        <br />
+                        <hr />
+                        <h3> Create Backup </h3>
+                        <br />
+                        <Button
+                            onClick={() => this.createBackup()}>
+                            Click here to generate and download backup
+                        </Button>
+                        <hr />
+                        <h3> Restore Backup </h3>
+                        <Dropzone className="dropzone" onDrop={this.onBackupDrop.bind(this)} >
+                            {this.state.backupUploaded ? (
+                                <h2>{this.state.backup.name}</h2>
+                            ) : <h2>Drop your backup zipfile here</h2>}
+                        </Dropzone>
+
                     </ReactCSSTransitionGroup> : <div><h1>You are not allowed to view this page</h1></div>
                 }
             </div>
