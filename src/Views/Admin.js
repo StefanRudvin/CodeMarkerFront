@@ -198,7 +198,7 @@ class Admin extends React.Component {
                         </Button>
                         <hr />
                         <h3> Restore Backup </h3>
-                        <Dropzone className="dropzone" onDrop={this.onBackupDrop.bind(this)} >
+                        <Dropzone className="dropzone-backup" onDrop={this.onBackupDrop.bind(this)} >
                             {this.state.backupUploaded ? (
                                 <h2>{this.state.backup.name}</h2>
                             ) : <h2>Drop your backup zipfile here</h2>}
