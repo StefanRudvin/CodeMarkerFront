@@ -1,7 +1,6 @@
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { ClimbingBoxLoader } from 'react-spinners'
 import { Jumbotron, Col, Row } from 'react-bootstrap'
-import DatePicker from 'react-date-picker'
 import { toast } from 'react-toastify'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
