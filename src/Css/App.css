@@ -59,6 +59,16 @@ a {
   border: 1px solid rgba(201, 201, 201, 0.4);
   border-radius: 5px; }
 
+.dropzone-backup {
+  height: 100px;
+  width: 20%;
+  border : 1px dashed black;
+  margin: auto;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 20px;
+}
+
 .dropzone > div > h2 {
   margin-top: 25%;
   padding: 10px; }

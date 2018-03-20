@@ -5,8 +5,8 @@ export default {
         assessments: 'http://localhost:3000/assessments/'
     },
 
-    auth : {
-        obtain_token : config.API_URL + 'obtain-auth-token/',
+    auth: {
+        obtain_token: config.API_URL + 'obtain-auth-token/',
         get_user: config.API_URL + 'get-user/',
     },
 
@@ -21,5 +21,8 @@ export default {
     courses: config.API_URL + 'courses/',
     users: config.API_URL + 'users/',
 
-    base: config.API_URL
+    base: config.API_URL,
+
+    create_backup: config.API_URL + 'create_backup/',
+    restore_backup: config.API_URL + 'restore_backup/'
 }
