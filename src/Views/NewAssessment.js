@@ -121,7 +121,7 @@ class NewAssessment extends React.Component {
         })
             .then((response) => {
                     this.setState({uploading: false})
-                    this.setState({assessment_url: Routes.local.assessments + response.data})
+                    this.setState({assessment_url: Routes.assessments + response.data})
                     toast('Assessment Created!')
                 }
             )
