@@ -237,7 +237,7 @@ class User extends React.Component {
                     </p>
                 </Jumbotron>
                 {
-                    this.state.user.is_superuser || this.state.user.is_staff ? <Col sm={4}>
+                    this.state.currentUser.is_superuser || this.state.currentUser.is_staff ? <Col sm={4}>
                             <div className="content">
                                 <h2>User Information</h2>
                                 <label className="label">UserName</label>
@@ -281,7 +281,7 @@ class User extends React.Component {
                 }
 
                 {
-                    this.state.user.is_superuser || this.state.user.is_staff ? <Col sm={8}>
+                    this.state.currentUser.is_superuser || this.state.currentUser.is_staff ? <Col sm={8}>
                             <table className="table">
                                 <thead>
                                 <tr>
