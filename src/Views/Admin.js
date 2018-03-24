@@ -84,7 +84,7 @@ class Admin extends React.Component {
     createBackup() {
         axios.post(Routes.create_backup, { responseType: 'application/zip' })
             .then((response) => {
-                toast("Check your email for requested backup!")
+                toast("Backup has been created in backups/ folder!")
             })
             .catch(error => {
                 console.log('error: ', error)
@@ -194,7 +194,7 @@ class Admin extends React.Component {
                         <br />
                         <Button
                             onClick={() => this.createBackup()}>
-                            Click here to generate and download backup
+                            Click here to generate
                         </Button>
                         <hr />
                         <h3> Restore Backup </h3>
