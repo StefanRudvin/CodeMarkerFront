@@ -29,7 +29,9 @@ class Admin extends React.Component {
                 is_staff: false
             },
             backupUploaded: false,
-            backup: {}
+            backup: {},
+            csvUploaded: false,
+            csv: {}
         }
     }
 
@@ -115,7 +117,7 @@ class Admin extends React.Component {
 
         swal({
             title: 'Are you sure?',
-            text: 'All current data will be replaced by a provided backup. Current data will be send to you via email. Upon completion you will be logged out and redirected to home',
+            text: 'All current data will be replaced by a provided backup. Upon completion you will be logged out and redirected to home',
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
@@ -125,6 +127,45 @@ class Admin extends React.Component {
             .then((willDelete) => {
                 if (willDelete.value) {
                     this.uploadBackup(files);
+
+                } else {
+                    swal("Operation cancelled!");
+                }
+            });
+    }
+
+    uploadCsv(files) {
+        let formData = new FormData()
+        formData.append('csv', files[0])
+
+        axios.post(Routes.import_users, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+            .then((response) => {
+                window.location.reload()
+            })
+            .catch(() => {
+                console.error("error uploading backup")
+            })
+    }
+
+    onCsvDrop(files) {
+        this.setState({ csv: files[0] })
+        this.setState({ csvUploaded: true })
+
+        swal({
+            title: 'Are you sure? All duplicated users will be deleted!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, import them!',
+            confirmButtonClass: 'confirm-class',
+            cancelButtonClass: 'cancel-class'
+        })
+            .then((willDelete) => {
+                if (willDelete.value) {
+                    this.uploadCsv(files);
 
                 } else {
                     swal("Operation cancelled!");
@@ -190,19 +231,30 @@ class Admin extends React.Component {
 
                         <br />
                         <hr />
-                        <h3> Create Backup </h3>
+                        <h3> <b>Import multiple users from CSV</b> </h3>
+                        <h4> Important! Each file HAS to be of following format:</h4>
+                        <span>FirstName,LastNameUsername,Email,Password,Course1 Course2 Course3...</span>
+                        <Dropzone className="dropzone-backup" onDrop={this.onCsvDrop.bind(this)} >
+                            {this.state.csvUploaded ? (
+                                <h2>{this.state.csv.name}</h2>
+                            ) : <h2>Click here to select your CSV file</h2>}
+                        </Dropzone>
+                        <hr />
+                        <h3> <b>Create Backup</b> </h3>
                         <br />
                         <Button
                             onClick={() => this.createBackup()}>
                             Click here to generate
                         </Button>
                         <hr />
-                        <h3> Restore Backup </h3>
+                        <h3> <b>Restore Backup</b> </h3>
                         <Dropzone className="dropzone-backup" onDrop={this.onBackupDrop.bind(this)} >
                             {this.state.backupUploaded ? (
                                 <h2>{this.state.backup.name}</h2>
-                            ) : <h2>Drop your backup zipfile here</h2>}
+                            ) : <h2>Click here to select your backup file</h2>}
                         </Dropzone>
+
+
 
                     </ReactCSSTransitionGroup> : <div><h1>You are not allowed to view this page</h1></div>
                 }

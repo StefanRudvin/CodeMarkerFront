@@ -24,5 +24,7 @@ export default {
     base: config.API_URL,
 
     create_backup: config.API_URL + 'create_backup/',
-    restore_backup: config.API_URL + 'restore_backup/'
+    restore_backup: config.API_URL + 'restore_backup/',
+
+    import_users: config.API_URL + 'import_users/'
 }
