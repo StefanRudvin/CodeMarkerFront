@@ -240,11 +240,13 @@ class Admin extends React.Component {
                         <h3> <b>Import multiple users from CSV</b> </h3>
                         <h4> Important! Each file HAS to be of following format:</h4>
                         <span>FirstName,LastNameUsername,Email,Password,Course1 Course2 Course3...</span>
-                        <Dropzone style={dropzoneStyle} onDrop={this.onCsvDrop.bind(this)} >
-                            {this.state.csvUploaded ? (
-                                <h2>{this.state.csv.name}</h2>
-                            ) : <h2>Click here to select your CSV file</h2>}
-                        </Dropzone>
+                        <div className="dropzone">
+                            <Dropzone  onDrop={this.onCsvDrop.bind(this)} >
+                                {this.state.csvUploaded ? (
+                                    <h2>{this.state.csv.name}</h2>
+                                ) : <h2>Click here to select your CSV file</h2>}
+                            </Dropzone>
+                        </div>
                         <hr />
                         <h3> <b>Create Backup</b> </h3>
                         <br />
@@ -254,11 +256,13 @@ class Admin extends React.Component {
                         </Button>
                         <hr />
                         <h3> <b>Restore Backup</b> </h3>
-                        <Dropzone style={dropzoneStyle} onDrop={this.onBackupDrop.bind(this)} >
-                            {this.state.backupUploaded ? (
-                                <h2>{this.state.backup.name}</h2>
-                            ) : <h2>Click here to select your backup file</h2>}
-                        </Dropzone>
+                        <div className="dropzone">
+                            <Dropzone onDrop={this.onBackupDrop.bind(this)} >
+                                {this.state.backupUploaded ? (
+                                    <h2>{this.state.backup.name}</h2>
+                                ) : <h2>Click here to select your backup file</h2>}
+                            </Dropzone>
+                        </div>
 
 
 
