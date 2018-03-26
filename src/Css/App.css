@@ -116,13 +116,6 @@ a {
 .react-date-picker {
   z-index: 999; }
 
-.dropzone-backup {
-  border: 3px dashed black;
-  width: 20%;
-  padding: 20px;
-  margin: 25px auto;
-}
-
 .submission {
   width: 50%;
   margin: auto; }
