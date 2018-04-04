@@ -9,7 +9,6 @@ import swal from 'sweetalert2'
 class ConfigurableTable extends React.Component {
 
     deleteItem (item) {
-
         //deleting warning
         swal({
             title: 'Are you sure?',
@@ -33,6 +32,72 @@ class ConfigurableTable extends React.Component {
         })
     }
 
+    constructor (props) {
+        super(props)
+        this.state = {
+            courses: []
+        }
+    }
+
+    componentDidMount () {
+        if (this.props.showTotalScore) {
+            this.getAllCourses()
+        }
+    }
+
+    getAllCourses () {
+        axios.get(Routes.courses_json)
+            .then((response) => {
+                return response.data
+            })
+            .then((json) => {
+                this.setState({courses: json})
+            })
+    }
+
+    getUserTotalScore (userId) {
+        let studentCourses = this.filterCourses(userId)
+
+        let totalScore = 0
+
+        let self = this
+
+        studentCourses.forEach(function (course) {
+            totalScore += self.getCourseTotalScore(course, userId)
+        })
+        return totalScore
+    }
+
+    getCourseTotalScore (course, userId) {
+        let courseScore = 0
+
+        course.assessments.forEach(function (assessment) {
+            let bestSubmission = 0
+            assessment.submissions.forEach(function (submission) {
+                if (submission.marks >= bestSubmission && submission.user == userId) {
+                    bestSubmission = submission.marks
+                }
+            })
+            if (assessment.submissions.length > 0) {
+                courseScore += bestSubmission
+            }
+
+        })
+        return courseScore
+    }
+
+    filterCourses (userId) {
+        let studentCourses = []
+
+        this.state.courses.forEach(function (course) {
+            if (course.students.includes(userId)) {
+                studentCourses.push(course)
+            }
+        })
+
+        return studentCourses
+    }
+
     render () {
         return (
             <div>
@@ -49,6 +114,9 @@ class ConfigurableTable extends React.Component {
                         {this.props.column3 ? (
                             <th>{this.props.column3}</th>
                         ) : null}
+                        {this.props.showTotalScore ? (
+                            <th>Total Score</th>
+                        ) : null}
                         {this.props.showEdit ? (
                             <th>Edit</th>
                         ) : null}
@@ -62,14 +130,15 @@ class ConfigurableTable extends React.Component {
                         <tr>
                             <td>{Object.values(item)[0]}</td>
                             <td><Link to={this.props.route + '/' + item.id}>{Object.values(item)[1]}</Link></td>
-
                             {this.props.column2 ? (
                                 <td>{Object.values(item)[2]}</td>
                             ) : null}
                             {this.props.column3 ? (
                                 <td>{Object.values(item)[3]}</td>
                             ) : null}
-
+                            {this.props.showTotalScore ? (
+                                <td>{this.getUserTotalScore(Object.values(item)[0])}</td>
+                            ) : null}
                             {this.props.showEdit ? (
                                 <td><a href={this.props.editRoute + '/' + Object.values(item)[0]} className="button">Edit</a>
                                 </td>

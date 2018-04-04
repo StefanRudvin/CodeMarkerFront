@@ -292,6 +292,10 @@ td.rdtYear:hover {
 .rdtCounter {
   width: 40px; }
 
+.user-form {
+  width: 60%;
+  margin: auto; }
+
 .rdtCounterSeparator {
   line-height: 100px; }
 

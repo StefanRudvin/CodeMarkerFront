@@ -1,7 +1,7 @@
-import axios from 'axios'
+import Events from './../client.js'
 import swal from 'sweetalert2'
 import Routes from './routes'
-import Events from './../client.js'
+import axios from 'axios'
 
 export default {
     /*

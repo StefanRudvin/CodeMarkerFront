@@ -12,6 +12,7 @@ class UserChart extends React.Component {
             selectedCourse: '',
             courseNames: [],
             id: '',
+            show_late: true,
             user: [],
             username: '',
             options: {
@@ -42,6 +43,18 @@ class UserChart extends React.Component {
             this.setState({user: user})
             this.processData()
         })
+
+        Events.on('onShowLateTrue', () => {
+            this.setState({show_late: true}, () => {
+                this.processData()
+            })
+        })
+
+        Events.on('onShowLateFalse', () => {
+            this.setState({show_late: false}, () => {
+                this.processData()
+            })
+        })
     }
 
     processData () {
@@ -71,15 +84,24 @@ class UserChart extends React.Component {
         dataset.borderColor.push('crimson')
         dataset.borderWidth = 1
 
+        let self = this
+
         course.assessments.forEach(function (assessment) {
             let bestSubmission = null
             let bestMark = 0
             assessment.submissions.forEach(function (submission) {
                 if (submission != null) {
-                    if (submission.marks > bestMark) {
 
-                        bestSubmission = submission
-                        bestMark = submission.marks
+                    if (self.state.show_late) {
+                        if (submission.marks >= bestMark && submission.user == self.state.user.id) {
+                            bestSubmission = submission
+                            bestMark = submission.marks
+                        }
+                    } else {
+                        if (submission.marks >= bestMark && submission.user == self.state.user.id && !submission.late) {
+                            bestSubmission = submission
+                            bestMark = submission.marks
+                        }
                     }
                 }
             })
