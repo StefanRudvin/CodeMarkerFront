@@ -112,8 +112,6 @@ class Course extends React.Component {
             })
         }
 
-        console.log(submissionCount)
-
         this.setState({submissionCount: submissionCount})
         this.setState({submissionFailCount: submissionFailCount})
         this.setState({submissionPassCount: submissionPassCount})

@@ -1,5 +1,5 @@
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import CourseItem from '../Components/common/CourseItem'
+import AssessmentItem from '../Components/common/AssessmentItem'
 import { Jumbotron, Col } from 'react-bootstrap'
 import UserChart from './../Components/UserChart'
 import { Link } from 'react-router-dom'
@@ -7,11 +7,10 @@ import Dropdown from 'react-dropdown'
 import { toast } from 'react-toastify'
 import Routes from './../Api/routes'
 import Events from './../client.js'
+import swal from 'sweetalert2'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
-import swal from 'sweetalert2'
-import AssessmentItem from '../Components/common/AssessmentItem'
 
 class User extends React.Component {
 
@@ -24,6 +23,7 @@ class User extends React.Component {
             },
             selectedCourse: '',
             allCoursesAr: [],
+            show_late: true,
             is_staff: false,
             submissions: [],
             allCourses: [],
@@ -43,7 +43,6 @@ class User extends React.Component {
         this.getCurrentUser()
         this.getUser(this.props.match.params.id)
         this.getAllCourses()
-        let self = this
 
         Events.on('onCoursesChanged', () => {
             this.getUser(this.props.match.params.id)
@@ -57,6 +56,11 @@ class User extends React.Component {
 
     toggleStaff () {
         this.setState({is_staff: !this.state.is_staff})
+    }
+
+    toggleShowLate () {
+        this.state.show_late ? Events.emit('onShowLateFalse') : Events.emit('onShowLateTrue')
+        this.setState({show_late: !this.state.show_late})
     }
 
     handleUsernameChange (e) {
@@ -74,7 +78,6 @@ class User extends React.Component {
             })
             .then((response) => {
                 this.setState({currentUser: response})
-                this.getCourse()
             })
             .catch(error => {
                 console.log('error: ', error)
@@ -133,10 +136,6 @@ class User extends React.Component {
                     Events.emit('onCoursesChanged')
                 }
             )
-    }
-
-    componentWillUnmount () {
-        delete localStorage.user_id
     }
 
     updateUser () {
@@ -198,11 +197,19 @@ class User extends React.Component {
         let ScoreNum = 0
         let ScoreTotal = 0
 
+        let self = this
+
         assessments.forEach(function (assessment) {
             let bestSubmission = 0
-            assessment.submissions.forEach(function (submission) {
-                if (submission.marks >= bestSubmission) {
-                    bestSubmission = submission.marks
+            assessment.submissions.forEach((submission) => {
+                if (self.state.show_late) {
+                    if (submission.marks >= bestSubmission && submission.user == self.state.user.id) {
+                        bestSubmission = submission.marks
+                    }
+                } else {
+                    if (submission.marks >= bestSubmission && submission.user == self.state.user.id && !submission.late) {
+                        bestSubmission = submission.marks
+                    }
                 }
             })
             if (assessment.submissions.length > 0) {
@@ -235,6 +242,17 @@ class User extends React.Component {
                         takes part in {this.state.courses.length} courses
                         and has submitted {this.state.submissions.length} times.
                     </p>
+
+                    <div className="field">
+                        <div className="control user-checkbox">
+                            <label className="label">Show Late Submissions</label>
+                            <input
+                                name="Show Late"
+                                type="checkbox"
+                                checked={this.state.show_late}
+                                onChange={this.toggleShowLate.bind(this)}/>
+                        </div>
+                    </div>
                 </Jumbotron>
                 {
                     this.state.currentUser.is_superuser || this.state.currentUser.is_staff ? <Col sm={4}>

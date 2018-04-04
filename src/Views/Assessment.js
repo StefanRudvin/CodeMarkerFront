@@ -1,21 +1,23 @@
 import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import AssessmentEdit from '../Components/assessment/AssessmentEdit'
 import { ClimbingBoxLoader } from 'react-spinners'
+import ReactMarkdown from 'react-markdown'
 import Report from '../Components/Report'
+import { toast } from 'react-toastify'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
-import ReactMarkdown from 'react-markdown'
 import Routes from './../Api/routes'
+import Events from './../client.js'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
-import { toast } from 'react-toastify'
-import Auth from '../Api/auth'
 
 class Assessment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            editModal: false,
             uploading: false,
             submissions: [],
             loading: false,
@@ -66,6 +68,7 @@ class Assessment extends React.Component {
             })
             .then((json) => {
                 this.setState({assessment: json})
+                Events.emit('onAssessmentRetrieved', json)
                 this.filterSubmissions(json.submissions)
                 this.setState({possibleLanguages: JSON.parse(json.languages.replace(/'/g, '"'))})
 
@@ -77,11 +80,11 @@ class Assessment extends React.Component {
     }
 
     toggleModal() {
-        if (this.state.modal) {
-            this.setState({ modal: false })
-        } else {
-            this.setState({ modal: true })
-        }
+        this.setState({modal: !this.state.modal})
+    }
+
+    toggleEditModal() {
+        this.setState({editModal: !this.state.editModal})
     }
 
     onDrop(files) {
@@ -157,6 +160,13 @@ class Assessment extends React.Component {
 
     componentDidMount () {
         this.getUserAndUsersAndAssessment()
+
+        Events.on('onAssessmentEditComplete', () => {
+            this.getAssessment(this.props.match.params.id)
+            this.setState({loading: false})
+            this.setState({uploading: false})
+            this.toggleEditModal()
+        })
     }
 
     onLanguageSelected(choice) {
@@ -198,7 +208,13 @@ class Assessment extends React.Component {
                         ) : null}
                     </div>}
 
-                    <p>Deadline: {moment(this.state.assessment.deadline).format('DD/MM/YYYY hh:mm:ss')}</p>
+                    <p>Deadline: {moment(this.state.assessment.deadline).utc().format('YYYY-MM-DD HH:mm')}</p>
+
+                    {this.state.user.is_staff || this.state.user.is_superuser ? (
+                        <div className="bd-tw-button button" onClick={this.toggleEditModal.bind(this)}>
+                            Edit Assessment
+                        </div>
+                    ) : null}
 
                 </Jumbotron>
 
@@ -280,6 +296,34 @@ class Assessment extends React.Component {
                         </footer>
                     </div>
                 </div>
+
+                <div className={'modal ' + (this.state.editModal ? 'is-active' : '')}>
+                    <div className="modal-background"/>
+                    <div className="modal-card">
+
+                        <header className="modal-card-head">
+                            <p className="modal-card-title">Edit Assessment</p>
+                            <button className="delete" onClick={this.toggleEditModal.bind(this)}
+                                    aria-label="close"/>
+                        </header>
+
+                        <section className="modal-card-body">
+                            {this.props.uploading ? (
+                                <h2>Uploading...</h2>
+                            ) : null}
+                            {this.props.loading ? (
+                                <h2>Loading...</h2>
+                            ) : null}
+                            {!this.props.loading ? (
+                                <AssessmentEdit assessment={this.state.assessment}/>
+                            ) : null}
+                        </section>
+                        <footer className="modal-card-foot">
+                            <button className="button is-success" onClick={this.toggleEditModal.bind(this)}>Close</button>
+                        </footer>
+                    </div>
+                </div>
+
             </ReactCSSTransitionGroup>
         )
     }

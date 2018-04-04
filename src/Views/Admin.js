@@ -15,7 +15,7 @@ import Auth from '../Api/auth'
 
 class Admin extends React.Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             courses: [],
@@ -35,33 +35,33 @@ class Admin extends React.Component {
         }
     }
 
-    getUsers() {
+    getUsers () {
         axios.get(Routes.users_json)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({ users: json })
+                this.setState({users: json})
             })
     }
 
-    getCourses() {
+    getCourses () {
         axios.get(Routes.courses_json)
             .then((response) => {
                 return response.data
             })
             .then((json) => {
-                this.setState({ courses: json })
+                this.setState({courses: json})
             })
     }
 
-    getUser() {
+    getUser () {
         axios.post(Routes.auth.get_user)
             .then((response) => {
                 return response.data
             })
             .then((response) => {
-                this.setState({ user: response })
+                this.setState({user: response})
                 Events.emit('onUserRetrieved')
             })
             .catch(error => {
@@ -69,7 +69,7 @@ class Admin extends React.Component {
             })
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.getUser()
         Events.on('onUserRetrieved', () => {
             this.getCourses()
@@ -83,17 +83,17 @@ class Admin extends React.Component {
         })
     }
 
-    createBackup() {
-        axios.post(Routes.create_backup, { responseType: 'application/zip' })
+    createBackup () {
+        axios.post(Routes.create_backup, {responseType: 'application/zip'})
             .then((response) => {
-                toast("Backup has been created in backups/ folder!")
+                toast('Backup has been created in backups/ folder!')
             })
             .catch(error => {
                 console.log('error: ', error)
             })
     }
 
-    uploadBackup(files) {
+    uploadBackup (files) {
         let formData = new FormData()
         formData.append('backup', files[0])
 
@@ -107,13 +107,13 @@ class Admin extends React.Component {
                 window.location = '/login'
             })
             .catch(() => {
-                console.error("error uploading backup")
+                console.error('error uploading backup')
             })
     }
 
-    onBackupDrop(files) {
-        this.setState({ backup: files[0] })
-        this.setState({ backupUploaded: true })
+    onBackupDrop (files) {
+        this.setState({backup: files[0]})
+        this.setState({backupUploaded: true})
 
         swal({
             title: 'Are you sure?',
@@ -126,15 +126,15 @@ class Admin extends React.Component {
         })
             .then((willDelete) => {
                 if (willDelete.value) {
-                    this.uploadBackup(files);
+                    this.uploadBackup(files)
 
                 } else {
-                    swal("Operation cancelled!");
+                    swal('Operation cancelled!')
                 }
-            });
+            })
     }
 
-    uploadCsv(files) {
+    uploadCsv (files) {
         let formData = new FormData()
         formData.append('csv', files[0])
 
@@ -147,13 +147,13 @@ class Admin extends React.Component {
                 window.location.reload()
             })
             .catch(() => {
-                console.error("error uploading backup")
+                console.error('error uploading backup')
             })
     }
 
-    onCsvDrop(files) {
-        this.setState({ csv: files[0] })
-        this.setState({ csvUploaded: true })
+    onCsvDrop (files) {
+        this.setState({csv: files[0]})
+        this.setState({csvUploaded: true})
 
         swal({
             title: 'Are you sure? All duplicated users will be deleted!',
@@ -165,20 +165,20 @@ class Admin extends React.Component {
         })
             .then((willDelete) => {
                 if (willDelete.value) {
-                    this.uploadCsv(files);
+                    this.uploadCsv(files)
 
                 } else {
-                    swal("Operation cancelled!");
+                    swal('Operation cancelled!')
                 }
-            });
+            })
     }
 
-    render() {
+    render () {
         const dropzoneStyle = {
-            border: "3px dashed black",
-            width: "20%",
-            padding: "20px",
-            margin: "25px auto"
+            border: '3px dashed black',
+            width: '20%',
+            padding: '20px',
+            margin: '25px auto'
         }
         return (
             <div>
@@ -192,9 +192,9 @@ class Admin extends React.Component {
                         className="admin"
                     >
                         <Jumbotron>
-                            <img src={logo} className="App-logo" alt="logo" />
+                            <img src={logo} className="App-logo" alt="logo"/>
                             <h1 className="App-title">Admin Page</h1>
-                            <br />
+                            <br/>
                             <p className="App-intro">
                                 Here you can administrate courses and assignments.
                             </p>
@@ -226,45 +226,48 @@ class Admin extends React.Component {
                             column3="Email"
                             showDelete={true}
                             showEdit={true}
+                            showTotalScore={true}
                             editRoute="/users"
                             route="users"
                             event="onUsersChanged"
                         />
 
-                        <UserForm route="users" event="onUsersChanged">
+                        <UserForm route="users" event="onUsersChanged" />
 
-                        </UserForm>
-
-                        <br />
-                        <hr />
-                        <h3> <b>Import multiple users from CSV</b> </h3>
+                        <br/>
+                        <hr/>
+                        <h3><b>Import multiple users from CSV</b></h3>
+                        <br/>
                         <h4> Important! Each file HAS to be of following format:</h4>
                         <span>FirstName,LastNameUsername,Email,Password,Course1 Course2 Course3...</span>
+                        <br/>
+                        <br/>
                         <div className="dropzone">
-                            <Dropzone  onDrop={this.onCsvDrop.bind(this)} >
+                            <Dropzone onDrop={this.onCsvDrop.bind(this)}>
                                 {this.state.csvUploaded ? (
                                     <h2>{this.state.csv.name}</h2>
                                 ) : <h2>Click here to select your CSV file</h2>}
                             </Dropzone>
                         </div>
-                        <hr />
-                        <h3> <b>Create Backup</b> </h3>
-                        <br />
-                        <Button
+                        <hr/>
+                        <h3><b>Create Backup</b></h3>
+                        <br/>
+                        <div
+                            className="button"
                             onClick={() => this.createBackup()}>
-                            Click here to generate
-                        </Button>
-                        <hr />
-                        <h3> <b>Restore Backup</b> </h3>
+                            Generate Backup
+                        </div>
+                        <hr/>
+                        <h3><b>Restore Backup</b></h3>
+                        <br/>
                         <div className="dropzone">
-                            <Dropzone onDrop={this.onBackupDrop.bind(this)} >
+                            <Dropzone onDrop={this.onBackupDrop.bind(this)}>
                                 {this.state.backupUploaded ? (
                                     <h2>{this.state.backup.name}</h2>
                                 ) : <h2>Click here to select your backup file</h2>}
                             </Dropzone>
                         </div>
-
-
+                        <br/>
 
                     </ReactCSSTransitionGroup> : <div><h1>You are not allowed to view this page</h1></div>
                 }

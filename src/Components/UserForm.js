@@ -75,7 +75,7 @@ class UserForm extends React.Component {
 
     render () {
         return (
-            <Form>
+            <Form className="user-form">
                 <label className="label">Add new User</label>
                 <div>
                     <label className="wideForm">
