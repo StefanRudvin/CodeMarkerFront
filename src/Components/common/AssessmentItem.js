@@ -1,18 +1,10 @@
-import { Jumbotron, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
-import { toast } from 'react-toastify'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import SubmissionItem from './SubmissionItem'
 import moment from 'moment'
 import React from 'react'
-import axios from 'axios'
-import SubmissionItem from './SubmissionItem'
 
 class AssessmentItem extends React.Component {
 
-    constructor (props) {
-        super(props)
-        this.state = {
-        }
-
-    }
     render () {
         return (
             <div>
@@ -29,7 +21,6 @@ class AssessmentItem extends React.Component {
                     }
                 </ListGroup>
             </div>
-
         )
     }
 }

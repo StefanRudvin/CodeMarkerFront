@@ -1,15 +1,22 @@
-import { Jumbotron, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
-import { toast } from 'react-toastify'
+import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import Events from './../../client.js'
 import moment from 'moment'
 import React from 'react'
-import axios from 'axios'
 
 class SubmissionItem extends React.Component {
 
     constructor (props) {
         super(props)
-        this.state = {}
+        this.state = {
+            user: {}
+        }
+    }
 
+    componentDidMount () {
+        Events.on('onUserRetrieved', (user) => {
+            this.setState({user: user})
+            console.log(user)
+        })
     }
 
     render () {
@@ -17,9 +24,9 @@ class SubmissionItem extends React.Component {
             <div>
                 <ListGroup>
                     {
-                        this.props.items.map(function (submission) {
+                        this.props.items.map((submission) => {
                             return <div>
-                                {submission.user == localStorage.user_id ? (
+                                {submission.user == this.state.user.id ? (
                                     <ListGroupItem
                                         header={'Late: ' + submission.late + ' Marks: ' + submission.marks}
                                         href={'/submissions/' + submission.id}>

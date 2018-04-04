@@ -446,7 +446,6 @@ class NewAssessment extends React.Component {
                                     <NumericInput
                                         min={0}
                                         max={100}
-                                        value={0}
                                         style={{input: {width: 50}}}
                                         onChange={this.changeStaticQuantity.bind(this)}
                                         value={this.state.numOfStatic}/>
