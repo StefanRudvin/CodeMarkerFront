@@ -1,3 +1,10 @@
+/*
+Admin view.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import ConfigurableTable from './../Components/common/ConfigurableTable.js'
 import ConfigurableForm from './../Components/common/ConfigurableForm.js'
 import UserForm from './../Components/UserForm.js'
@@ -232,7 +239,7 @@ class Admin extends React.Component {
                             event="onUsersChanged"
                         />
 
-                        <UserForm route="users" event="onUsersChanged" />
+                        <UserForm route="users" event="onUsersChanged"/>
 
                         <br/>
                         <hr/>

@@ -1,10 +1,17 @@
+/*
+View to show information about a user.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import AssessmentItem from '../Components/common/AssessmentItem'
-import { Jumbotron, Col } from 'react-bootstrap'
 import UserChart from './../Components/UserChart'
+import { Jumbotron, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import Dropdown from 'react-dropdown'
 import { toast } from 'react-toastify'
+import Dropdown from 'react-dropdown'
 import Routes from './../Api/routes'
 import Events from './../client.js'
 import swal from 'sweetalert2'
@@ -100,6 +107,9 @@ class User extends React.Component {
             })
     }
 
+    /*
+        Get all courses from the backend.
+     */
     getAllCourses () {
         axios.get(Routes.courses_json)
             .then((response) => {
@@ -120,6 +130,9 @@ class User extends React.Component {
             })
     }
 
+    /*
+        Select a course, which changes graph etc.
+     */
     onCourseSelected (choice) {
         let formData = new FormData()
 
@@ -162,6 +175,9 @@ class User extends React.Component {
             )
     }
 
+    /*
+        Remove a user from a course with a SweetAlert warning
+     */
     removeUserFromCourse (course_id) {
         let formData = new FormData()
 

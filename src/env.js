@@ -1,3 +1,10 @@
+/*
+Environment variables used throughout the system.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 const hostname = window && window.location && window.location.hostname;
 
 let url = "";

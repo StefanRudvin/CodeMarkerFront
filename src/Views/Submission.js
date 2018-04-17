@@ -1,3 +1,9 @@
+/*
+View for submissions.
+
+@TeamAlpha 2018
+CodeMarker
+*/
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
@@ -76,6 +82,9 @@ class Submission extends React.Component {
         this.setState({submission: submissionCopy})
     }
 
+    /*
+        Update a submission.
+     */
     handleSubmit (e) {
         e.preventDefault()
         let formData = new FormData()

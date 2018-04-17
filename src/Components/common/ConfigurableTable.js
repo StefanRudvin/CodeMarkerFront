@@ -1,3 +1,10 @@
+/*
+A configurable table to allow for DRY table creation.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import { Link } from 'react-router-dom'
 import React from 'react'
 import axios from 'axios'

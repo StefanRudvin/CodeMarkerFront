@@ -1,3 +1,10 @@
+/*
+App start for React
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 // Polyfills for IE11
 import 'babel-polyfill';
 

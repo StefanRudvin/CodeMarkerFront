@@ -1,3 +1,10 @@
+/*
+Validator for forms.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import React from 'react'
 
 export const required = (value) => {

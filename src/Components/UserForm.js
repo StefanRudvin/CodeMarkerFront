@@ -1,3 +1,10 @@
+/*
+Form to create a new form.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import React from 'react'
 import axios from 'axios'
 import Routes from './../Api/routes'

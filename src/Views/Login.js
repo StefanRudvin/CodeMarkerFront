@@ -1,12 +1,19 @@
+/*
+Login view.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
+import {red500} from 'material-ui/styles/colors';
 import logo from './../Assets/CodeMarkerLogo.png'
 import TextField from 'material-ui/TextField'
 import { Jumbotron } from 'react-bootstrap'
 import React, { Component } from 'react'
-import Auth from './../Api/auth'
-import {red500} from 'material-ui/styles/colors';
 import { toast } from 'react-toastify'
+import Auth from './../Api/auth'
 
 const styles = {
     underlineStyle: {
@@ -27,6 +34,9 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    /*
+        Log the user in with the Auth module.
+     */
     login () {
         console.log('Logging in..')
         Auth.login(this.state.username, this.state.password, (loggedIn) => {

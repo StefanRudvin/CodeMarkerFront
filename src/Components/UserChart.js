@@ -1,3 +1,10 @@
+/*
+Show a chart about a users' submissions.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import { Bar } from 'react-chartjs-2'
 import Dropdown from 'react-dropdown'
 import Events from './../client.js'

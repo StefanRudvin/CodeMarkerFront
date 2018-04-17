@@ -1,3 +1,10 @@
+/*
+Centralised routes for all backend api calls.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import config from './../env'
 export default {
 

@@ -1,10 +1,16 @@
+/*
+Course View.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { Jumbotron, ListGroup, ListGroupItem } from 'react-bootstrap'
 import CourseEdit from '../Components/Course/CourseEdit'
 import Col from 'react-bootstrap/es/Col'
 import Routes from './../Api/routes'
 import Events from './../client.js'
-import Auth from './../Api/auth'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'

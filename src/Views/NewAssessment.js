@@ -1,15 +1,22 @@
+/*
+View for creating a new assessment.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { ClimbingBoxLoader } from 'react-spinners'
 import { Jumbotron, Col, Row } from 'react-bootstrap'
+import { ClimbingBoxLoader } from 'react-spinners'
+import NumericInput from 'react-numeric-input'
 import { toast } from 'react-toastify'
+import Datetime from 'react-datetime'
 import Dropzone from 'react-dropzone'
 import Dropdown from 'react-dropdown'
 import Routes from './../Api/routes'
 import React from 'react'
 import axios from 'axios'
 import moment from 'moment'
-import NumericInput from 'react-numeric-input'
-import Datetime from 'react-datetime'
 
 class NewAssessment extends React.Component {
     constructor (props) {
@@ -76,6 +83,9 @@ class NewAssessment extends React.Component {
         this.setState({inputGeneratorUploaded: true})
     }
 
+    /*
+        Upload i.e. create new assessment.
+    */
     upload () {
         this.setState({modal: true})
         this.setState({loading: true})

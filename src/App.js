@@ -1,3 +1,11 @@
+/*
+Start location for the Codemarker application.
+Imports main system modules shows authenticator with navbar.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 // Packages
 import { ToastContainer, toast } from 'react-toastify'
 import React, { Component } from 'react'
@@ -30,6 +38,8 @@ axios.interceptors.response.use(function (response) {
     return response
 }, function (error) {
     console.log(error.response)
+
+    // Handle different error types
     if (parseInt(error.response.status) == 403) {
 
         swal(String(error), error.response.data + error.response.data.detail)

@@ -1,3 +1,10 @@
+/*
+Assessment view.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import AssessmentEdit from '../Components/assessment/AssessmentEdit'

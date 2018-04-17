@@ -1,3 +1,10 @@
+/*
+Show navbar with different items depending on admin level of user.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import logo from './../../Assets/CodeMarkerLogo.png'
 import * as ReactDOM from 'react-dom'
 import Routes from '../../Api/routes'

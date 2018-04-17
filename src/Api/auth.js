@@ -1,15 +1,21 @@
+/*
+This class acts as the authentication layer for the React frontend. It sends a login()
+request when the user logs in. If no token is present, it requests one from the
+backend with the given username and password, and saves it into local storage.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import Events from './../client.js'
 import swal from 'sweetalert2'
 import Routes from './routes'
 import axios from 'axios'
 
 export default {
+
     /*
-
-    This class acts as the authentication layer for the React frontend. It sends a login()
-    request when the user logs in. If no token is present, it requests one from the
-    backend with the given username and password, and saves it into local storage.
-
+        Logs the user in, checks if localStorage token exists first.
      */
     login: function (username, pass, loggedIn) {
         if (localStorage.token) {
@@ -35,6 +41,9 @@ export default {
         delete localStorage.token
     },
 
+    /*
+        Return the user of the current token.
+     */
     getUser() {
         axios.post(Routes.auth.get_user)
             .then((response) => {
@@ -61,6 +70,9 @@ export default {
         return !!localStorage.token
     },
 
+    /*
+        Get token from the backend with username and password.
+     */
     getToken (username, password, cb) {
 
         let formData = new FormData()

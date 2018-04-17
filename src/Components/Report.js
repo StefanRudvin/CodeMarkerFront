@@ -1,3 +1,10 @@
+/*
+Report component to show the report of a submission.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import React from 'react'
 import swal from 'sweetalert2'
 

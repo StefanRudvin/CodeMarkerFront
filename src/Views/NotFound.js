@@ -1,3 +1,9 @@
+/*
+View shown when the URL doesn't match anything or a record does not exist.
+
+@TeamAlpha 2018
+CodeMarker
+*/
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import logo from './../Assets/CodeMarkerLogo.png'
 import { Jumbotron } from 'react-bootstrap'

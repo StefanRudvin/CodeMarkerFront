@@ -1,3 +1,10 @@
+/*
+Home view.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import ConfigurableTable from './../Components/common/ConfigurableTable.js';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import logo from './../Assets/CodeMarkerLogo.png';

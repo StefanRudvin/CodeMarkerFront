@@ -1,3 +1,10 @@
+/*
+Authenticator simply checks if the user is logged in. If not, it shows the login page.
+
+@TeamAlpha 2018
+CodeMarker
+*/
+
 import React, { Component } from 'react'
 
 import Auth from './../Api/auth.js'
