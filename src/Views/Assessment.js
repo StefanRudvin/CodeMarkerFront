@@ -1,10 +1,3 @@
-/*
-Assessment view.
-
-@TeamAlpha 2018
-CodeMarker
-*/
-
 import { Jumbotron, ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import AssessmentEdit from '../Components/assessment/AssessmentEdit'
@@ -152,6 +145,7 @@ class Assessment extends React.Component {
 
     processSubmission(id) {
         let url = Routes.submissions + id + '/process/'
+	console.log(url)
         axios.get(url)
             .then((json) => {
                 this.setState({ submission: json.data.fields })
@@ -201,7 +195,7 @@ class Assessment extends React.Component {
                 <Jumbotron>
                     <h1>{this.state.assessment.name}</h1>
                     <br/>
-                    <p>{this.state.assessment.description}</p>
+                    <p class="leftp"> <ReactMarkdown source={this.state.assessment.description} /> </p>
 
                     {this.state.user.is_staff || this.state.user.is_superuser ? (
                         <div>
@@ -235,7 +229,7 @@ class Assessment extends React.Component {
                 <Col sm={6}>
                     <div className="content description">
                         <h3>Additional Help</h3>
-                        <p> <ReactMarkdown source={this.state.assessment.additional_help} /></p>
+                        <p class="leftp"> <ReactMarkdown source={this.state.assessment.additional_help} /></p>
                         <p>Created {moment(this.state.assessment.created_at).calendar()}</p>
                         <p>Updated {moment(this.state.assessment.updated_at).calendar()}</p>
                         <h2>Upload File</h2>

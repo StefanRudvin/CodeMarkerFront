@@ -1,9 +1,3 @@
-/*
-View for submissions.
-
-@TeamAlpha 2018
-CodeMarker
-*/
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { Jumbotron } from 'react-bootstrap'
 import Routes from './../Api/routes'
@@ -82,9 +76,6 @@ class Submission extends React.Component {
         this.setState({submission: submissionCopy})
     }
 
-    /*
-        Update a submission.
-     */
     handleSubmit (e) {
         e.preventDefault()
         let formData = new FormData()
@@ -156,7 +147,7 @@ class Submission extends React.Component {
 
                     </div>
 
-                    <h3>More info: {this.state.submission.info}</h3>
+                    <h3>More info:</h3> <pre>{this.state.submission.info}</pre>
                     {
                         this.state.user.is_superuser || this.state.user.is_staff ? <div className="button" onClick={this.handleSubmit}>
                                 Submit
