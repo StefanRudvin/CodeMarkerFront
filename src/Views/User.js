@@ -1,17 +1,10 @@
-/*
-View to show information about a user.
-
-@TeamAlpha 2018
-CodeMarker
-*/
-
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import AssessmentItem from '../Components/common/AssessmentItem'
-import UserChart from './../Components/UserChart'
 import { Jumbotron, Col } from 'react-bootstrap'
+import UserChart from './../Components/UserChart'
 import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import Dropdown from 'react-dropdown'
+import { toast } from 'react-toastify'
 import Routes from './../Api/routes'
 import Events from './../client.js'
 import swal from 'sweetalert2'
@@ -38,12 +31,14 @@ class User extends React.Component {
             username: '',
             courses: [],
             email: '',
+            password: '',
             user: [],
             id: '',
         }
 
         this.handleUsernameChange = this.handleUsernameChange.bind(this)
         this.handleEmailChange = this.handleEmailChange.bind(this)
+        this.handlePasswordChange = this.handlePasswordChange.bind(this)
     }
 
     componentDidMount () {
@@ -78,6 +73,10 @@ class User extends React.Component {
         this.setState({email: e.target.value})
     }
 
+    handlePasswordChange (e) {
+        this.setState({password: e.target.value})
+    }
+
     getCurrentUser () {
         axios.post(Routes.auth.get_user)
             .then((response) => {
@@ -101,15 +100,13 @@ class User extends React.Component {
                 this.setState({username: this.state.user.username})
                 this.setState({is_staff: this.state.user.is_staff})
                 this.setState({email: this.state.user.email})
+                this.setState({password: this.state.user.password})
                 this.setState({submissions: json.submissions})
                 this.setState({courses: json.courses})
                 Events.emit('onUserRetrieved', json)
             })
     }
 
-    /*
-        Get all courses from the backend.
-     */
     getAllCourses () {
         axios.get(Routes.courses_json)
             .then((response) => {
@@ -130,9 +127,6 @@ class User extends React.Component {
             })
     }
 
-    /*
-        Select a course, which changes graph etc.
-     */
     onCourseSelected (choice) {
         let formData = new FormData()
 
@@ -159,6 +153,7 @@ class User extends React.Component {
         formData.append('username', this.state.username)
         formData.append('is_staff', this.state.is_staff)
         formData.append('email', this.state.email)
+        formData.append('password', this.state.password)
         formData.append('id', this.state.user.id)
 
         let self = this
@@ -175,9 +170,6 @@ class User extends React.Component {
             )
     }
 
-    /*
-        Remove a user from a course with a SweetAlert warning
-     */
     removeUserFromCourse (course_id) {
         let formData = new FormData()
 
@@ -295,6 +287,18 @@ class User extends React.Component {
                                         value={this.state.email}
                                         type="text"
                                         placeholder="User Email"/>
+                                </div>
+                            </div>
+                            <div className="field">
+                                <label className="label">Password</label>
+                                <div className="control">
+                                    <input
+                                        ref="nameTextArea"
+                                        className="input"
+                                        onChange={this.handlePasswordChange}
+                                        value={this.state.password}
+                                        type="text"
+                                        placeholder="User Password"/>
                                 </div>
                             </div>
                             <div className="field">
