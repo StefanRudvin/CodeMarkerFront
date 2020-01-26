@@ -52,12 +52,14 @@ class NewAssessment extends React.Component {
             staticOutputs: [{}],
             staticInputsUploaded: [],
             staticOutputsUploaded: [],
+            maxTime: 0,
         }
 
         this.handleAdditionalHelpChange = this.handleAdditionalHelpChange.bind(this)
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleMaxTimeChange = this.handleMaxTimeChange.bind(this)
     }
 
     onChange (newDate) {
@@ -94,6 +96,7 @@ class NewAssessment extends React.Component {
 
         formData.append('resource', this.state.sample_code)
         formData.append('input_generator', this.state.input_generator)
+        formData.append('max_time', this.state.maxTime)
 
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
@@ -156,6 +159,11 @@ class NewAssessment extends React.Component {
 
     handleNameChange (e) {
         this.setState({name: e.target.value})
+    }
+
+    handleMaxTimeChange (e) {
+        console.log(this);
+        this.setState({maxTime: e.target.value})
     }
 
     handleDescriptionChange (e) {
@@ -341,6 +349,25 @@ class NewAssessment extends React.Component {
                                     onChange={this.onChange.bind(this)}
                                     value={this.state.date}
                                 />*/}
+                            </Col>
+                        </div>
+                    </div>
+
+                    <div className="field deadline">
+                        <div>
+                            <Col sm={3}>
+
+                            </Col>
+
+                            <Col sm={3}>
+                                <h1>Select max runtime in seconds (0 means no limit)</h1>
+                            </Col>
+                            <Col sm={3}>
+                                <input onChange={this.handleMaxTimeChange}
+                                       className="input"
+                                       value={this.state.maxTime}
+                                       type="number">
+                                </input>
                             </Col>
                         </div>
                     </div>
