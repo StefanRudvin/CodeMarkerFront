@@ -246,7 +246,7 @@ class Admin extends React.Component {
                         <h3><b>Import multiple users from CSV</b></h3>
                         <br/>
                         <h4> Important! Each file HAS to be of following format:</h4>
-                        <span>FirstName,LastNameUsername,Email,Password,Course1 Course2 Course3...</span>
+                        <span>FirstName,LastName,Username,Email,Password,Course1 Course2 Course3...</span>
                         <br/>
                         <br/>
                         <div className="dropzone">
