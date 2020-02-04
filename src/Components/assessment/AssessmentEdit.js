@@ -5,6 +5,7 @@ import Datetime from 'react-datetime'
 import moment from 'moment'
 import React from 'react'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 class AssessmentEdit extends React.Component {
 
@@ -52,6 +53,31 @@ class AssessmentEdit extends React.Component {
 
   handleMaxTimeChange(e) {
     this.setState({max_time: e.target.value})
+  }
+
+  handleDelete(e) {
+    //deleting warning
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to undo this action.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      confirmButtonClass: 'confirm-class',
+      cancelButtonClass: 'cancel-class',
+      closeOnConfirm: false,
+      closeOnCancel: false
+
+    }).then((result) => {
+      if (result.value) {
+        axios.delete(Routes.base + 'assessments/' + this.state.id + '/')
+          .then(() => {
+            Events.emit(this.props.event)
+            toast('Item deleted')
+            window.location = '/'
+          })
+      }
+    })
   }
 
   updateAssessment() {
@@ -145,8 +171,12 @@ class AssessmentEdit extends React.Component {
         </div>
 
         <div className="button" onClick={this.updateAssessment.bind(this)}>
-          Update Assessment
-                </div>
+        Update Assessment
+        </div>
+
+        <div className="button" onClick={this.handleDelete.bind(this)}>
+        Delete Assessment
+        </div>
       </div>
     )
   }
