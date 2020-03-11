@@ -344,7 +344,7 @@ class NewAssessment extends React.Component {
                                 <Datetime onChange={this.onChange.bind(this)}
                                           value={this.state.date}
                                           dateFormat='DD/MM/YYYY'
-                                          timeFormat='hh:mm:ss'/>
+                                          timeFormat='HH:mm:ss'/>
                                 {/*<DatePicker
                                     onChange={this.onChange.bind(this)}
                                     value={this.state.date}
