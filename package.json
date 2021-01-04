@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "EventEmitter": "^1.0.0",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "bulma": "^0.6.2",
