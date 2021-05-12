@@ -8,7 +8,7 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "bulma": "^0.6.2",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "font-awesome": "^4.7.0",
     "halogen": "^0.2.0",
     "jest-cli": "^21.2.1",
